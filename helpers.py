@@ -1,7 +1,7 @@
 import numpy as np
 import torch
-from transformers import GPT2Tokenizer, GPT2Model
 from scipy.spatial.distance import cosine as cosine_similarity
+import ollama
 
 class Node:
     def __init__(self, vector, text, activation):
@@ -39,23 +39,16 @@ def combine_nodes(nodes, embedding_model):
 
 # Assume EmbeddingModel is a placeholder for your actual embedding model with an encode method
 class EmbeddingModel:
-    def __init__(self, model_name='gpt2-medium'):
-        self.tokenizer = GPT2Tokenizer.from_pretrained(model_name)
-        self.model = GPT2Model.from_pretrained(model_name)
+    def __init__(self, model_name='llama2'):
+        self.model_name = model_name
 
     def encode(self, text):
         # Tokenize the input text
-        inputs = self.tokenizer(text, return_tensors="pt", truncation=True)
-        
-        # Get the vector representation (hidden state) of the input text
-        with torch.no_grad():
-            outputs = self.model(**inputs)
-        vector = outputs.last_hidden_state.mean(dim=1)  # Average the hidden states to get a single vector
-        return vector.squeeze().numpy()
-
+        return ollama.embeddings(self.model_name, text)['embedding']
 
 # Usage
 embedding_model = EmbeddingModel()
 nodes_to_combine = [Node(np.array([0.1, 0.2, 0.3]), "Hello, world!", 1.0),
                     Node(np.array([0.4, 0.5, 0.6]), "Goodbye, world!", 1.0)]
 combined_node = combine_nodes(nodes_to_combine, embedding_model)
+get_similarity = lambda x, y: cosine_similarity(x, y)

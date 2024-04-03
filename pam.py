@@ -1,5 +1,6 @@
 import numpy as np
-from scipy.spatial.distance import cosine
+import logging
+from helpers import get_similarity
 
 class Node:
     def __init__(self, vector, text, activation):
@@ -17,7 +18,7 @@ class VectorStore:
     def find_similar_nodes(self, vector, threshold):
         similar_nodes = []
         for node in self.nodes:
-            similarity = 1 - cosine(node.vector, vector)  # cosine similarity
+            similarity = get_similarity(node.vector, vector)  # cosine similarity
             if similarity >= threshold:
                 similar_nodes.append(node)
         return similar_nodes
@@ -30,15 +31,16 @@ class PerceptualAssociativeMemory:
     def process_node(self, node):
         # Find similar nodes
         similar_nodes = self.vector_store.find_similar_nodes(node.vector, self.threshold)
-        
+        logging.warning(f"PRCP_MEM: Similar nodes: {similar_nodes}")        
         # Boost activation of similar nodes
         for similar_node in similar_nodes:
             boost = np.exp(-5 * (1 - similar_node.activation))  # Exponential boost function
             similar_node.activation = min(similar_node.activation + boost, 1.0)  # Cap activation at 1.0
         
         # Add the new node to the vector store if no similar node is found
-        if not similar_nodes:
+        if not len(similar_nodes):
             self.vector_store.add_node(node)
+            logging.warning(f"PRCP_MEM: Added to vector store: {node}")        
 
 # Usage
 pam = PerceptualAssociativeMemory(threshold=0.8)

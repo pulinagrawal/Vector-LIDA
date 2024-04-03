@@ -44,13 +44,15 @@ Schema consists of a context, an action and a result.
 The conscious broadcast triggers a schema that is most similar to the contents of the conscious broadcast.
 That action is then executed.
 '''
+from venv import create
 from torch import embedding
 from sensory_memory import SensoryMemory
 from helpers import EmbeddingModel, Node
 from pam import PerceptualAssociativeMemory, VectorStore
 from csm import CurrentSituationalModel, GlobalWorkspace, AttentionCodelet
 from procedural_memory import ProceduralMemory, Schema
-
+import logging
+logging.basicConfig(level=logging.WARNING)
 import numpy as np
 
 # Initialize the embedding model
@@ -62,19 +64,30 @@ csm = CurrentSituationalModel(max_size=10, embedding_model=embedding_model)
 procedural_memory = ProceduralMemory()
 global_workspace = GlobalWorkspace()
 
+create_node = lambda text: Node(embedding_model.encode(text), text, 1.0)
+
 class ACTIONS:
     TURN_ON = 1
     TURN_OFF = 2
 
-context = Node(embedding_model.encode('lights'), 'bedroom', 1.0)
-result1 = Node(embedding_model.encode('lights on'), 'lights on', 1.0)
-result2 = Node(embedding_model.encode('lights off'), 'lights off', 1.0)
-sample_schema1 = Schema(context, ACTIONS.TURN_ON, result1)  # This is a very simplistic schema
-sample_schema2 = Schema(context, ACTIONS.TURN_OFF, result2)  # This is a very simplistic schema
-procedural_memory.add_schema(sample_schema1)
-procedural_memory.add_schema(sample_schema2)
+rooms = ['bedroom', 'kitchen', 'living room', 'bathroom']
+nodes = []
+for room in rooms:
+    node = create_node(room)
+    nodes.append(node)
 
-focus_vector = embedding_model.encode("lights")
+result1 = create_node('lights on')
+result2 = create_node('lights off')
+
+for node in nodes:
+    schema = Schema(create_node(' '.join([node.text, 'lights off'])), ACTIONS.TURN_ON, result1)  # This is a very simplistic schema
+    procedural_memory.add_schema(schema)
+
+for node in nodes:
+    schema = Schema(create_node(' '.join([node.text, 'lights on'])), ACTIONS.TURN_OFF, result1)  # This is a very simplistic schema
+    procedural_memory.add_schema(schema)
+
+focus_vector = embedding_model.encode("bedroom")
 
 # Step 3: Attention Codelet forms a coalition
 attention_codelet = AttentionCodelet(focus_vector)

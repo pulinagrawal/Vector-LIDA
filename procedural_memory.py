@@ -1,11 +1,11 @@
 import numpy as np
-from helpers import Node, cosine_similarity
+from helpers import Node, get_similarity
 
 class Schema:
     def __init__(self, context, action, result):
-        self.context = context  # list of Nodes
+        self.context = context  # a Node
         self.action = action  # Node
-        self.result = result  # list of Nodes
+        self.result = result  # a Node
 
 class ProceduralMemory:
     def __init__(self):
@@ -16,7 +16,7 @@ class ProceduralMemory:
 
     @staticmethod
     def compute_similarity(node1, node2):
-        return cosine_similarity(node1.vector, node2.vector)
+        return get_similarity(node1.vector, node2.vector)
 
     def select_action(self, coalition):
         max_match_score = 0
