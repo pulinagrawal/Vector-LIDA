@@ -44,81 +44,117 @@ Schema consists of a context, an action and a result.
 The conscious broadcast triggers a schema that is most similar to the contents of the conscious broadcast.
 That action is then executed.
 '''
-from venv import create
-from torch import embedding
+from pdb import run
 from sensory_memory import SensoryMemory
-from helpers import EmbeddingModel, Node
+from helpers import embed, Node, create_node, generate
 from pam import PerceptualAssociativeMemory, VectorStore
-from csm import CurrentSituationalModel, GlobalWorkspace, AttentionCodelet
+from csm import CurrentSituationalModel, GlobalWorkspace, AttentionCodelet, StructureBuildingCodelet
+from episodic import EpisodicMemory
 from procedural_memory import ProceduralMemory, Schema
+from motor_plan_execution import Action
 import logging
 logging.basicConfig(level=logging.WARNING)
 import numpy as np
 
+class CA2StructureBuildingCodelet(StructureBuildingCodelet): 
+    def run(self, csm):
+        new_structures = []
+        to_be_removed = []
+        nodes = csm.get_all_nodes()
+        for node in nodes:
+            if node.text.startswith("respond to"):
+                for event in nodes:
+                    if 'episodic' in event.tags:
+                        new_structure = create_node(node.text + "\n" + f"relate to: {event.text}")
+                        new_structure.tags.append(list(tag for tag in node.tags+event.tags))
+                        new_structure.activation = (node.activation + event.activation) / 2
+                        new_structures.append(new_structure)
+                        to_be_removed.append(node)
+                        to_be_removed.append(event)
+        for node in to_be_removed:
+            if node in csm.nodes:
+                csm.nodes.remove(node)
+        return new_structures
+
 # Initialize the embedding model
-embedding_model = EmbeddingModel()
-sensory_memory = SensoryMemory(embedding_model)
+sensory_memory = SensoryMemory()
 vector_store = VectorStore()
 pam = PerceptualAssociativeMemory()
-csm = CurrentSituationalModel(max_size=10, embedding_model=embedding_model)
+episodic = EpisodicMemory()
+csm = CurrentSituationalModel(max_size=10, sbcs=[CA2StructureBuildingCodelet()], memories=[pam, episodic])
 procedural_memory = ProceduralMemory()
 global_workspace = GlobalWorkspace()
 
-create_node = lambda text: Node(embedding_model.encode(text), text, 1.0)
+class Environment:
+    def __init__(self):
+        self.text = ""
+    
+    def execute(self, action):
+        result = None
+        if action:
+            result = action.execute(self)
 
-class ACTIONS:
-    TURN_ON = 1
-    TURN_OFF = 2
+        input_text = input("Enter a text: ")
+        return f"respond to: {input_text}", result
+    
+    def print_text(self, text):
+        print(text)
 
-rooms = ['bedroom', 'kitchen', 'living room', 'bathroom']
-nodes = []
-for room in rooms:
-    node = create_node(room)
-    nodes.append(node)
+class RespondAction(Action):
+    def execute(self, environment):
+        result = generate(prompt=self.params["context"]+"\n"+self.params["coalition"])['response']
+        environment.print_text(result)
+        return result
 
-result1 = create_node('lights on')
-result2 = create_node('lights off')
 
-for node in nodes:
-    schema = Schema(create_node(' '.join([node.text, 'lights off'])), ACTIONS.TURN_ON, result1)  # This is a very simplistic schema
-    procedural_memory.add_schema(schema)
+schema = Schema(action=RespondAction)  # This is a very simplistic schema
+procedural_memory.add_schema(schema)
 
-for node in nodes:
-    schema = Schema(create_node(' '.join([node.text, 'lights on'])), ACTIONS.TURN_OFF, result1)  # This is a very simplistic schema
-    procedural_memory.add_schema(schema)
-
-focus_vector = embedding_model.encode("bedroom")
+# focus_vector = embed("needs a response")
 
 # Step 3: Attention Codelet forms a coalition
-attention_codelet = AttentionCodelet(focus_vector)
+attention_codelet = AttentionCodelet(focus_tag='environment')
+env = Environment()
+selected_action = None
 
 # Assume we have a text input from the environment
-while True:
-    input_text = input("Enter a text: ")
-    if input_text == "q":
-        break
 
+def run_lida(input):
     # Step 1: Sensory Memory processes the input text
-    node_from_text = sensory_memory.process_text(input_text)
+    if not input:
+        return 
+    node_from_text = sensory_memory.process_text(input)
+    if node_from_text.text.startswith("respond to"):
+        node_from_text.tags.append('environment')
 
     pam.process_node(node_from_text)
     # Step 2: CSM stores the new node
-    csm.add_node(node_from_text)
+    csm.run(node_from_text)
     # Assume we have a focus vector for attention codelet
     coalition = attention_codelet.form_coalition(csm)
     print('Coalition: ', coalition)
     # Step 4: Coalition is sent to Global Workspace
-    global_workspace.receive_coalition(coalition)
+    winning_coalition = global_workspace.run(coalition)
     # Step 5: Competition occurs in Global Workspace
-    winning_coalition = global_workspace.competition()
+    csm.receive_broadcast(winning_coalition)
     print('Winning Coalition: ', winning_coalition)
 
     # Assume we have some predefined schemas
     # Adding a simple schema for demonstration
     # Step 6: Procedural Memory selects an action based on the winning coalition
-    selected_action = procedural_memory.select_action(winning_coalition)
+    selected_action = procedural_memory.instatiate_schema(winning_coalition)
     # The selected action node now contains the action to be executed.
     # You would have some mechanism to execute or further process this action as per your application's requirements.
 
     # Print the selected action text for demonstration
     print(f'Selected Action: {selected_action}')
+    return selected_action
+
+while True:
+
+    input_text, result = env.execute(selected_action)
+    if input_text == "q":
+        break
+    if result:
+        run_lida(result)
+    selected_action = run_lida(input_text)

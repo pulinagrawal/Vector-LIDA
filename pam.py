@@ -1,6 +1,6 @@
 import numpy as np
 import logging
-from helpers import get_similarity
+from helpers import get_similarity, combine_nodes
 
 class Node:
     def __init__(self, vector, text, activation):
@@ -39,8 +39,16 @@ class PerceptualAssociativeMemory:
         
         # Add the new node to the vector store if no similar node is found
         if not len(similar_nodes):
-            self.vector_store.add_node(node)
-            logging.warning(f"PRCP_MEM: Added to vector store: {node}")        
+            self.store(node)
+
+    def store(self, node):
+        self.vector_store.add_node(node)
+        logging.warning(f"PRCP_MEM: Added to vector store: {node}")        
+            
+    def cue(self, vector):
+        similar_nodes = self.vector_store.find_similar_nodes(vector, self.threshold)
+        combined_node = combine_nodes(similar_nodes)
+        return combined_node
 
 # Usage
 pam = PerceptualAssociativeMemory(threshold=0.8)
