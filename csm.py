@@ -46,8 +46,9 @@ class CurrentSituationalModel:
             memory.store(node)
             if not cued_node:
                 continue
-            if get_similarity(node.vector, cued_node.vector) < 1.0:
-                self.add_node(cued_node)
+            for csm_node in self.nodes:
+                if get_similarity(cued_node.vector, csm_node.vector) == 1.0:
+                    csm_node.tags.extend(cued_node.tags)
 
     def get_all_nodes(self):
         return list(self.nodes)

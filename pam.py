@@ -1,12 +1,8 @@
+from hmac import new
+from re import T
 import numpy as np
 import logging
-from helpers import get_similarity, combine_nodes
-
-class Node:
-    def __init__(self, vector, text, activation):
-        self.vector = vector
-        self.text = text
-        self.activation = activation
+from helpers import get_similarity, combine_nodes, create_node, Node
 
 class VectorStore:
     def __init__(self):
@@ -42,11 +38,14 @@ class PerceptualAssociativeMemory:
             self.store(node)
 
     def store(self, node):
-        self.vector_store.add_node(node)
-        logging.warning(f"PRCP_MEM: Added to vector store: {node}")        
+        new_node = Node(vector=node.vector, text=node.text, activation=node.activation, tags=['pam'])
+        self.vector_store.add_node(new_node)
+        logging.warning(f"PRCP_MEM: Added to vector store: {new_node}")        
             
     def cue(self, vector):
         similar_nodes = self.vector_store.find_similar_nodes(vector, self.threshold)
+        if len(similar_nodes) == 0:
+            return None
         combined_node = combine_nodes(similar_nodes)
         return combined_node
 

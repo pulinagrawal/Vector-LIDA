@@ -44,7 +44,6 @@ Schema consists of a context, an action and a result.
 The conscious broadcast triggers a schema that is most similar to the contents of the conscious broadcast.
 That action is then executed.
 '''
-from pdb import run
 from sensory_memory import SensoryMemory
 from helpers import embed, Node, create_node, generate
 from pam import PerceptualAssociativeMemory, VectorStore
@@ -53,7 +52,7 @@ from episodic import EpisodicMemory
 from procedural_memory import ProceduralMemory, Schema
 from motor_plan_execution import Action
 import logging
-logging.basicConfig(level=logging.WARNING)
+logging.basicConfig(level=logging.INFO)
 import numpy as np
 
 class CA2StructureBuildingCodelet(StructureBuildingCodelet): 
@@ -66,7 +65,7 @@ class CA2StructureBuildingCodelet(StructureBuildingCodelet):
                 for event in nodes:
                     if 'episodic' in event.tags:
                         new_structure = create_node(node.text + "\n" + f"relate to: {event.text}")
-                        new_structure.tags.append(list(tag for tag in node.tags+event.tags))
+                        new_structure.tags.extend(list(tag for tag in node.tags+event.tags))
                         new_structure.activation = (node.activation + event.activation) / 2
                         new_structures.append(new_structure)
                         to_be_removed.append(node)
