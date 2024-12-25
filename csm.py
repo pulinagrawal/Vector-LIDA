@@ -14,8 +14,15 @@ class CurrentSituationalModel:
     def __init__(self, max_size, sbcs=None, memories=None):
         self.nodes = [] 
         self.ccq = deque(maxlen=max_size)  # Conscious Contents Queue
-        self.sbcs = sbcs
-        self.memories = memories
+        self.sbcs = []
+        if sbcs is not None:
+            for sbc in sbcs:
+                self.sbcs.append(sbc)
+
+        self.memories = []
+        if memories is not None:
+            for memory in memories:
+                self.memories.append(memory)
 
     def run_structure_building_codelets(self):
         for sbc in self.sbcs:
