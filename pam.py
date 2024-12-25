@@ -1,5 +1,3 @@
-from hmac import new
-from re import T
 import numpy as np
 import logging
 from helpers import get_similarity, combine_nodes, create_node, Node
@@ -20,11 +18,27 @@ class VectorStore:
         return similar_nodes
 
 class PerceptualAssociativeMemory:
-    def __init__(self, threshold=0.8):
+    def __init__(self, threshold=0.8, csm=None):
         self.vector_store = VectorStore()
         self.threshold = threshold
+        self.csm = csm
     
     def process_node(self, node):
+        similar_nodes = self.cue(node)
+
+        if self.csm is not None:
+            self.csm.receive(similar_nodes)
+
+    def store(self, nodes):
+        # This should be called upon receiving a broadcast from the Global Workspace
+        if isinstance(nodes, Node):
+           nodes = [nodes]  
+        for node in nodes:
+            new_node = Node(vector=node.vector, text=node.text, activation=node.activation, tags=['pam'])
+            self.vector_store.add_node(new_node)
+            logging.warning(f"PRCP_MEM: Added to vector store: {new_node}")        
+            
+    def cue(self, node):
         # Find similar nodes
         similar_nodes = self.vector_store.find_similar_nodes(node.vector, self.threshold)
         logging.warning(f"PRCP_MEM: Similar nodes: {similar_nodes}")        
@@ -33,21 +47,7 @@ class PerceptualAssociativeMemory:
             boost = np.exp(-5 * (1 - similar_node.activation))  # Exponential boost function
             similar_node.activation = min(similar_node.activation + boost, 1.0)  # Cap activation at 1.0
         
-        # Add the new node to the vector store if no similar node is found
-        if not len(similar_nodes):
-            self.store(node)
-
-    def store(self, node):
-        new_node = Node(vector=node.vector, text=node.text, activation=node.activation, tags=['pam'])
-        self.vector_store.add_node(new_node)
-        logging.warning(f"PRCP_MEM: Added to vector store: {new_node}")        
-            
-    def cue(self, vector):
-        similar_nodes = self.vector_store.find_similar_nodes(vector, self.threshold)
-        if len(similar_nodes) == 0:
-            return None
-        combined_node = combine_nodes(similar_nodes)
-        return combined_node
+        return similar_nodes
 
 # Usage
 pam = PerceptualAssociativeMemory(threshold=0.8)
