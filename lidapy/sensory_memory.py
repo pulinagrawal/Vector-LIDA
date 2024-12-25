@@ -1,5 +1,5 @@
 import warnings
-from helpers import Node, embed
+from lidapy.helpers import Node, embed
 import logging
 
 class SensoryMemory:

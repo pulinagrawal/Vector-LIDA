@@ -1,4 +1,4 @@
-from helpers import get_most_similar_node, create_node
+from lidapy.helpers import get_most_similar_node, create_node
 
 class EpisodicMemory:
     def __init__(self):

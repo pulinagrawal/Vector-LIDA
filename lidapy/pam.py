@@ -1,6 +1,6 @@
 import numpy as np
 import logging
-from helpers import get_similarity, combine_nodes, create_node, Node
+from lidapy.helpers import get_similarity, combine_nodes, create_node, Node
 
 class VectorStore:
     def __init__(self):

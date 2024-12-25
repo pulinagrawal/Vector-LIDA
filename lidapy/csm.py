@@ -1,5 +1,5 @@
 from collections import deque
-from helpers import get_similarity
+from lidapy.helpers import get_similarity
 
 class StructureBuildingCodelet:
     def __init__(self, interests = [], activation=1.0):

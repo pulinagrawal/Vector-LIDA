@@ -1,6 +1,6 @@
 import numpy as np
-from helpers import Node, get_similarity, embed
-from motor_plan_execution import Action
+from lidapy.helpers import Node, get_similarity, embed
+from lidapy.motor_plan_execution import Action
 
 class Schema:
     def __init__(self, context: Node=None, action: type[Action]=None, result: Node=None):

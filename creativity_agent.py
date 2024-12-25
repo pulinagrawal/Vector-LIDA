@@ -44,16 +44,17 @@ Schema consists of a context, an action and a result.
 The conscious broadcast triggers a schema that is most similar to the contents of the conscious broadcast.
 That action is then executed.
 '''
-from sensory_memory import SensoryMemory
-from helpers import embed, Node, create_node, generate
-from pam import PerceptualAssociativeMemory, VectorStore
-from csm import CurrentSituationalModel, GlobalWorkspace, AttentionCodelet, StructureBuildingCodelet
-from episodic import EpisodicMemory
-from procedural_memory import ProceduralMemory, Schema
-from motor_plan_execution import Action
+from lidapy.sensory_memory import SensoryMemory
+from lidapy.helpers import create_node, generate
+from lidapy.pam import PerceptualAssociativeMemory, VectorStore
+from lidapy.csm import CurrentSituationalModel, StructureBuildingCodelet
+from lidapy.global_workspace import GlobalWorkspace, AttentionCodelet
+from lidapy.episodic import EpisodicMemory
+from lidapy.procedural_memory import ProceduralMemory, Schema
+from lidapy.motor_plan_execution import Action
+from lidapy.agent import run_lida
 import logging
 logging.basicConfig(level=logging.INFO)
-import numpy as np
 
 class CA2StructureBuildingCodelet(StructureBuildingCodelet): 
     def run(self, csm):
@@ -117,36 +118,6 @@ env = Environment()
 selected_action = None
 
 # Assume we have a text input from the environment
-
-def run_lida(input):
-    # Step 1: Sensory Memory processes the input text
-    if not input:
-        return 
-    nodes = sensory_memory.process(input)
-
-    pam.process(nodes)
-    # Step 2: CSM stores the new node
-    csm.run(nodes)
-    # Assume we have a focus vector for attention codelet
-    coalition = attention_codelet.form_coalition(csm)
-    print('Coalition: ', coalition)
-    # Step 4: Coalition is sent to Global Workspace
-    winning_coalition = global_workspace.run(coalition)
-    # Step 5: Competition occurs in Global Workspace
-    csm.receive_broadcast(winning_coalition)
-    print('Winning Coalition: ', winning_coalition)
-
-    # Assume we have some predefined schemas
-    # Adding a simple schema for demonstration
-    # Step 6: Procedural Memory selects an action based on the winning coalition
-    selected_action = procedural_memory.instatiate_schema(winning_coalition)
-    # The selected action node now contains the action to be executed.
-    # You would have some mechanism to execute or further process this action as per your application's requirements.
-
-    # Print the selected action text for demonstration
-    print(f'Selected Action: {selected_action}')
-    return selected_action
-
 while True:
 
     input_text, result = env.execute(selected_action)
@@ -154,4 +125,4 @@ while True:
         break
     if result:
         run_lida({'text': result})
-    selected_action = run_lida(input_text)
+    selected_action = run_lida({'text': result})
