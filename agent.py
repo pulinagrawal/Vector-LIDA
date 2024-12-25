@@ -122,13 +122,11 @@ def run_lida(input):
     # Step 1: Sensory Memory processes the input text
     if not input:
         return 
-    node_from_text = sensory_memory.process_text(input)
-    if node_from_text.text.startswith("respond to"):
-        node_from_text.tags.append('environment')
+    nodes = sensory_memory.process(input)
 
-    pam.process_node(node_from_text)
+    pam.process(nodes)
     # Step 2: CSM stores the new node
-    csm.run(node_from_text)
+    csm.run(nodes)
     # Assume we have a focus vector for attention codelet
     coalition = attention_codelet.form_coalition(csm)
     print('Coalition: ', coalition)
@@ -155,5 +153,5 @@ while True:
     if input_text == "q":
         break
     if result:
-        run_lida(result)
+        run_lida({'text': result})
     selected_action = run_lida(input_text)

@@ -23,8 +23,10 @@ class PerceptualAssociativeMemory:
         self.threshold = threshold
         self.csm = csm
     
-    def process_node(self, node):
-        similar_nodes = self.cue(node)
+    def process(self, nodes):
+        similar_nodes = []
+        for node in nodes:
+            similar_nodes.extend(self.cue(node))
 
         if self.csm is not None:
             self.csm.receive(similar_nodes)

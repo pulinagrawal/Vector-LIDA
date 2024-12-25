@@ -37,10 +37,13 @@ class CurrentSituationalModel:
         for node in nodes:
             node.activation *= 0.9
 
-    def run(self, node):
+    def run(self, nodes):
         self.decay(self.nodes)
-        self.add_node(node)
+        for node in nodes:
+            self.add_node(node)
         self.run_structure_building_codelets()
+        # Departure from basic LIDA model for cueing memories. 
+        # Happens during conscious broadcast
 
     def receive_broadcast(self, coalition):
         node = coalition.coalition_node
