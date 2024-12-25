@@ -44,115 +44,77 @@ Schema consists of a context, an action and a result.
 The conscious broadcast triggers a schema that is most similar to the contents of the conscious broadcast.
 That action is then executed.
 '''
-from lidapy.sensory_memory import SensoryMemory
-from lidapy.helpers import create_node, generate
-from lidapy.pam import PerceptualAssociativeMemory, VectorStore
-from lidapy.csm import CurrentSituationalModel, StructureBuildingCodelet
-from lidapy.global_workspace import GlobalWorkspace, AttentionCodelet
+from types import SimpleNamespace
+import warnings
+from lidapy.ss import SensorySystem
+from lidapy.csm import CurrentSituationalModel
+from lidapy.global_workspace import GlobalWorkspace
+from lidapy.sbcs import ActivationSBC
 from lidapy.episodic import EpisodicMemory
-from lidapy.procedural_memory import ProceduralMemory, Schema
-from lidapy.motor_plan_execution import Action
+from lidapy.ps import ProceduralSystem
+from lidapy.sms import SensoryMotorSystem
+from abc import ABC, abstractmethod
 import logging
 logging.basicConfig(level=logging.INFO)
 import numpy as np
 
-class CA2StructureBuildingCodelet(StructureBuildingCodelet): 
-    def run(self, csm):
-        new_structures = []
-        to_be_removed = []
-        nodes = csm.get_all_nodes()
-        for node in nodes:
-            if node.text.startswith("respond to"):
-                for event in nodes:
-                    if 'episodic' in event.tags:
-                        new_structure = create_node(node.text + "\n" + f"relate to: {event.text}")
-                        new_structure.tags.extend(list(tag for tag in node.tags+event.tags))
-                        new_structure.activation = (node.activation + event.activation) / 2
-                        new_structures.append(new_structure)
-                        to_be_removed.append(node)
-                        to_be_removed.append(event)
-        for node in to_be_removed:
-            if node in csm.nodes:
-                csm.nodes.remove(node)
-        return new_structures
-
 # Initialize the embedding model
-sensory_memory = SensoryMemory()
-vector_store = VectorStore()
-pam = PerceptualAssociativeMemory()
+sensory_system = SensorySystem()
 episodic = EpisodicMemory()
-csm = CurrentSituationalModel(max_size=10, sbcs=[CA2StructureBuildingCodelet()], memories=[pam, episodic])
-procedural_memory = ProceduralMemory()
+csm = CurrentSituationalModel(max_size=10, sbcs=[ActivationSBC()], memories=[sensory_system.pam, episodic])
 global_workspace = GlobalWorkspace()
+procedural_system = ProceduralSystem()
+sensory_motor_system = SensoryMotorSystem()
 
-class Environment:
-    def __init__(self):
-        self.text = ""
-    
-    def execute(self, action):
-        result = None
-        if action:
-            result = action.execute(self)
+class Environment(ABC):
 
-        input_text = input("Enter a text: ")
-        return f"respond to: {input_text}", result
-    
-    def print_text(self, text):
-        print(text)
+    def execute(self, motor_commands):
+        if not motor_commands:
+            warnings.warn("No motor commands provided to execute.")
 
-class RespondAction(Action):
-    def execute(self, environment):
-        result = generate(prompt=self.params["context"]+"\n"+self.params["coalition"])['response']
-        environment.print_text(result)
-        return result
+        if motor_commands:
+            if len(motor_commands):
+                self.run_commands(motor_commands)
 
+        current_stimuli = self.recieve_sensory_stimuli()
+        return current_stimuli
 
-schema = Schema(action=RespondAction)  # This is a very simplistic schema
-procedural_memory.add_schema(schema)
+    @abstractmethod
+    def run_commands(self, motor_commands):
+        pass
 
-# focus_vector = embed("needs a response")
+    @abstractmethod
+    def recieve_sensory_stimuli(self):
+        pass
 
-# Step 3: Attention Codelet forms a coalition
-attention_codelet = AttentionCodelet(focus_tag='environment')
-env = Environment()
-selected_action = None
+DEFAULT_LIDA_AGENT = {
+    "sensor_system": sensory_system,
+    "csm": csm,
+    "global_workspace": global_workspace,
+    "procedural_system": procedural_system,
+    "sensory_motor_system": sensory_motor_system,
+}
 
-# Assume we have a text input from the environment
-
-def run_lida(input):
+def run_lida(environment, lida_agent=DEFAULT_LIDA_AGENT, steps=100):
     # Step 1: Sensory Memory processes the input text
-    if not input:
-        return 
-    nodes = sensory_memory.process(input)
+    if not isinstance(environment, Environment):
+        raise ValueError("environment must be an instance of Environment class")
 
-    pam.process(nodes)
-    # Step 2: CSM stores the new node
-    csm.run(nodes)
-    # Assume we have a focus vector for attention codelet
-    coalition = attention_codelet.form_coalition(csm)
-    print('Coalition: ', coalition)
-    # Step 4: Coalition is sent to Global Workspace
-    winning_coalition = global_workspace.run(coalition)
-    # Step 5: Competition occurs in Global Workspace
-    csm.receive_broadcast(winning_coalition)
-    print('Winning Coalition: ', winning_coalition)
+    lida_agent = SimpleNamespace(**lida_agent)
+    motor_commands = []
+    for _ in range(steps):
+        current_stimuli = environment.execute(motor_commands=motor_commands)
+        associated_nodes = lida_agent.sensory_system.process(current_stimuli)
 
-    # Assume we have some predefined schemas
-    # Adding a simple schema for demonstration
-    # Step 6: Procedural Memory selects an action based on the winning coalition
-    selected_action = procedural_memory.instatiate_schema(winning_coalition)
-    # The selected action node now contains the action to be executed.
-    # You would have some mechanism to execute or further process this action as per your application's requirements.
+        # Step 2: CSM stores the new node
+        lida_agent.csm.run(associated_nodes)
+        # Assume we have a focus vector for attention codelet
+        winning_coalition = lida_agent.global_workspace.run(csm)
+        # Step 5: Competition occurs in Global Workspace
+        print('Winning Coalition: ', winning_coalition)
 
-    # Print the selected action text for demonstration
-    print(f'Selected Action: {selected_action}')
-    return selected_action
-
-while True:
-
-    input_text, result = env.execute(selected_action)
-    if input_text == "q":
-        break
-    if result:
-        run_lida({'text': result})
-    selected_action = run_lida(input_text)
+        # Step 6: Procedural Memory selects an action based on the winning coalition
+        selected_action = lida_agent.procedural_system.run(winning_coalition)
+        # The selected action node now contains the action to be executed.
+        # You would have some mechanism to execute or further process this action as per your application's requirements.
+        motor_commands = lida_agent.sensory_motor_system.run(selected_action)

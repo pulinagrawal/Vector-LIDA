@@ -1,3 +1,4 @@
+from numpy import broadcast
 from lidapy.helpers import get_most_similar_node, create_node 
 
 class Coalition:
@@ -102,4 +103,6 @@ class GlobalWorkspace:
             coalition = attention_codelet.form_coalition(csm)
             self.receive_coalition(coalition)
         winning_coalition = self.competition()
+        for broadcast_reciever in self.broadcast_receivers:
+            broadcast_reciever.recieve_broadcast(winning_coalition)
         return winning_coalition
