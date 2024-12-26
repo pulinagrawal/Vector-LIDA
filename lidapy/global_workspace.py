@@ -2,28 +2,22 @@ from numpy import broadcast
 from lidapy.helpers import get_most_similar_node, create_node 
 
 class Coalition:
-    def __init__(self, nodes, attention_codelet_activation):
+    def __init__(self, nodes, attention_codelet):
         self.nodes = nodes
-        self.attention_codelet_activation = attention_codelet_activation
+        self.attention_codelet = attention_codelet
         self.activation = self.compute_activation()
-        self.create_coalition_node()
-
-    def create_coalition_node(self):
-        merged_text = '\n'.join(node.text for node in self.nodes) 
-        self.coalition_node = create_node(merged_text, activation=self.compute_activation())
 
     def compute_activation(self):
         # Average activation of nodes in the coalition
         total_activation = sum(node.activation for node in self.nodes)
         avg_activation = total_activation / len(self.nodes) if self.nodes else 0
         # Weighted by the activation of the attention codelet
-        weighted_activation = avg_activation * self.attention_codelet_activation
+        weighted_activation = avg_activation * self.attention_codelet.activation
         return weighted_activation
 
-    def add_node(self, node):
-        self.nodes.append(node)
+    def add_nodes(self, nodes):
+        self.nodes.extend(nodes)
         self.activation = self.compute_activation()
-        self.create_coalition_node()
 
     def get_nodes(self):
         return self.nodes   
@@ -33,41 +27,6 @@ class Coalition:
 
     def __repr__(self) -> str:
         return f"Coalition(nodes={self.nodes}, activation={self.activation})"
-
-class AttentionCodelet:
-    def __init__(self, focus_vector=None, focus_tag=None, focus_text=None, activation=1.0):
-        self.focus_vector = focus_vector
-        self.focus_tag = focus_tag
-        self.focus_text = focus_text
-        self.activation = activation  # Activation level of the attention codelet
-
-        if focus_vector is not None:
-            self.focus = self.focus_vector_coalition
-        if focus_text is not None:
-            self.focus = self.focus_text_coalition
-        if focus_tag is not None:
-            self.focus = self.focus_tag_coalition
-
-    def focus_vector_coalition(self, nodes):
-        most_similar_node, similiarity = get_most_similar_node(self.focus_vector, nodes)
-        return most_similar_node, similiarity 
-
-    def focus_text_coalition(self, nodes):
-        pass
-
-    def focus_tag_coalition(self, nodes):
-        nodes = []
-        for node in nodes:
-            if self.focus_tag in node.tags:
-                nodes.append(node)
-        return max(nodes, key=lambda node: node.activation), 1.0
-
-    def form_coalition(self, csm):
-        coalition = Coalition([], self.activation)
-        focus_node, similiarity = self.focus(csm.get_all_nodes())
-        coalition.add_node(focus_node) 
-        coalition.activation *= similiarity
-        return coalition
 
 class GlobalWorkspace:
     def __init__(self, attention_codelets=None, broadcast_receivers=None):

@@ -1,6 +1,6 @@
-from all_code import combine_nodes
-from lidapy.csm import StructureBuildingCodelet
 from lidapy.helpers import create_node
+from abc import ABC, abstractmethod
+from lidapy.codelet import Codelet
 
 def combine_nodes_for_sbc(nodes):
   ''' Combine nodes to create a new node. '''
@@ -8,6 +8,12 @@ def combine_nodes_for_sbc(nodes):
   new_node.tags.extend(list(tag for node in nodes for tag in node.tags))
   new_node.activation = sum(node.activation for node in nodes) / len(nodes)
   return new_node
+
+class StructureBuildingCodelet(Codelet):
+    @abstractmethod
+    def run(self, csm):
+        pass
+
 
 class ActivationSBC(StructureBuildingCodelet):
   ''' Create a class that inherits from StructureBuildingCodelet and 

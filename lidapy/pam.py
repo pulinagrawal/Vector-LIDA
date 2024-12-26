@@ -24,12 +24,10 @@ class PerceptualAssociativeMemory:
         self.csm = csm
     
     def process(self, nodes):
-        similar_nodes = []
+        associated_nodes = []
         for node in nodes:
-            similar_nodes.extend(self.cue(node))
-
-        if self.csm is not None:
-            self.csm.receive(similar_nodes)
+            associated_nodes.extend(self.cue(node))
+        return associated_nodes
 
     def store(self, nodes):
         # This should be called upon receiving a broadcast from the Global Workspace

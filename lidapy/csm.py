@@ -1,15 +1,6 @@
 from collections import deque
 from lidapy.helpers import get_similarity
 
-class StructureBuildingCodelet:
-    def __init__(self, interests = [], activation=1.0):
-        self.activation = activation
-        self.interests = interests
-
-    def run(self, csm):
-        pass
-
-
 class CurrentSituationalModel:
     def __init__(self, max_size, sbcs=None, memories=None):
         self.nodes = [] 
@@ -41,9 +32,10 @@ class CurrentSituationalModel:
         self.decay(self.nodes)
         for node in nodes:
             self.add_node(node)
+            # Departure from basic LIDA model for cueing memories. 
+            # Happens during conscious broadcast
+            # self.cue_memories(node)
         self.run_structure_building_codelets()
-        # Departure from basic LIDA model for cueing memories. 
-        # Happens during conscious broadcast
 
     def receive_broadcast(self, coalition):
         node = coalition.coalition_node
