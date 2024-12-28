@@ -59,18 +59,6 @@ import logging
 logging.basicConfig(level=logging.INFO)
 import numpy as np
 
-# Initialize the embedding model
-sensory_system = SensorySystem()
-episodic = EpisodicMemory()
-csm = CurrentSituationalModel(max_size=10, sbcs=[SBC()], memories=[sensory_system.pam, episodic])
-procedural_system = ProceduralSystem()
-sensory_motor_system = SensoryMotorSystem()
-
-global_workspace = GlobalWorkspace(attention_codelets=[AttentionCodelet()],
-                                   broadcast_receivers=[csm, 
-                                                        episodic,
-                                                        sensory_system.pam,
-                                                        procedural_system.pm])
 class Environment(ABC):
 
     def execute(self, motor_commands):
@@ -91,6 +79,18 @@ class Environment(ABC):
     @abstractmethod
     def recieve_sensory_stimuli(self):
         pass
+
+# Initialize the LIDA agent
+sensory_system = SensorySystem()
+episodic = EpisodicMemory()
+csm = CurrentSituationalModel(max_size=10, sbcs=[SBC()], memories=[sensory_system.pam, episodic])
+procedural_system = ProceduralSystem()
+sensory_motor_system = SensoryMotorSystem()
+global_workspace = GlobalWorkspace(attention_codelets=[AttentionCodelet()],
+                                   broadcast_receivers=[csm, 
+                                                        episodic,
+                                                        sensory_system.pam,
+                                                        procedural_system.pm])
 
 DEFAULT_LIDA_AGENT = {
     "sensor_system": sensory_system,
