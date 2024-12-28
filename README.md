@@ -1,7 +1,7 @@
 # LIDA Cognitive Architecture
 
 ## Overview
-LIDA (Learning Intelligent Distribution Agent) models cognition through three repeating phases:
+LIDA (Learning Intelligent Decision Agent) models cognition through three repeating phases:
 1. Understanding phase processes raw sensory data into structured Node objects.  
 2. Consciousness phase selects highly activated coalitions for broadcast in the Global Workspace.  
 3. Action Selection phase involves Procedural and SensoryMotor modules choosing and executing a behavior.
@@ -15,11 +15,12 @@ LIDA (Learning Intelligent Distribution Agent) models cognition through three re
 
 ## Extensibility & Flexibility
 This implementation is built with modular Python classes, allowing:  
-- Plug-and-play memory structures (e.g., different sensor processors).  
-- Adaptable codelets (e.g., custom attention strategies).  
+- Plug-and-play sensors (e.g., different built-in sensor processors).  
+- Adaptable codelets (e.g., custom attention and structure building strategies).  
 - Easy creation of specialized agents by substituting or extending modules.
 
 ## Usage
 1. Import and initialize the modules you need.  
-2. Run the cognitive cycle by providing an environment to the agent.  
-3. Extend modules or override classes to create custom behavior.
+2. Extend modules or override classes to create custom behavior.
+3. Run the cognitive cycle by providing an environment to the agent.  
+
