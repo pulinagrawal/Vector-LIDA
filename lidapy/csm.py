@@ -17,7 +17,8 @@ class CurrentSituationalModel:
 
     def run_structure_building_codelets(self):
         for sbc in self.sbcs:
-            new_structures = sbc.run(self)
+            # Possible infinite loop if a sbc calls run_structure_building_codelets on passed csm
+            new_structures = sbc.run(csm=self)
             for structure in new_structures:
                 self.add_node(structure)
 

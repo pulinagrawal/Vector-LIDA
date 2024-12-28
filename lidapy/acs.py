@@ -1,5 +1,3 @@
-from cv2 import sort
-from httpx import get
 from lidapy.codelet import Codelet
 from lidapy.global_workspace import Coalition
 
@@ -15,14 +13,14 @@ class AttentionCodelet(Codelet):
       super().__init__()
       if not callable(focus_function):
         raise ValueError("focus_function must be a function")
-      self.focus = focus_function
+      self.focus_function = focus_function
 
     def run(self, csm):
       return self.form_coalition(csm)
 
     def form_coalition(self, csm):
       coalition = Coalition(nodes=[], attention_codelet=self)
-      focus_nodes, activation = self.focus(csm)
+      focus_nodes, activation = self.focus_function(csm)
       coalition.add_nodes(focus_nodes) 
       if activation:
         coalition.activation = activation

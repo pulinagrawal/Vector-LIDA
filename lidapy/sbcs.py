@@ -1,33 +1,24 @@
-from lidapy.helpers import create_node
-from abc import ABC, abstractmethod
 from lidapy.codelet import Codelet
+from functools import partial
+from helpers import combine_nodes
 
-def combine_nodes_for_sbc(nodes):
-  ''' Combine nodes to create a new node. '''
-  new_node = create_node("\n".join([node.text for node in nodes]))
-  new_node.tags.extend(list(tag for node in nodes for tag in node.tags))
-  new_node.activation = sum(node.activation for node in nodes) / len(nodes)
-  return new_node
+def get_most_active_nodes(csm, activation_threshold=0.95):
+  ''' Get highly active nodes from the CSM based on a threshold. '''
+  nodes = csm.get_all_nodes()
+  return list(filter(iterable=nodes, function=lambda node: node.activation>activation_threshold))
+
+DEFAULT_SBC_FOCUS = get_most_active_nodes
+DEFAULT_SBC_BUILD = lambda nodes: combine_nodes(nodes, method='average')
 
 class StructureBuildingCodelet(Codelet):
-    @abstractmethod
+    def __init__(self, focus_function=DEFAULT_SBC_FOCUS, build_function=DEFAULT_SBC_BUILD):
+      super().__init__()
+      if not callable(focus_function):
+        raise ValueError("focus_function must be a function")
+      self.focus_function = focus_function
+      self.build_function = build_function
+
     def run(self, csm):
-        pass
-
-
-class ActivationSBC(StructureBuildingCodelet):
-  ''' Create a class that inherits from StructureBuildingCodelet and 
-  grabs few of the most active node from the CSM based on a threshold 
-  and creates a new node.''' 
-
-  def __init__(self, activation_threshold=.95, combine_nodes=combine_nodes_for_sbc):
-    super().__init__()
-    self.activation_threshold = activation_threshold
-    self.combine_nodes = combine_nodes
-
-  def run(self, csm):
-    nodes = csm.get_all_nodes()
-    highly_active_nodes = [node for node in nodes if node.activation>self.activation_threshold]
-    new_structure = self.combine_nodes(highly_active_nodes)
-    return new_structure
-  
+      focus_nodes = self.focus_function(csm)
+      new_strucutre = self.build_function(focus_nodes)
+      return new_strucutre
