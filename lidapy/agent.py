@@ -49,10 +49,11 @@ import warnings
 from lidapy.ss import SensorySystem
 from lidapy.csm import CurrentSituationalModel
 from lidapy.global_workspace import GlobalWorkspace
-from lidapy.sbcs import ActivationSBC
 from lidapy.episodic import EpisodicMemory
 from lidapy.ps import ProceduralSystem
 from lidapy.sms import SensoryMotorSystem
+from lidapy.sbcs import StructureBuildingCodelet as SBC
+from lidapy.acs import AttentionCodelet
 from abc import ABC, abstractmethod
 import logging
 logging.basicConfig(level=logging.INFO)
@@ -61,11 +62,15 @@ import numpy as np
 # Initialize the embedding model
 sensory_system = SensorySystem()
 episodic = EpisodicMemory()
-csm = CurrentSituationalModel(max_size=10, sbcs=[ActivationSBC()], memories=[sensory_system.pam, episodic])
-global_workspace = GlobalWorkspace()
+csm = CurrentSituationalModel(max_size=10, sbcs=[SBC()], memories=[sensory_system.pam, episodic])
 procedural_system = ProceduralSystem()
 sensory_motor_system = SensoryMotorSystem()
 
+global_workspace = GlobalWorkspace(attention_codelets=[AttentionCodelet()],
+                                   broadcast_receivers=[csm, 
+                                                        episodic,
+                                                        sensory_system.pam,
+                                                        procedural_system.pm])
 class Environment(ABC):
 
     def execute(self, motor_commands):
@@ -96,7 +101,7 @@ DEFAULT_LIDA_AGENT = {
 }
 
 def run_lida(environment, lida_agent=DEFAULT_LIDA_AGENT, steps=100):
-    # Step 1: Sensory Memory processes the input text
+
     if not isinstance(environment, Environment):
         raise ValueError("environment must be an instance of Environment class")
 
@@ -104,16 +109,16 @@ def run_lida(environment, lida_agent=DEFAULT_LIDA_AGENT, steps=100):
     motor_commands = []
     for _ in range(steps):
         current_stimuli = environment.execute(motor_commands=motor_commands)
+
         associated_nodes = lida_agent.sensory_system.process(current_stimuli)
 
-        # Step 2: CSM stores the new node
         lida_agent.csm.run(associated_nodes)
-        # Assume we have a focus vector for attention codelet
+
         winning_coalition = lida_agent.global_workspace.run(csm)
-        # Step 5: Competition occurs in Global Workspace
+
         print('Winning Coalition: ', winning_coalition)
 
-        # Step 6: Procedural Memory selects an action based on the winning coalition
+        # Procedural Memory selects an action based on the winning coalition
         selected_action = lida_agent.procedural_system.run(winning_coalition)
         # The selected action node now contains the action to be executed.
         # You would have some mechanism to execute or further process this action as per your application's requirements.
