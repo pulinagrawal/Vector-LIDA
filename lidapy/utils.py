@@ -4,7 +4,7 @@ from scipy.spatial.distance import cosine as cosine_distance
 import ollama
 import randomname
 
-randomname = lambda: randomname.get_name()
+random_name = lambda: randomname.get_name()
 
 class Node:
     def __init__(self, vector, text, activation, tags=None, links=None):

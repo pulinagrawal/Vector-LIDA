@@ -1,4 +1,4 @@
-from lidapy.helpers import Node, embed
+from lidapy.utils import Node, embed
 import logging
 
 def _process_text(text):

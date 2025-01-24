@@ -1,5 +1,5 @@
 from collections import deque
-from lidapy.helpers import get_similarity
+from lidapy.utils import get_similarity
 
 class CurrentSituationalModel:
     def __init__(self, max_size, sbcs=None, memories=None):

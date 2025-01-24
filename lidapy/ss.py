@@ -1,5 +1,5 @@
 import warnings
-from lidapy.helpers import Node, embed
+from lidapy.utils import Node, embed
 from lidapy.sensors import DEFAULT_PROCESSORS, DEFAULT_SENSORS
 
 from lidapy.pam import PerceptualAssociativeMemory

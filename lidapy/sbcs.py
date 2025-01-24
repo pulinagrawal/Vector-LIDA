@@ -1,6 +1,6 @@
 from lidapy.codelet import Codelet
 from functools import partial
-from helpers import combine_nodes
+from lidapy.utils import combine_nodes
 
 def get_most_active_nodes(csm, activation_threshold=0.95):
   ''' Get highly active nodes from the CSM based on a threshold. '''
@@ -22,3 +22,4 @@ class StructureBuildingCodelet(Codelet):
       focus_nodes = self.focus_function(csm)
       new_strucutre = self.build_function(focus_nodes)
       return new_strucutre
+    

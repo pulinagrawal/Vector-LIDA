@@ -1,5 +1,5 @@
 from numpy import broadcast
-from lidapy.helpers import get_most_similar_node, create_node 
+from lidapy.utils import get_most_similar_node, create_node 
 
 class Coalition:
     def __init__(self, nodes, attention_codelet):

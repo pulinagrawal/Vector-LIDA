@@ -1,5 +1,5 @@
 import numpy as np
-from lidapy.helpers import Node, get_similarity, embed
+from lidapy.utils import Node, get_similarity, embed
 from lidapy.motor_plan_execution import Action
 
 
