@@ -4,7 +4,7 @@ from lidapy.global_workspace import Coalition
 def get_most_active_node(csm):
   ''' Get highly active nodes from the CSM based on a threshold. '''
   nodes = csm.get_all_nodes()
-  return [sorted(nodes, key=lambda node: node.activation, reverse=True)[0]], None
+  return sorted(nodes, key=lambda node: node.activation, reverse=True)[:1], None
 
 DEFAULT_ATTENTION_CODELET = get_most_active_node
 
@@ -21,7 +21,7 @@ class AttentionCodelet(Codelet):
     def form_coalition(self, csm):
       coalition = Coalition(nodes=[], attention_codelet=self)
       focus_nodes, activation = self.focus_function(csm)
-      coalition.add_nodes(focus_nodes) 
-      if activation:
-        coalition.activation = activation
+      if not focus_nodes:
+        return None
+      coalition.form_coalition(focus_nodes, activation)
       return coalition

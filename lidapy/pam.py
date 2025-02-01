@@ -18,10 +18,9 @@ class VectorStore:
         return similar_nodes
 
 class PerceptualAssociativeMemory:
-    def __init__(self, threshold=0.8, csm=None):
+    def __init__(self, threshold=0.8):
         self.vector_store = VectorStore()
         self.threshold = threshold
-        self.csm = csm
     
     def process(self, nodes):
         associated_nodes = []
@@ -37,6 +36,10 @@ class PerceptualAssociativeMemory:
             new_node = Node(vector=node.vector, text=node.text, activation=node.activation, tags=['pam'])
             self.vector_store.add_node(new_node)
             logging.warning(f"PRCP_MEM: Added to vector store: {new_node}")        
+
+    def recieve_broadcast(self, coalition):
+        self.store(coalition.coalition_node)
+        map(self.store, coalition.get_nodes())
             
     def cue(self, node):
         # Find similar nodes
@@ -50,6 +53,7 @@ class PerceptualAssociativeMemory:
         return similar_nodes
 
 # Usage
-pam = PerceptualAssociativeMemory(threshold=0.8)
-node = Node(vector=np.array([0.1, 0.2, 0.3]), text="Hello, world!", activation=1.0)
-pam.process_node(node)
+if __name__ == "__main__":
+    pam = PerceptualAssociativeMemory(threshold=0.8)
+    node = Node(vector=np.array([0.1, 0.2, 0.3]), text="Hello, world!", activation=1.0)
+    pam.process_node(node)

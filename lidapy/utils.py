@@ -60,6 +60,10 @@ def _average_embedding_combine(nodes):
     return combined_node
 
 def combine_nodes(nodes, method='text'):
+    if len(nodes) == 0:
+        return None
+    if len(nodes) == 1:
+        return nodes[0]
     if method == 'text':
         return _text_combine(nodes)
     elif method == 'average':

@@ -17,7 +17,7 @@ class SensoryMemory:
 
             # Select processor
             if 'processor' not in sensor:
-                warnings.warn(f"Sensor {sensor['name']} does not have a processor,
+                warnings.warn(f"Sensor {sensor['name']} does not have a processor, \
                                using default processor for {sensor['modality']}")
                 processor = DEFAULT_PROCESSORS[sensor['modality']]
             else:
@@ -35,9 +35,11 @@ class SensoryMemory:
             if isinstance(processed_output, list):
                 for item in processed_output:
                     if not isinstance(item, Node):
-                        raise ValueError(f"SENS_MEM: Processed output from {sensor} is not a Node: {item}.
+                        raise ValueError(f"SENS_MEM: Processed output from {sensor} is not a Node: {item}. \
                                            Please verify the processor function's return.")
 
+            if isinstance(processed_output, Node):
+                processed_output = [processed_output]
             nodes.extend(processed_output)
         return nodes
 
@@ -49,4 +51,5 @@ class SensorySystem:
     def process(self, input):
         nodes = self.sensory_memory.process(input)
         associated_nodes = self.pam.process(nodes)
-        return associated_nodes
+        nodes.extend(associated_nodes)
+        return nodes

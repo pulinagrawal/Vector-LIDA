@@ -3,7 +3,7 @@ from lidapy.utils import get_similarity
 
 class CurrentSituationalModel:
     def __init__(self, max_size, sbcs=None, memories=None):
-        self.nodes = [] 
+        self.nodes = set()
         self.ccq = deque(maxlen=max_size)  # Conscious Contents Queue
         self.sbcs = []
         if sbcs is not None:
@@ -19,11 +19,13 @@ class CurrentSituationalModel:
         for sbc in self.sbcs:
             # Possible infinite loop if a sbc calls run_structure_building_codelets on passed csm
             new_structures = sbc.run(csm=self)
+            if not new_structures:
+                continue
             for structure in new_structures:
                 self.add_node(structure)
 
     def add_node(self, node):
-        self.nodes.append(node)  # Adds a new node to the right end of the queue
+        self.nodes.add(node)  # Adds a new node to the right end of the queue
 
     def decay(self, nodes):
         for node in nodes:
@@ -38,14 +40,14 @@ class CurrentSituationalModel:
             # self.cue_memories(node)
         self.run_structure_building_codelets()
 
-    def receive_broadcast(self, coalition):
+    def recieve_broadcast(self, coalition):
         node = coalition.coalition_node
         self.ccq.appendleft(node)
         self.cue_memories(node)
 
     def cue_memories(self, node):
         for memory in self.memories:
-            cued_node = memory.cue(node.vector)
+            cued_node = memory.cue(node)
             memory.store(node)
             if not cued_node:
                 continue

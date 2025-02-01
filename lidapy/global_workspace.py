@@ -1,11 +1,12 @@
 from numpy import broadcast
-from lidapy.utils import get_most_similar_node, create_node 
+from lidapy.utils import combine_nodes, get_most_similar_node, create_node 
 
 class Coalition:
     def __init__(self, nodes, attention_codelet):
         self.nodes = nodes
         self.attention_codelet = attention_codelet
         self.activation = self.compute_activation()
+        self.coalition_node = combine_nodes(nodes, method='average')
 
     def compute_activation(self):
         # Average activation of nodes in the coalition
@@ -17,7 +18,11 @@ class Coalition:
 
     def add_nodes(self, nodes):
         self.nodes.extend(nodes)
+
+    def form_coalition(self, focus_nodes, activation=None):
+        self.add_nodes(focus_nodes) 
         self.activation = self.compute_activation()
+        self.coalition_node = combine_nodes(focus_nodes, method='average')
 
     def get_nodes(self):
         return self.nodes   
@@ -43,7 +48,8 @@ class GlobalWorkspace:
                 self.broadcast_receivers.append(broadcast_receiver)
 
     def receive_coalition(self, coalition):
-        self.coalitions.append(coalition)
+        if coalition is not None:  
+            self.coalitions.append(coalition)
 
     def competition(self):
         if not self.coalitions:
@@ -62,6 +68,8 @@ class GlobalWorkspace:
             coalition = attention_codelet.form_coalition(csm)
             self.receive_coalition(coalition)
         winning_coalition = self.competition()
+        if winning_coalition is None:  
+            return None
         for broadcast_reciever in self.broadcast_receivers:
             broadcast_reciever.recieve_broadcast(winning_coalition)
         return winning_coalition

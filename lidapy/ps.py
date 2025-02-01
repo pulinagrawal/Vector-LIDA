@@ -1,20 +1,18 @@
+from typing import List
 import numpy as np
 from lidapy.utils import Node, get_similarity, embed
-from lidapy.motor_plan_execution import Action
+# from lidapy.motor_plan_execution import Action
 
-
+class ActionSequence:
+    pass
 
 class Schema:
-    def __init__(self, context: Node=None, action: type[Action]=None, result: Node=None):
+    def __init__(self, context: List[Node]=None, action: type[Action]=None, result: List[Node]=None):
         if not context: 
-            embedding = embed("empty context")
-            embedding = np.zeros_like(embedding)
-            context = Node(embedding, "", 1.0)
+            context = Node([], "", 1.0)
         
         if not result: 
-            embedding = embed("empty result")
-            embedding = np.zeros_like(embedding)
-            result = Node(embedding, "", 1.0)
+            result = Node([], "", 1.0)
 
         self.context = context  # a Node
         self.action = action  
@@ -27,7 +25,11 @@ class ProceduralMemory:
     def add_schema(self, schema):
         self.schemas.append(schema)
     
-    def receive_broadcast(self, conscious_broadcast):
+    def recieve_broadcast(self, coalition):
+        self.learn_schemas(coalition)
+        self.instatiate_schema(coalition)
+
+    def learn_schemas(self, coalition):
         pass
 
     def run(self, winning_coalition):
@@ -35,10 +37,8 @@ class ProceduralMemory:
 
     def instatiate_schema(self, coalition):
         # Create a action object with the schema's action and parameters
-        schema: Schema = self.select_schema(coalition)
-        return schema.action(params={"context": schema.context.text, 
-                                     "coalition": coalition.coalition_node.text,
-                                     "result": schema.result.text})
+        schema: Schema = self._select_schema(coalition)
+        return schema.action(coalition=coalition)
 
     def _select_schema(self, coalition) -> Schema:
         max_match_score = 0
