@@ -46,14 +46,7 @@ That action is then executed.
 '''
 from types import SimpleNamespace
 import warnings
-from lidapy.ss import SensorySystem
-from lidapy.csm import CurrentSituationalModel
-from lidapy.global_workspace import GlobalWorkspace
-from lidapy.episodic import EpisodicMemory
-from lidapy.ps import ProceduralSystem
-from lidapy.sms import SensoryMotorSystem
-from lidapy.sbcs import StructureBuildingCodelet as SBC
-from lidapy.acs import AttentionCodelet
+
 from abc import ABC, abstractmethod
 import logging
 logging.basicConfig(level=logging.INFO)
@@ -78,29 +71,11 @@ class Environment(ABC):
 
     @abstractmethod
     def recieve_sensory_stimuli(self):
+        ''' Recieves sensory stimuli from the 
+        actual environment. '''
         pass
 
-# Initialize the LIDA agent
-sensory_system = SensorySystem()
-episodic = EpisodicMemory()
-csm = CurrentSituationalModel(max_size=10, sbcs=[SBC()], memories=[sensory_system.pam, episodic])
-procedural_system = ProceduralSystem()
-sensory_motor_system = SensoryMotorSystem()
-global_workspace = GlobalWorkspace(attention_codelets=[AttentionCodelet()],
-                                   broadcast_receivers=[csm, 
-                                                        episodic,
-                                                        sensory_system.pam,
-                                                        procedural_system.pm])
-
-DEFAULT_LIDA_AGENT = {
-    "sensor_system": sensory_system,
-    "csm": csm,
-    "global_workspace": global_workspace,
-    "procedural_system": procedural_system,
-    "sensory_motor_system": sensory_motor_system,
-}
-
-def run_lida(environment, lida_agent=DEFAULT_LIDA_AGENT, steps=100):
+def run_lida(environment, lida_agent, steps=100):
 
     if not isinstance(environment, Environment):
         raise ValueError("environment must be an instance of Environment class")
@@ -110,11 +85,11 @@ def run_lida(environment, lida_agent=DEFAULT_LIDA_AGENT, steps=100):
     for _ in range(steps):
         current_stimuli = environment.execute(motor_commands=motor_commands)
 
-        associated_nodes = lida_agent.sensory_system.procss(current_stimuli)
+        associated_nodes = lida_agent.sensory_system.process(current_stimuli)
 
         lida_agent.csm.run(associated_nodes)
 
-        winning_coalition = lida_agent.global_workspace.run(csm)
+        winning_coalition = lida_agent.global_workspace.run(lida_agent.csm)
 
         print('Winning Coalition: ', winning_coalition)
 
@@ -123,3 +98,4 @@ def run_lida(environment, lida_agent=DEFAULT_LIDA_AGENT, steps=100):
         # The selected action node now contains the action to be executed.
         # You would have some mechanism to execute or further process this action as per your application's requirements.
         motor_commands = lida_agent.sensory_motor_system.run(selected_action)
+

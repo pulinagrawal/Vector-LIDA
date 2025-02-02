@@ -1,7 +1,6 @@
 import warnings
-from lidapy.utils import Node, embed
+from lidapy.utils import Node 
 from lidapy.sensors import DEFAULT_PROCESSORS, DEFAULT_SENSORS
-
 from lidapy.pam import PerceptualAssociativeMemory
 
 class SensoryMemory:
@@ -44,12 +43,12 @@ class SensoryMemory:
         return nodes
 
 class SensorySystem:
-    def __init__(self, sensory_memory=SensoryMemory(), pam=PerceptualAssociativeMemory()):
+    def __init__(self, pam :PerceptualAssociativeMemory, sensory_memory :SensoryMemory=SensoryMemory()):
         self.sensory_memory = sensory_memory
         self.pam = pam
 
     def process(self, input):
         nodes = self.sensory_memory.process(input)
-        associated_nodes = self.pam.process(nodes)
+        associated_nodes = self.pam.cue(nodes)
         nodes.extend(associated_nodes)
         return nodes

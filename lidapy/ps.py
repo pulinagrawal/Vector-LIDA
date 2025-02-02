@@ -1,13 +1,13 @@
 from typing import List
 import numpy as np
-from lidapy.utils import Node, get_similarity, embed
+from lidapy.utils import Node 
 # from lidapy.motor_plan_execution import Action
 
 class ActionSequence:
     pass
 
 class Schema:
-    def __init__(self, context: List[Node]=None, action: type[Action]=None, result: List[Node]=None):
+    def __init__(self, context: List[Node]=None, action: type[ActionSequence]=None, result: List[Node]=None):
         if not context: 
             context = Node([], "", 1.0)
         

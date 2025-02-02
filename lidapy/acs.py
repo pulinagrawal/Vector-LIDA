@@ -23,5 +23,5 @@ class AttentionCodelet(Codelet):
       focus_nodes, activation = self.focus_function(csm)
       if not focus_nodes:
         return None
-      coalition.form_coalition(focus_nodes, activation)
+      coalition.form_coalition(focus_nodes)
       return coalition

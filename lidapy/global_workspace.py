@@ -1,12 +1,10 @@
-from numpy import broadcast
-from lidapy.utils import combine_nodes, get_most_similar_node, create_node 
 
 class Coalition:
     def __init__(self, nodes, attention_codelet):
         self.nodes = nodes
         self.attention_codelet = attention_codelet
         self.activation = self.compute_activation()
-        self.coalition_node = combine_nodes(nodes, method='average')
+        self.coalition_node = self.combine_nodes(nodes)
 
     def compute_activation(self):
         # Average activation of nodes in the coalition
@@ -19,10 +17,17 @@ class Coalition:
     def add_nodes(self, nodes):
         self.nodes.extend(nodes)
 
-    def form_coalition(self, focus_nodes, activation=None):
-        self.add_nodes(focus_nodes) 
+    def combine_nodes(self, nodes):
+        if len(nodes) == 0:
+            return None
+        if len(nodes) == 1:
+            return nodes[0]
+        return nodes[0].__class__.combine_nodes(nodes, type='coalition')
+
+    def form_coalition(self, nodes):
+        self.add_nodes(nodes) 
         self.activation = self.compute_activation()
-        self.coalition_node = combine_nodes(focus_nodes, method='average')
+        self.coalition_node = self.combine_nodes(nodes)
 
     def get_nodes(self):
         return self.nodes   

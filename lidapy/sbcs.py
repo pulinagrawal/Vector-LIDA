@@ -1,14 +1,19 @@
 from lidapy.codelet import Codelet
-from functools import partial
-from lidapy.utils import combine_nodes
 
 def get_most_active_nodes(csm, activation_threshold=0.95):
   ''' Get highly active nodes from the CSM based on a threshold. '''
   nodes = csm.get_all_nodes()
   return list(filter(lambda node: node.activation>activation_threshold, nodes))
 
+def combine_nodes(nodes):
+  if len(nodes) == 0:
+    return []
+  if len(nodes) == 1:
+    return [nodes[0]]
+  return nodes[0].__class__.combine_nodes(nodes, type='sbc')
+
 DEFAULT_SBC_FOCUS = get_most_active_nodes
-DEFAULT_SBC_BUILD = lambda nodes: [combine_nodes(nodes, method='average')]
+DEFAULT_SBC_BUILD = combine_nodes
 
 class StructureBuildingCodelet(Codelet):
     def __init__(self, focus_function=DEFAULT_SBC_FOCUS, build_function=DEFAULT_SBC_BUILD):

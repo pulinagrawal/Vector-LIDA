@@ -1,5 +1,4 @@
 from collections import deque
-from lidapy.utils import get_similarity
 
 class CurrentSituationalModel:
     def __init__(self, max_size, sbcs=None, memories=None):
@@ -47,13 +46,9 @@ class CurrentSituationalModel:
 
     def cue_memories(self, node):
         for memory in self.memories:
-            cued_node = memory.cue(node)
             memory.store(node)
-            if not cued_node:
-                continue
-            for csm_node in self.nodes:
-                if get_similarity(cued_node.vector, csm_node.vector) == 1.0:
-                    csm_node.tags.extend(cued_node.tags)
+            cued_nodes = memory.cue([node])
+            map(self.add_node, cued_nodes)
 
     def get_all_nodes(self):
         return list(self.nodes)
