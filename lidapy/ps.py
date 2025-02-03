@@ -6,7 +6,7 @@ from lidapy.utils import Node
 class ActionSequence:
     pass
 
-class Schema:
+class Scheme:
     def __init__(self, context: List[Node]=None, action: type[ActionSequence]=None, result: List[Node]=None):
         if not context: 
             context = Node([], "", 1.0)
