@@ -63,7 +63,8 @@ class FrozenLakeEnvironment(Environment):
         if self._step_out is None:
             return {}
         state, reward, done, truncated, info, surrounding_tiles = self._step_out
-        stimuli = {'vision_sensor': surrounding_tiles, 'reward': reward}
+        order = ['left', 'down', 'right', 'up']
+        stimuli = {'vision_sensor': ''.join([surrounding_tiles[x] for x in order]), 'reward': reward}
         return stimuli
 
     # render environment's current state:
@@ -105,7 +106,7 @@ sm = SensoryMemory(sensors=sensors)
 def dorsal_update(self, activated_nodes):
     content = activated_nodes[0].content
     actions = ['left', 'down', 'right', 'up']
-    holes = list(map(actions.index, filter(lambda x: content[x]=='H', content)))
+    holes = [actions.index(action) for action, tile in zip(actions, content) if tile == 'H']
     if self.current_command in holes:
         self.current_command = random.choices(list(set(range(4))-set(holes)))[0]
     print(f"Activated nodes: {activated_nodes}")
