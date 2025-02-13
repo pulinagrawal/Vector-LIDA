@@ -1,4 +1,5 @@
 import randomname
+from abc import abstractmethod 
 
 random_name = lambda: randomname.get_name()
 
@@ -15,6 +16,15 @@ class Node:
 
     def __repr__(self) -> str:
         return f"Node(content={str(self.content)}, activation={self.activation})"
+
+    def similarity(self, other_node):
+        return self.__class__.similarity_function(self, other_node)
+
+    @classmethod
+    @abstractmethod
+    def similarity_function(cls, one_node, other_node):
+        pass
+
 
 def link_nodes(node1, node2):
     node1.links.append(node2)

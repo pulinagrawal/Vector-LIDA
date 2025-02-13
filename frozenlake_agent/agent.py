@@ -131,7 +131,7 @@ def run_reactive_lida(environment, lida_agent, steps=100):
 
         associated_nodes = lida_agent.sensory_system.process(current_stimuli)
 
-        motor_commands = lida_agent.sensory_motor_system.run(selected_action=None)
+        motor_commands = lida_agent.sensory_motor_system.run(selected_behavior=None)
         lida_agent.sensory_motor_system.dorsal_stream(associated_nodes)
         motor_commands = lida_agent.sensory_motor_system.get_motor_commands()
 

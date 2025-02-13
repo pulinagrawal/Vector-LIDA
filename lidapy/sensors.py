@@ -26,5 +26,6 @@ DEFAULT_SENSORS = [{"name": "text", "modality": "text", "processor": _process_te
                     {"name": "image", "modality": "image", "processor": _process_image},
                     {"name": "audio", "modality": "audio", "processor": _process_audio},
                     {"name": "touch", "modality": "touch", "processor": _process_touch},
+                    {"name": "visual2", "modality": "image", "processor": _process_image},
                     {"name": "internal_state", "modality": "internal_state", "processor": _process_internal_state},
                    ]

@@ -1,65 +1,65 @@
-from typing import List
-import numpy as np
-from lidapy.utils import Node 
-# from lidapy.motor_plan_execution import Action
+import sys
+from pathlib import Path
 
-class ActionSequence:
-    pass
+from numpy import mat
+sys.path.append(str(Path(__file__).parents[1]))
+
+from typing import List
+
+from lidapy.utils import Node 
+from lidapy.sms import MotorPlan
 
 class Scheme:
-    def __init__(self, context: List[Node]=None, action: type[ActionSequence]=None, result: List[Node]=None):
-        if not context: 
-            context = Node([], "", 1.0)
+    def __init__(self, context: List[Node]=None, action: List[MotorPlan]=None, result: List[Node]=None): # type: ignore
+        if context is None: 
+            context = []
         
-        if not result: 
-            result = Node([], "", 1.0)
+        if result is None: 
+            result = []
 
         self.context = context  # a Node
         self.action = action  
         self.result = result  # a Node
 
 class ProceduralMemory:
-    def __init__(self):
-        self.schemas = []
+    def __init__(self, motor_plans: List[MotorPlan]=None, schemes :List[Scheme]=None, coalition_match=False): # type: ignore
+        if motor_plans is not None and schemes is not None:
+            raise ValueError("Both motor_plans and schemes must not be provided.")
+        if motor_plans is None and schemes is None:
+            self.schemes = [] 
+        if schemes is not None:
+            schemes = self.schemes 
+        if motor_plans is not None:
+            self.schemes = [Scheme(action=motor_plan) for motor_plan in motor_plans]
+        
+        self.instatiated_scheme = self.schemes[0] if len(self.schemes)>0 else None
+        self.coalition_match = coalition_match
 
-    def add_schema(self, schema):
-        self.schemas.append(schema)
+    def add_scheme(self, scheme):
+        self.schemes.append(scheme)
     
     def recieve_broadcast(self, coalition):
-        self.learn_schemas(coalition)
-        self.instatiate_schema(coalition)
+        self.learn_schemes(coalition)
+        self.instatiated_scheme = self.instatiate_scheme(coalition)
 
-    def learn_schemas(self, coalition):
+    def learn_schemes(self, coalition):
         pass
 
-    def run(self, winning_coalition):
-        return self.instatiate_schema(winning_coalition)
+    def instatiate_scheme(self, coalition):
+        # Create a action object with the scheme's action and parameters
+        scheme = self.find_best_matching_scheme(coalition)
+        return scheme
 
-    def instatiate_schema(self, coalition):
-        # Create a action object with the schema's action and parameters
-        schema: Schema = self._select_schema(coalition)
-        return schema.action(coalition=coalition)
-
-    def _select_schema(self, coalition) -> Schema:
-        max_match_score = 0
-        selected_schema = None
-
-        for schema in self.schemas:
+    def find_best_matching_scheme(self, coalition :Node) -> Scheme:
+        def get_match_score(scheme):
             match_score = 0
-            for node in coalition.nodes:
-                # Compute similarity with context, action, and result nodes
-                context_similarity = get_similarity(node.vector, schema.context.vector)
-                result_similarity = get_similarity(node.vector, schema.result.vector)
-
-                # Sum up similarities (weighted by your choice, here equally weighted)
-                match_score += context_similarity + result_similarity
-
-                # Update selected action if current schema has a higher match score
-                if match_score >= max_match_score:
-                    max_match_score = match_score
-                    selected_schema = schema
-
-        return selected_schema
+            for node in scheme.context:
+                match_score += max(map(node.similarity, coalition.get_nodes()))
+            match_score /= len(scheme.context)
+            return match_score
+        
+        best_scheme = max(self.schemes, key=get_match_score)
+        return best_scheme # type: ignore
 
 class ActionSelection:
     def __init__(self) -> None:
@@ -72,7 +72,7 @@ class ActionSelection:
 
         yield selected_action
 
-    def run(self, selected_schema):
+    def run(self, selected_scheme):
         pass 
 
         selected_behavior = self.select_behavior()
@@ -81,11 +81,15 @@ class ActionSelection:
 
 
 class ProceduralSystem:
-    def __init__(self, procedural_memory=ProceduralMemory(), action_selection=ActionSelection()):
+    def __init__(self, procedural_memory, action_selection=ActionSelection()):
         self.pm = procedural_memory
         self.acs = action_selection
 
     def run(self, winning_coalition):
-        selected_schema = self.pm.run(winning_coalition)
-        selected_action = self.acs.run(selected_schema)
+        selected_scheme = self.pm.run(winning_coalition)
+        selected_action = self.acs.run(selected_scheme)
         return selected_action
+
+if __name__ == "__main__":
+    pm = ProceduralMemory()
+    ProceduralSystem(pm)

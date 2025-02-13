@@ -48,7 +48,7 @@ class SensoryMotorMemory:
     def __init__(self, motor_plans):
         self.motor_plans = motor_plans
       
-    def cue(self, selected_action):
+    def cue(self, selected_behavior):
         return self.motor_plans[0]
 
 class SensoryMotorSystem:
@@ -56,8 +56,8 @@ class SensoryMotorSystem:
         self.motor_plan_execution = motor_plan_execution
         self.sensory_motor_memory = sensory_motor_memory
 
-    def run(self, selected_action=None):
-        self.current_motor_plan = self.sensory_motor_memory.cue(selected_action)
+    def run(self, selected_behavior=None):
+        self.current_motor_plan = self.sensory_motor_memory.cue(selected_behavior)
         self.motor_plan_execution.select_plan(self.current_motor_plan)  
         self.current_motor_commands = self.motor_plan_execution.run()
     
