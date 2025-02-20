@@ -26,7 +26,7 @@ class MotorPlanExecution:
     def _dorsal_stream_update(self, activated_nodes):
         self.dorsal_update = activated_nodes
 
-def generator_wrapper(func):
+def policy_generator_wrapper(func):
     ''' Wraps a function in a generator to allow for the use of the send() method. '''
     def wrapper():
         dorsal_update = yield
@@ -43,7 +43,7 @@ class MotorPlan:
     '''
     def __init__(self, name, policy):
         self.name = name
-        self.policy = generator_wrapper(policy)()
+        self.policy = policy_generator_wrapper(policy)()
         next(self.policy)
     
     def get_current_command(self):
