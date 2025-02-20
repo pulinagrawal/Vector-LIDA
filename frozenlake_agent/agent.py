@@ -103,15 +103,14 @@ sensors = [
 pam = PerceptualAssociativeMemory(memory=DefaultPAMMemory())
 sm = SensoryMemory(sensors=sensors)
 # single expression infinite random number iterator
-def dorsal_update(self, activated_nodes):
-    content = activated_nodes[0].content
-    actions = ['left', 'down', 'right', 'up']
-    holes = [actions.index(action) for action, tile in zip(actions, content) if tile == 'H']
-    if self.current_command in holes:
-        self.current_command = random.choices(list(set(range(4))-set(holes)))[0]
-    print(f"Activated nodes: {activated_nodes}")
 
-mp = MotorPlan('random_move', iter(lambda: random.randint(0, 3), None), dorsal_update=dorsal_update)
+def random_move(dorsal_update):
+    node = dorsal_update[0]
+    hole_indices = list(filter(lambda i: node.content[i] != 'H', range(len(node.content))))  # Filter out holes
+    move = random.choice(hole_indices)  # Choose a move from the available indices 
+    return move
+
+mp = MotorPlan('random_move', random_move)
 smm = SensoryMotorMemory(motor_plans=[mp])
 
 lida_agent = {
@@ -131,9 +130,9 @@ def run_reactive_lida(environment, lida_agent, steps=100):
         current_stimuli = environment.execute(motor_commands=motor_commands)
 
         associated_nodes = lida_agent.sensory_system.process(current_stimuli)
+        lida_agent.sensory_motor_system.dorsal_stream_update(associated_nodes)
 
         motor_commands = lida_agent.sensory_motor_system.run(selected_behavior=None)
-        lida_agent.sensory_motor_system.dorsal_stream(associated_nodes)
         motor_commands = lida_agent.sensory_motor_system.get_motor_commands()
 
 
