@@ -39,7 +39,7 @@ class CurrentSituationalModel:
             # self.cue_memories(node)
         self.run_structure_building_codelets()
 
-    def recieve_broadcast(self, coalition):
+    def receive_broadcast(self, coalition):
         node = coalition.coalition_node
         self.ccq.appendleft(node)
         self.cue_memories(node)

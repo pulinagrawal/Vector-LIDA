@@ -59,7 +59,7 @@ class FrozenLakeEnvironment(Environment):
         action = motor_commands[0] if len(motor_commands) > 0 else 0
         self._step_out = self.step(action)
     
-    def recieve_sensory_stimuli(self):
+    def receive_sensory_stimuli(self):
         if self._step_out is None:
             return {}
         state, reward, done, truncated, info, surrounding_tiles = self._step_out

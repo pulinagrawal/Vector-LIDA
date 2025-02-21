@@ -12,7 +12,7 @@ class PerceptualAssociativeMemory:
             associated_nodes.extend(self.memory.find_associated_nodes(node))
         return associated_nodes
 
-    def recieve_broadcast(self, coalition :Coalition):
+    def receive_broadcast(self, coalition :Coalition):
         self.store(coalition.coalition_node)
         map(self.memory.store, coalition.get_nodes())
 

@@ -9,8 +9,32 @@ from typing import List
 from lidapy.utils import Node 
 from lidapy.sms import MotorPlan
 
+class SchemeUnit:
+    def __init__(self, context: List[Node]=None, action: MotorPlan=None, result: List[Node]=None): # type: ignore
+        if context is None:
+            context = []
+        
+        if result is None:
+            result = []
+
+        self.context = context  # a Node
+        self.action = action  # a MotorPlan
+        self.result = result  # a Node
+
+def learn_schemes(coalition):
+    # Create a new scheme with the given scheme units
+    schemes
+    for scheme in schemes:
+        if coalition in scheme.result:
+            scheme.context.append(coalition)
+    return scheme
+
 class Scheme:
-    def __init__(self, context: List[Node]=None, action: List[MotorPlan]=None, result: List[Node]=None): # type: ignore
+    def __init__(self, context: List[Node]=None, action_stream=None, result: List[Node]=None): # type: ignore
+        if len(action) == 1:
+            context = action[0].context
+            result = action[0].result
+
         if context is None: 
             context = []
         
@@ -18,7 +42,7 @@ class Scheme:
             result = []
 
         self.context = context  # a Node
-        self.action = action  
+        self.action = action  # a list of SchemeUnits
         self.result = result  # a Node
 
 class ProceduralMemory:
@@ -38,7 +62,7 @@ class ProceduralMemory:
     def add_scheme(self, scheme):
         self.schemes.append(scheme)
     
-    def recieve_broadcast(self, coalition):
+    def receive_broadcast(self, coalition):
         self.learn_schemes(coalition)
         self.instatiated_scheme = self.instatiate_scheme(coalition)
 

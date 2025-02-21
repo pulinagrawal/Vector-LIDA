@@ -75,6 +75,6 @@ class GlobalWorkspace:
         winning_coalition = self.competition()
         if winning_coalition is None:  
             return None
-        for broadcast_reciever in self.broadcast_receivers:
-            broadcast_reciever.recieve_broadcast(winning_coalition)
+        for broadcast_receiver in self.broadcast_receivers:
+            broadcast_receiver.receive_broadcast(winning_coalition)
         return winning_coalition

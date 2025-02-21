@@ -15,7 +15,7 @@ PAM
 The Vector Store is a collection of nodes, each representing a text.
 If a new text is encountered, it is added to the Vector Store/PAM as a new node, 
 only if the dissimilarity of the new text with any existing text in the Vector Store is higher than a threshold.
-Otherwise, the existing stored node for all the similar vectors recieves a boost to its activation weighted by 
+Otherwise, the existing stored node for all the similar vectors receives a boost to its activation weighted by 
 their similarity.
 
 Current Situational Model (CSM)
@@ -62,7 +62,7 @@ class Environment(ABC):
             if len(motor_commands):
                 self.run_commands(motor_commands)
 
-        current_stimuli = self.recieve_sensory_stimuli()
+        current_stimuli = self.receive_sensory_stimuli()
         return current_stimuli
 
     @abstractmethod
@@ -70,8 +70,8 @@ class Environment(ABC):
         pass
 
     @abstractmethod
-    def recieve_sensory_stimuli(self):
-        ''' Recieves sensory stimuli from the 
+    def receive_sensory_stimuli(self):
+        ''' Receives sensory stimuli from the 
         actual environment. '''
         pass
 
