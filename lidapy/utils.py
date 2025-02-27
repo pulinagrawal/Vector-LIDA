@@ -22,7 +22,7 @@ class Node:
 
     @classmethod
     @abstractmethod
-    def similarity_function(cls, one_node, other_node):
+    def similarity_function(cls, one_node, other_node) -> float:
         pass
 
 
