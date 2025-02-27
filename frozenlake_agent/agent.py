@@ -19,12 +19,13 @@ class FrozenLakeEnvironment(Environment):
     metadata = {"render_modes": ["human", "rgb_array"], "render_fps": 4}
     col = 0     #Data to hold the current column the agent occupies
     row = 0     # Data to hold the current row the agent occupies
-    def __init__(self, render_mode="human", size=4):
+    def __init__(self, render_mode="human", size=8):
     #def __init__(self):
         #generating the frozen lake environment
         self.env = gym.make(
             'FrozenLake-v1',
             desc=None,
+            map_name="8x8",
             is_slippery=False,
             render_mode=render_mode)
 
