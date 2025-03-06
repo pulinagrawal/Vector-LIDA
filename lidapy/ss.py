@@ -27,6 +27,10 @@ class SensoryMemory:
     def process(self, sensory_stimuli):
         nodes = []
         for sensor, value in sensory_stimuli.items():
+            if sensor not in self.sensor_processors:
+                warnings.warn(f"SENS_MEM: Sensor {sensor} not found in sensor processors. \
+                               Using default processor for {sensor}")
+                continue
             processed_output = self.sensor_processors[sensor](value)
             if not isinstance(processed_output, list) or not isinstance(processed_output, Node):
                 warnings.warn(f"SENS_MEM: Processed output is not a list or Node: {processed_output}")

@@ -1,14 +1,12 @@
 import sys
 from pathlib import Path
 
-from networkx import moral_graph
-
 sys.path.append(str(Path(__file__).parents[1]))
 
 from typing import List, Union
 
 from lidapy.utils import Node 
-from lidapy.sms import MotorPlan
+from lidapy.actuators import MotorPlan
 from lidapy.global_workspace import Coalition
 
 class Scheme:
@@ -51,6 +49,9 @@ class Scheme:
         return best_action, best_score
         
     def get_context_match_score(self, coalition) -> float:
+        if len(self.context) == 0:
+            return 0 # If no context, assume zero match
+
         match_score = 0
         for node in self.context:
             scores = [node.similarity(n) for n in coalition.get_nodes()]
@@ -77,17 +78,19 @@ class SchemeUnit(Scheme):
         self.context = context  # a Node
         self.action = action    # a MotorPlan
         self.result = result    # a Node
+        self.action_stream = [self]  # a list of MotorPlans
 
 class ProceduralMemory:
     def __init__(self, motor_plans: List[MotorPlan]=None, schemes :List[Scheme]=None): # type: ignore
-        if motor_plans is not None and schemes is not None:
-            raise ValueError("Both motor_plans and schemes must not be provided.")
+        self.schemes = []
         if motor_plans is None and schemes is None:
-            self.schemes = [] 
+            raise ValueError("At least one of the motor_plans or schemes must be provided.")
+
         if schemes is not None:
-            schemes = self.schemes 
+            self.schemes += schemes
+
         if motor_plans is not None:
-            self.schemes = [Scheme.from_motor_plan(motor_plan=motor_plan) for motor_plan in motor_plans]
+            self.schemes += [SchemeUnit(action=motor_plan) for motor_plan in motor_plans]
         
     def add_scheme(self, scheme):
         self.schemes.append(scheme)
@@ -114,8 +117,19 @@ class Behavior:
         self.activation = scheme.get_match_score(winning_coalition)  # Initial activation based on match score
     
     def find_action(self, winning_coalition):
-        best_action = self.scheme.find_best_action(winning_coalition)
-        return best_action
+        best_scheme = self.scheme
+        best_score = -float('inf')
+
+        # Iterate through the action stream to find the best matching scheme
+        while not isinstance(best_scheme, SchemeUnit):
+            for scheme in best_scheme.action_stream:
+                # If the scheme is a SchemeUnit, extract its scheme (which is a MotorPlan)
+                match_score = scheme.get_context_match_score(winning_coalition)
+                if match_score > best_score:
+                    best_score = match_score
+                    best_scheme = scheme
+        
+        return best_scheme.action
     
 
 class ActionSelection:

@@ -1,5 +1,7 @@
 import types
 import random
+from lidapy.ps import SchemeUnit
+from lidapy.actuators import MotorPlan
 
 class MotorPlanExecution:
     ''' Enable to run multiple motor plans simultaneously'''
@@ -27,48 +29,31 @@ class MotorPlanExecution:
         self.dorsal_update = activated_nodes
 
 
-class MotorPlan:
-    '''
-    A motor plan is a sequence of motor commands that can be executed by the motor system.
-    It is a generator that yields motor commands and can be updated by the dorsal stream based
-    on the current stimulus/agent state. The dorsal stream update is a function that takes
-    the current state and changes the current motor command based on the current state and policy.
-    '''
-    def __init__(self, name, policy):
-        def policy_generator_wrapper(func):
-            ''' Wraps a function in a generator to allow for the use of the send() method. '''
-            def wrapper():
-                dorsal_update = yield
-                while True:
-                    dorsal_update = yield func(dorsal_update)
-            return wrapper
-
-        self.name = name
-        self.policy = policy_generator_wrapper(policy)()
-        next(self.policy)
-    
-    def get_current_command(self):
-        return self.current_command
-
-    def emit_command(self, dorsal_update):
-        self.current_command = self.policy.send(dorsal_update)
-        return self.current_command
-    
-
 class SensoryMotorMemory:
     def __init__(self, motor_plans):
         self.motor_plans = motor_plans
       
-    def cue(self, selected_behavior):
-        return None
+    def cue(self, selected_motor_plan, dorsal_update):
+        """
+        Cues the sensory motor memory with a selected behavior and dorsal update.
+        
+        Args:
+            selected_motor_plan: The motor plan selected by the procedural system
+            dorsal_update: The current sensory input nodes
+            
+        Returns:
+            The motor plan modified by the dorsal update
+        """
+        return selected_motor_plan
 
 class SensoryMotorSystem:
     def __init__(self, sensory_motor_memory, motor_plan_execution=MotorPlanExecution()):
         self.motor_plan_execution = motor_plan_execution
         self.sensory_motor_memory = sensory_motor_memory
 
-    def run(self, selected_behavior=None):
-        self.current_motor_plan = self.sensory_motor_memory.cue(selected_behavior)
+    def run(self, selected_motor_plan=None, dorsal_update=None):
+        # The dorsal stream update can trigger a change in the selected motor command in the motor plan
+        self.current_motor_plan = self.sensory_motor_memory.cue(selected_motor_plan, dorsal_update)
 
         # select a random motor plan if no plan is selected
         if self.current_motor_plan is None:

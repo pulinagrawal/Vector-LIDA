@@ -20,12 +20,6 @@ class Node:
     def similarity(self, other_node):
         return self.__class__.similarity_function(self, other_node)
 
-    @classmethod
-    @abstractmethod
-    def similarity_function(cls, one_node, other_node) -> float:
-        pass
-
-
 def link_nodes(node1, node2):
     node1.links.append(node2)
     node2.links.append(node1)

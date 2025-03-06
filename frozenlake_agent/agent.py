@@ -1,20 +1,27 @@
-import re
 import sys
 from pathlib import Path
+
+from networkx import moral_graph
+
+
 sys.path.append(str(Path(__file__).parents[1]))
 
 import random
 import gymnasium as gym
-
-from lidapy.pam import PerceptualAssociativeMemory
-from lidapy.sms import MotorPlan, SensoryMotorMemory, SensoryMotorSystem
-from lidapy.ss import SensoryMemory, SensorySystem
-from lidapy.utils import Node
-from lidapy.agent import Environment, run_lida
 from types import SimpleNamespace
+
+from lidapy.utils import Node
+from lidapy.agent import Environment 
+from lidapy.acs import AttentionCodelet
+from lidapy.pam import PerceptualAssociativeMemory
+from lidapy.ss import SensoryMemory, SensorySystem
+from lidapy.ps import ProceduralMemory, ProceduralSystem, SchemeUnit
+from lidapy.sms import MotorPlan, SensoryMotorMemory, SensoryMotorSystem
 
 from frozenlake_agent.pam import DefaultPAMMemory
 
+
+    
 class FrozenLakeEnvironment(Environment):
     metadata = {"render_modes": ["human", "rgb_array"], "render_fps": 4}
     col = 0     #Data to hold the current column the agent occupies
@@ -65,7 +72,9 @@ class FrozenLakeEnvironment(Environment):
             return {}
         state, reward, done, truncated, info, surrounding_tiles = self._step_out
         order = ['left', 'down', 'right', 'up']
-        stimuli = {'vision_sensor': ''.join([surrounding_tiles[x] for x in order]), 'reward': reward}
+        stimuli = {'vision_sensor': ''.join([surrounding_tiles[x] for x in order]),
+                   'reward': reward
+                  }
         return stimuli
 
     # render environment's current state:
@@ -94,28 +103,94 @@ class FrozenLakeEnvironment(Environment):
         for direction, (r,c) in directions.items():
             surrounding_tiles[direction] = desc[r,c].decode('utf-8') #Decode byte to string
         return surrounding_tiles
+    
+def editDistRec(s1, s2, m, n):
+
+    # If first string is empty, the only option is to
+    # insert all characters of second string into first
+    if m == 0:
+        return n
+
+    # If second string is empty, the only option is to
+    # remove all characters of first string
+    if n == 0:
+        return m
+
+    # If last characters of two strings are same, nothing
+    # much to do. Get the count for
+    # remaining strings.
+    if s1[m - 1] == s2[n - 1]:
+        return editDistRec(s1, s2, m - 1, n - 1)
+
+    # If last characters are not same, consider all three
+    # operations on last character of first string,
+    # recursively compute minimum cost for all three
+    # operations and take minimum of three values.
+    return 1 + min(editDistRec(s1, s2, m, n - 1),
+                   editDistRec(s1, s2, m - 1, n),
+                   editDistRec(s1, s2, m - 1, n - 1))
+
+# Wrapper function to initiate
+# the recursive calculation
+def editDistance(s1, s2):
+    return editDistRec(s1, s2, len(s1), len(s2))
+
+def similarity_function(cls, one_node, other_node):
+    content1 = one_node.content
+    content2 = other_node.content
+    edit_distance = editDistance(content1, content2)
+    return 1./edit_distance
+    if content1.replace('G', 'F') == content2.replace('G', 'F'):
+        return 1.0
+    else:
+        return 0.0
+
+Node.similarity_function = classmethod(similarity_function)
 
 vision_processor = lambda x: Node(content=x, activation=1)
 reward_processor = lambda x: Node(content=x, activation=1)
 sensors = [
     {"name": "vision_sensor", "modality": "image", "processor": vision_processor},
-    {"name": "reward", "modality": "internal_state", "processor": reward_processor}
+    # {"name": "reward", "modality": "internal_state", "processor": reward_processor}
 ]
 pam = PerceptualAssociativeMemory(memory=DefaultPAMMemory())
 sm = SensoryMemory(sensors=sensors)
 # single expression infinite random number iterator
 
-def random_move(dorsal_update):
+actions = ['left', 'down', 'right', 'up']
+
+def avoid_hole(dorsal_update):
     node = dorsal_update[0]
     hole_indices = list(filter(lambda i: node.content[i] != 'H', range(len(node.content))))  # Filter out holes
     move = random.choice(hole_indices)  # Choose a move from the available indices 
     return move
 
-mp = MotorPlan('random_move', random_move)
-smm = SensoryMotorMemory(motor_plans=[mp])
+def random_move(dorsal_update):
+    return random.choice(range(len(actions)))
+
+def seek_goal(dorsal_update):
+    node = dorsal_update[0]
+    goal_indices = list(filter(lambda i: node.content[i] == 'G', range(len(node.content))))  # Filter out goals
+    if not goal_indices:
+        return None
+    move = random.choice(goal_indices)  # Choose a move from the available indices
+    return move
+
+mps = [MotorPlan('random_move', random_move),
+       MotorPlan('seek_goal', seek_goal),
+       MotorPlan('avoid_hole', avoid_hole)]
+    
+# contexts = [None, 'G', 'H']
+# schemes = [SchemeUnit(context=[Node(content=context, activation=1)] if context else None, action=mp) 
+#            for context, mp in zip(contexts, mps)]
+
+smm = SensoryMotorMemory(motor_plans=mps)
+# pm = ProceduralMemory(schemes=schemes)  # Initialize with your motor plans
+pm = ProceduralMemory(motor_plans=mps)  # Initialize with your motor plans
 
 lida_agent = {
     'sensory_system': SensorySystem(pam=pam, sensory_memory=sm),  # Initialize with your sensory system
+    'procedural_system': ProceduralSystem(procedural_memory=pm),
     'sensory_motor_system': SensoryMotorSystem(sensory_motor_memory=smm),
 }
 
@@ -136,7 +211,26 @@ def run_reactive_lida(environment, lida_agent, steps=100):
         motor_commands = lida_agent.sensory_motor_system.run(selected_behavior=None)
         motor_commands = lida_agent.sensory_motor_system.get_motor_commands()
 
+def run_alarm_lida(environment, lida_agent, steps=100):
+
+    if not isinstance(environment, Environment):
+        raise ValueError("environment must be an instance of Environment class")
+
+    lida_agent = SimpleNamespace(**lida_agent)
+    motor_commands = []
+    current_stimuli = environment.execute([0])
+    from lidapy.global_workspace import Coalition
+    for _ in range(steps):
+        current_stimuli = environment.execute(motor_commands=motor_commands)
+
+        associated_nodes = lida_agent.sensory_system.process(current_stimuli)
+        lida_agent.sensory_motor_system.dorsal_stream_update(associated_nodes)
+
+        selected_motor_plan = lida_agent.procedural_system.run(Coalition(associated_nodes, AttentionCodelet()))
+
+        motor_commands = lida_agent.sensory_motor_system.run(selected_motor_plan=selected_motor_plan, dorsal_update=associated_nodes)
+        motor_commands = lida_agent.sensory_motor_system.get_motor_commands()
 
 if __name__ == '__main__':
     env = FrozenLakeEnvironment()
-    run_reactive_lida(env, lida_agent, steps=100)
+    run_alarm_lida(env, lida_agent, steps=100)
