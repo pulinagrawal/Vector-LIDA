@@ -7,23 +7,35 @@ class MotorPlanExecution:
     ''' Enable to run multiple motor plans simultaneously'''
     def __init__(self):
         self.dorsal_update = None
-        self.selected_plans = []
+        self.current_plans = []
+        self.selected_plan = None
 
-    def select_plan(self, motor_plan):
-        if motor_plan is not None:
-            self.selected_plans.append(motor_plan)
-
-    def run(self):
-        if self.selected_plans is None:
+    def run(self, selected_motor_plan):
+        self.selected_plan = selected_motor_plan
+        if self.current_plans is None:
             return None
-        for plan in self.selected_plans:
+        if not selected_motor_plan in self.current_plans:
+            self.current_plans.append(selected_motor_plan)
+
+        for plan in self.current_plans:
             try:
                 plan.emit_command(self.dorsal_update)
             except StopIteration:
-                self.selected_plans.remove(plan)
+                self.current_plans.remove(plan)
+        
+        subsumption_winner = self._run_subsumption()
 
-    def get_current_commands(self):
-        return [plan.get_current_command() for plan in self.selected_plans]
+        # can be removed once the subsumption winner is implemented
+        if subsumption_winner is None:
+            return self.selected_plan.get_current_command()
+
+        return subsumption_winner.get_current_command()
+    
+    def _run_subsumption(self):
+        pass
+
+    def _get_current_commands(self):
+        return [plan.get_current_command() for plan in self.current_plans]
 
     def _dorsal_stream_update(self, activated_nodes):
         self.dorsal_update = activated_nodes
@@ -47,9 +59,10 @@ class SensoryMotorMemory:
         return selected_motor_plan
 
 class SensoryMotorSystem:
-    def __init__(self, sensory_motor_memory, motor_plan_execution=MotorPlanExecution()):
+    def __init__(self, sensory_motor_memory, motor_plan_execution=MotorPlanExecution(), actuators=None):
         self.motor_plan_execution = motor_plan_execution
         self.sensory_motor_memory = sensory_motor_memory
+        self.actuators = actuators
 
     def run(self, selected_motor_plan=None, dorsal_update=None):
         # The dorsal stream update can trigger a change in the selected motor command in the motor plan
@@ -59,11 +72,10 @@ class SensoryMotorSystem:
         if self.current_motor_plan is None:
             self.current_motor_plan = random.choice(self.sensory_motor_memory.motor_plans)
 
-        self.motor_plan_execution.select_plan(self.current_motor_plan)  
-        self.current_motor_commands = self.motor_plan_execution.run()
+        self.current_motor_commands = self.motor_plan_execution.run(self.current_motor_plan)
     
     def get_motor_commands(self):
-        return self.motor_plan_execution.get_current_commands()
+        return self.current_motor_commands
 
     def dorsal_stream_update(self, activated_nodes):
         self.motor_plan_execution._dorsal_stream_update(activated_nodes)

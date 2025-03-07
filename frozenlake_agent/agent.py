@@ -32,7 +32,7 @@ class FrozenLakeEnvironment(Environment):
         self.env = gym.make(
             'FrozenLake-v1',
             desc=None,
-            map_name="8x8",
+            map_name="4x4",
             is_slippery=False,
             render_mode=render_mode)
 
@@ -163,10 +163,10 @@ def avoid_hole(dorsal_update):
     node = dorsal_update[0]
     hole_indices = list(filter(lambda i: node.content[i] != 'H', range(len(node.content))))  # Filter out holes
     move = random.choice(hole_indices)  # Choose a move from the available indices 
-    return move
+    return [move]
 
 def random_move(dorsal_update):
-    return random.choice(range(len(actions)))
+    return [random.choice(range(len(actions)))]
 
 def seek_goal(dorsal_update):
     node = dorsal_update[0]
@@ -174,19 +174,19 @@ def seek_goal(dorsal_update):
     if not goal_indices:
         return None
     move = random.choice(goal_indices)  # Choose a move from the available indices
-    return move
+    return [move]
 
 mps = [MotorPlan('random_move', random_move),
        MotorPlan('seek_goal', seek_goal),
        MotorPlan('avoid_hole', avoid_hole)]
     
-# contexts = [None, 'G', 'H']
-# schemes = [SchemeUnit(context=[Node(content=context, activation=1)] if context else None, action=mp) 
-#            for context, mp in zip(contexts, mps)]
+contexts = [None, 'G', 'H']
+schemes = [SchemeUnit(context=[Node(content=context, activation=1)] if context else None, action=mp) 
+           for context, mp in zip(contexts, mps)]
 
 smm = SensoryMotorMemory(motor_plans=mps)
-# pm = ProceduralMemory(schemes=schemes)  # Initialize with your motor plans
-pm = ProceduralMemory(motor_plans=mps)  # Initialize with your motor plans
+pm = ProceduralMemory(schemes=schemes)  # Initialize with your motor plans
+# pm = ProceduralMemory(motor_plans=mps)  # Initialize with your motor plans
 
 lida_agent = {
     'sensory_system': SensorySystem(pam=pam, sensory_memory=sm),  # Initialize with your sensory system

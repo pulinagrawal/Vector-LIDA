@@ -5,7 +5,7 @@ sys.path.append(str(Path(__file__).parents[1]))
 
 from typing import List, Union
 
-from lidapy.utils import Node 
+from lidapy.utils import Node, Decayable
 from lidapy.actuators import MotorPlan
 from lidapy.global_workspace import Coalition
 
@@ -50,7 +50,7 @@ class Scheme:
         
     def get_context_match_score(self, coalition) -> float:
         if len(self.context) == 0:
-            return 0 # If no context, assume zero match
+            return 0.3 # If no context, assume zero match
 
         match_score = 0
         for node in self.context:
@@ -132,9 +132,10 @@ class Behavior:
         return best_scheme.action
     
 
-class ActionSelection:
+class ActionSelection(Decayable):
     def __init__(self) -> None:
         self.behaviors = []
+        Decayable.__init__(self, self.behaviors)
 
     def evaluate_behavior(self, behavior: Behavior):
         # Compute the activation level of a behavior
@@ -147,6 +148,7 @@ class ActionSelection:
         
     def run(self, instantiated_behavior):
         # For now, assume that instantiated_behavior is appended to behaviors.
+        self.decay()  # Apply decay to all behaviors
         if instantiated_behavior is not None:
             self.behaviors.append(instantiated_behavior)
         selected_behavior = self.select_behavior()
