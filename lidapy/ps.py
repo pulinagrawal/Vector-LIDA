@@ -145,6 +145,9 @@ class Behavior:
         self.scheme = Scheme(context=winning_coalition.get_nodes(), action_stream=scheme.action_stream) # type: ignore
         self.activation = scheme.get_match_score(winning_coalition)  # Initial activation based on match score
     
+    def __repr__(self) -> str:
+        return f"Behavior(scheme={self.scheme}, activation={self.activation:.3f})"
+    
     def find_action(self, winning_coalition):
         best_scheme = self.scheme
         best_score = -float('inf')

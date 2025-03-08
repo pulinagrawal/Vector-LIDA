@@ -116,8 +116,7 @@ class GlobalWorkspace(Decayable):
         self.logger.debug("Running Global Workspace cycle")
         self.decay()
         for attention_codelet in self.attention_codelets:
-            self.logger.debug(f"Running attention codelet: {attention_codelet.name}")
-            coalition = attention_codelet.form_coalition(csm)
+            coalition = attention_codelet.run(csm)
             self.receive_coalition(coalition)
         
         winning_coalition = self.competition()
