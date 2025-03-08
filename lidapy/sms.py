@@ -2,33 +2,42 @@ import types
 import random
 from lidapy.ps import SchemeUnit
 from lidapy.actuators import MotorPlan
+from lidapy.utils import get_logger
+
+logger = get_logger(__name__)
 
 class MotorPlanExecution:
     ''' Enable to run multiple motor plans simultaneously'''
     def __init__(self):
+        self.logger = get_logger(self.__class__.__name__)
         self.dorsal_update = None
         self.current_plans = []
         self.selected_plan = None
+        self.logger.debug("Initialized motor plan execution")
 
-    def run(self, selected_motor_plan):
+    def run(self, selected_motor_plan, dorsal_update):
         self.selected_plan = selected_motor_plan
+        self.dorsal_update = dorsal_update
         if self.current_plans is None:
+            self.logger.warning("No current plans available")
             return None
         if not selected_motor_plan in self.current_plans:
             self.current_plans.append(selected_motor_plan)
+            self.logger.debug(f"Added new motor plan: {selected_motor_plan.name}")
 
         for plan in self.current_plans:
             try:
                 plan.emit_command(self.dorsal_update)
             except StopIteration:
                 self.current_plans.remove(plan)
+                self.logger.debug(f"Removed completed plan: {plan.name}")
         
         subsumption_winner = self._run_subsumption()
-
-        # can be removed once the subsumption winner is implemented
         if subsumption_winner is None:
+            self.logger.debug(f"No subsumption winner, using selected plan: {self.selected_plan.name}")
             return self.selected_plan.get_current_command()
 
+        self.logger.debug(f"Subsumption winner: {subsumption_winner.name}")
         return subsumption_winner.get_current_command()
     
     def _run_subsumption(self):
@@ -37,13 +46,12 @@ class MotorPlanExecution:
     def _get_current_commands(self):
         return [plan.get_current_command() for plan in self.current_plans]
 
-    def _dorsal_stream_update(self, activated_nodes):
-        self.dorsal_update = activated_nodes
-
 
 class SensoryMotorMemory:
     def __init__(self, motor_plans):
+        self.logger = get_logger(self.__class__.__name__)
         self.motor_plans = motor_plans
+        self.logger.debug(f"Initialized with {len(motor_plans)} motor plans")
       
     def cue(self, selected_motor_plan, dorsal_update):
         """
@@ -56,13 +64,17 @@ class SensoryMotorMemory:
         Returns:
             The motor plan modified by the dorsal update
         """
+        if selected_motor_plan:
+            self.logger.debug(f"Cueing with motor plan: {selected_motor_plan.name}")
         return selected_motor_plan
 
 class SensoryMotorSystem:
     def __init__(self, sensory_motor_memory, motor_plan_execution=MotorPlanExecution(), actuators=None):
+        self.logger = get_logger(self.__class__.__name__)
         self.motor_plan_execution = motor_plan_execution
         self.sensory_motor_memory = sensory_motor_memory
         self.actuators = actuators
+        self.logger.debug("Initialized sensory motor system")
 
     def run(self, selected_motor_plan=None, dorsal_update=None):
         # The dorsal stream update can trigger a change in the selected motor command in the motor plan
@@ -71,12 +83,12 @@ class SensoryMotorSystem:
         # select a random motor plan if no plan is selected
         if self.current_motor_plan is None:
             self.current_motor_plan = random.choice(self.sensory_motor_memory.motor_plans)
+            self.logger.debug(f"No plan selected, randomly chose: {self.current_motor_plan.name}")
 
-        self.current_motor_commands = self.motor_plan_execution.run(self.current_motor_plan)
+        self.current_motor_commands = self.motor_plan_execution.run(self.current_motor_plan, dorsal_update)
+        self.logger.info(f"Executing motor commands: {self.current_motor_commands}")
     
     def get_motor_commands(self):
         return self.current_motor_commands
 
-    def dorsal_stream_update(self, activated_nodes):
-        self.motor_plan_execution._dorsal_stream_update(activated_nodes)
 

@@ -1,18 +1,25 @@
-from lidapy.utils import Node
+from lidapy.utils import Node, get_logger
+
+logger = get_logger(__name__)
 
 def _process_text(text):
+    logger.debug(f"Processing text: {text}")
     pass
 
 def _process_image(image):
+    logger.debug(f"Processing image")
     pass
 
 def _process_audio(audio):
+    logger.debug(f"Processing audio")
     pass
 
 def _process_touch(touch):
+    logger.debug(f"Processing touch")
     pass
 
 def _process_internal_state(state):
+    logger.debug(f"Processing internal state")
     pass
 
 DEFAULT_PROCESSORS = {"text": _process_text,
