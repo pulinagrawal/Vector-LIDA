@@ -1,3 +1,4 @@
+from typing import List
 from lidapy.utils import Node
 from lidapy.codelet import Codelet
 from lidapy.utils import get_logger
