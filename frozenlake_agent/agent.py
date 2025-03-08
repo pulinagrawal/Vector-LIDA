@@ -21,13 +21,12 @@ from frozenlake_agent.pam import DefaultPAMMemory
 
 import logging
 
-logging.basicConfig(level=logging.DEBUG)
-logger = logging.getLogger(__name__)
-
 #Set specific logger levels
 logging.getLogger("lidapy").setLevel(logging.DEBUG)
 # logging.getLogger("lidapy.utils").setLevel(logging.DEBUG)
 # logging.getLogger("lidapy.global_workspace").setLevel(logging.DEBUG)
+
+logger = logging.getLogger(__name__)
 
 class FrozenLakeEnvironment(Environment):
     metadata = {"render_modes": ["human", "rgb_array"], "render_fps": 4}
