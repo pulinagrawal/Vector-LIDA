@@ -1,11 +1,59 @@
 import randomname
 import logging
+from abc import abstractmethod, ABC
 
 # Configure logging
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 )
+
+LIDA_COMPONENTS = {
+    'all': 'lidapy',
+    'sensory': 'lidapy.ss.SensorySystem',
+    'sensory_memory': 'lidapy.ss.SensoryMemory',
+    'pam': 'lidapy.pam.PerceptualAssociativeMemory',
+    'csm': 'lidapy.csm.CurrentSituationalModel',
+    'global_workspace': 'lidapy.global_workspace.GlobalWorkspace',
+    'coalition': 'lidapy.global_workspace.Coalition',
+    'procedural': 'lidapy.ps.ProceduralSystem',
+    'procedural_memory': 'lidapy.ps.ProceduralMemory',
+    'motor': 'lidapy.sms.SensoryMotorSystem',
+    'motor_memory': 'lidapy.sms.SensoryMotorMemory',
+    'attention': 'lidapy.acs.AttentionCodelet',
+    'sbc': 'lidapy.sbcs.StructureBuildingCodelet'
+}
+
+def configure_logging(components=None, level=logging.INFO):
+    """Configure logging levels for LIDA components.
+    
+    Args:
+        components (dict, optional): Dictionary mapping component names to desired log levels.
+                                   If None, sets all components to specified level.
+        level (int, optional): Default logging level to use if components is None.
+                             Uses standard logging levels (DEBUG, INFO, WARNING, ERROR, CRITICAL)
+    
+    Example:
+        configure_logging()  # Sets all components to INFO
+        configure_logging(level=logging.DEBUG)  # Sets all components to DEBUG
+        configure_logging({
+            'sensory': logging.DEBUG,    # Detailed logs for sensory system
+            'motor': logging.WARNING,    # Only warnings for motor system
+            'pam': logging.INFO         # Normal logs for PAM
+        })
+    """
+    if components is None:
+        # Set all components to the same level
+        logging.getLogger('lidapy').setLevel(level)
+        return
+
+    # Set specific levels for each component
+    for component, comp_level in components.items():
+        if component in LIDA_COMPONENTS:
+            logging.getLogger(LIDA_COMPONENTS[component]).setLevel(comp_level)
+            continue
+        else:
+            logging.getLogger(component).setLevel(comp_level)
 
 def get_logger(name):
     return logging.getLogger(f"lidapy.{name}")

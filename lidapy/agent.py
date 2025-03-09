@@ -47,7 +47,8 @@ That action is then executed.
 from types import SimpleNamespace
 
 from abc import ABC, abstractmethod
-from utils import get_logger
+from typing import Any, Dict
+from .utils import get_logger
 
 import logging
 logging.getLogger(__name__).setLevel(logging.INFO)
@@ -72,7 +73,7 @@ class Environment(ABC):
         pass
 
     @abstractmethod
-    def receive_sensory_stimuli(self):
+    def receive_sensory_stimuli(self) -> Dict[str, Any]:
         ''' Receives sensory stimuli from the 
         actual environment. '''
         pass

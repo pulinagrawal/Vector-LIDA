@@ -56,7 +56,7 @@ class SensoryMemory:
 
 
 class SensorySystem:
-    def __init__(self, pam :PerceptualAssociativeMemory, sensory_memory :SensoryMemory=SensoryMemory()):
+    def __init__(self, pam :PerceptualAssociativeMemory=None, sensory_memory :SensoryMemory=SensoryMemory()): # type: ignore
         self.logger = get_logger(self.__class__.__name__)
         self.sensory_memory = sensory_memory
         self.pam = pam
@@ -65,7 +65,8 @@ class SensorySystem:
     def process(self, input):
         self.logger.debug("Processing input through sensory system")
         nodes = self.sensory_memory.process(input)
-        associated_nodes = self.pam.cue(nodes)
-        nodes.extend(associated_nodes)
+        if self.pam is not None:
+            associated_nodes = self.pam.cue(nodes)
+            nodes.extend(associated_nodes)
         self.logger.info(f"Processed input into {len(nodes)} nodes")
         return nodes
