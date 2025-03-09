@@ -253,9 +253,8 @@ def run_reactive_lida(environment, lida_agent, steps=100):
         current_stimuli = environment.execute(motor_commands=motor_commands)
 
         associated_nodes = lida_agent.sensory_system.process(current_stimuli)
-        lida_agent.sensory_motor_system.dorsal_stream_update(associated_nodes)
+        motor_commands = lida_agent.sensory_motor_system.run(dorsal_update=associated_nodes)
 
-        motor_commands = lida_agent.sensory_motor_system.run(selected_behavior=None)
         motor_commands = lida_agent.sensory_motor_system.get_motor_commands()
 
 
@@ -273,7 +272,6 @@ def run_alarm_lida(environment, lida_agent, steps=100):
         current_stimuli = environment.execute(motor_commands=motor_commands)
 
         associated_nodes = lida_agent.sensory_system.process(current_stimuli)
-        # lida_agent.sensory_motor_system.dorsal_stream_update(associated_nodes)
 
         selected_motor_plan = lida_agent.procedural_system.run(
             Coalition(associated_nodes, AttentionCodelet())

@@ -45,18 +45,20 @@ The conscious broadcast triggers a schema that is most similar to the contents o
 That action is then executed.
 '''
 from types import SimpleNamespace
-import warnings
 
 from abc import ABC, abstractmethod
+from utils import get_logger
+
 import logging
-logging.basicConfig(level=logging.INFO)
-import numpy as np
+logging.getLogger(__name__).setLevel(logging.INFO)
 
 class Environment(ABC):
+    def __init__(self):
+        self.logger = get_logger(self.__class__.__name__)
 
     def execute(self, motor_commands):
         if not motor_commands:
-            warnings.warn("No motor commands provided to execute.")
+            self.logger.warn("No motor commands provided to execute.")
 
         if motor_commands:
             if len(motor_commands):
@@ -75,27 +77,64 @@ class Environment(ABC):
         actual environment. '''
         pass
 
-def run_lida(environment, lida_agent, steps=100):
 
+def run_reactive_lida(environment, lida_agent, steps=100):
     if not isinstance(environment, Environment):
         raise ValueError("environment must be an instance of Environment class")
 
     lida_agent = SimpleNamespace(**lida_agent)
-    motor_commands = []
+    motor_commands = None
+
+    for _ in range(steps):
+        current_stimuli = environment.execute(motor_commands=motor_commands)
+
+        associated_nodes = lida_agent.sensory_system.process(current_stimuli)
+        motor_commands = lida_agent.sensory_motor_system.run(dorsal_update=associated_nodes)
+
+        motor_commands = lida_agent.sensory_motor_system.get_motor_commands()
+
+
+def run_alarm_lida(environment, lida_agent, steps=100):
+    if not isinstance(environment, Environment):
+        raise ValueError("environment must be an instance of Environment class")
+
+    from lidapy.global_workspace import Coalition
+    from lidapy.acs import AttentionCodelet
+
+    lida_agent = SimpleNamespace(**lida_agent)
+    motor_commands = None
+
     for _ in range(steps):
         current_stimuli = environment.execute(motor_commands=motor_commands)
 
         associated_nodes = lida_agent.sensory_system.process(current_stimuli)
 
+        selected_motor_plan = lida_agent.procedural_system.run(
+            Coalition(associated_nodes, AttentionCodelet())
+        )
+
+        motor_commands = lida_agent.sensory_motor_system.run(
+            selected_motor_plan=selected_motor_plan, dorsal_update=associated_nodes
+        )
+        motor_commands = lida_agent.sensory_motor_system.get_motor_commands()
+
+
+def run_lida(environment, lida_agent, steps=100):
+    if not isinstance(environment, Environment):
+        raise ValueError("environment must be an instance of Environment class")
+
+    lida_agent = SimpleNamespace(**lida_agent)
+    motor_commands = None
+
+    for _ in range(steps):
+        current_stimuli = environment.execute(motor_commands=motor_commands)
+        associated_nodes = lida_agent.sensory_system.process(current_stimuli)
+
         lida_agent.csm.run(associated_nodes)
+        winning_coalition = lida_agent.gw.run(lida_agent.csm)
 
-        winning_coalition = lida_agent.global_workspace.run(lida_agent.csm)
-
-        print('Winning Coalition: ', winning_coalition)
-
-        # Procedural Memory selects an action based on the winning coalition
-        selected_action = lida_agent.procedural_system.run(winning_coalition)
-        # The selected action node now contains the action to be executed.
-        # You would have some mechanism to execute or further process this action as per your application's requirements.
-        motor_commands = lida_agent.sensory_motor_system.run(selected_action)
-
+        selected_motor_plan = lida_agent.procedural_system.run(winning_coalition)
+        motor_commands = lida_agent.sensory_motor_system.run(
+            selected_motor_plan=selected_motor_plan, dorsal_update=associated_nodes
+        )
+        motor_commands = lida_agent.sensory_motor_system.get_motor_commands()

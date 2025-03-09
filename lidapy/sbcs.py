@@ -43,7 +43,8 @@ class StructureBuildingCodelet(Codelet):
         self.logger.debug("No focus nodes found")
         return None
       new_structures = self.build_function(focus_nodes)
-      self.logger.info(f"Built {len(new_structures)} new structures")
+      if new_structures is not None:
+        self.logger.info(f"Built {len(new_structures)} new structures")
       return new_structures
 
     def __repr__(self) -> str:
