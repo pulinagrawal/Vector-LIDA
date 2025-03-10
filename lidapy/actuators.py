@@ -34,7 +34,13 @@ class MotorPlan:
         return self.current_command
 
     def emit_command(self, dorsal_update):
+        if len(dorsal_update) == 0 or dorsal_update is None:
+            self.current_command = None
+            return None
         self.current_command = self.policy_generator.send(dorsal_update)
+        if not isinstance(self.current_command, dict):
+            raise ValueError(f"Motor plan {self.name} emitted command {self.current_command} which is not a dictionary. "
+                             "Motor plans should emit a dictionary with actuator names as keys and its corresponding value(s).")
         self.logger.debug(f"Motor plan {self.name} emitted command {self.current_command}")
         return self.current_command
     

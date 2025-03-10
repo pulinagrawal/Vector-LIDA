@@ -8,9 +8,11 @@ logger = get_logger(__name__)
 
 class MotorPlanExecution:
     ''' Enable to run multiple motor plans simultaneously'''
-    def __init__(self):
+    def __init__(self, actuators):
         self.logger = get_logger(self.__class__.__name__)
+
         self.dorsal_update = None
+        self.actuators = actuators
         self.current_plans = []
         self.selected_plan = None
         self.logger.debug("Initialized motor plan execution")
@@ -38,7 +40,9 @@ class MotorPlanExecution:
             return self.selected_plan.get_current_command()
 
         self.logger.debug(f"Subsumption winner: {subsumption_winner.name}")
-        return subsumption_winner.get_current_command()
+        current_commands = subsumption_winner.get_current_command()
+        # TODO: at some point we should make it such that results from different motor plans can be merged
+        return current_commands
     
     def _run_subsumption(self):
         pass
@@ -69,8 +73,11 @@ class SensoryMotorMemory:
         return selected_motor_plan
 
 class SensoryMotorSystem:
-    def __init__(self, sensory_motor_memory, motor_plan_execution=MotorPlanExecution(), actuators=None):
+    def __init__(self, actuators, sensory_motor_memory, motor_plan_execution=None):
         self.logger = get_logger(self.__class__.__name__)
+        if motor_plan_execution is None:
+            motor_plan_execution = MotorPlanExecution(actuators)
+
         self.motor_plan_execution = motor_plan_execution
         self.sensory_motor_memory = sensory_motor_memory
         self.actuators = actuators
@@ -86,6 +93,9 @@ class SensoryMotorSystem:
             self.logger.debug(f"No plan selected, randomly chose: {self.current_motor_plan.name}")
 
         self.current_motor_commands = self.motor_plan_execution.run(self.current_motor_plan, dorsal_update)
+        if any(actuator not in self.actuators for actuator in self.current_motor_commands):
+            self.logger.warning(f"Actuator {actuator} not in {self.actuators}")
+
         self.logger.info(f"Executing motor commands: {self.current_motor_commands}")
     
     def get_motor_commands(self):
