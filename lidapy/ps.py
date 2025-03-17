@@ -203,6 +203,5 @@ class ProceduralSystem:
         self.logger.debug(f"Selected scheme {best_scheme}")
         self.behaviors.append(new_behavior:=Behavior(best_scheme, winning_coalition))
         selected_behavior = self.acs.run(new_behavior)
-        motor_plan = selected_behavior.find_action(winning_coalition)
-        self.logger.info(f"Selected motor plan {motor_plan}")
-        return motor_plan
+        self.logger.info(f"Selected behavior {selected_behavior}")
+        return selected_behavior

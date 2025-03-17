@@ -134,8 +134,10 @@ def run_lida(environment, lida_agent, steps=100):
         lida_agent.csm.run(associated_nodes)
         winning_coalition = lida_agent.gw.run(lida_agent.csm)
 
-        selected_motor_plan = lida_agent.procedural_system.run(winning_coalition)
+        selected_behavior = lida_agent.procedural_system.run(winning_coalition)
         motor_commands = lida_agent.sensory_motor_system.run(
-            selected_motor_plan=selected_motor_plan, dorsal_update=associated_nodes
+            selected_behavior=selected_behavior, dorsal_update=associated_nodes
         )
         motor_commands = lida_agent.sensory_motor_system.get_motor_commands()
+
+    current_stimuli = environment.execute(motor_commands=motor_commands)

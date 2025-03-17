@@ -1,7 +1,7 @@
 import types
 import random
-from lidapy.ps import SchemeUnit
 from lidapy.actuators import MotorPlan
+from lidapy.ps import Behavior
 from lidapy.utils import get_logger
 
 logger = get_logger(__name__)
@@ -73,17 +73,21 @@ class SensoryMotorMemory:
         return selected_motor_plan
 
 class SensoryMotorSystem:
-    def __init__(self, actuators, sensory_motor_memory, motor_plan_execution=None):
+    def __init__(self, actuators, motor_plans, sensory_motor_memory=None, motor_plan_execution=None):
         self.logger = get_logger(self.__class__.__name__)
         if motor_plan_execution is None:
             motor_plan_execution = MotorPlanExecution(actuators)
+        if sensory_motor_memory is None:
+            sensory_motor_memory = SensoryMotorMemory(motor_plans)
 
         self.motor_plan_execution = motor_plan_execution
         self.sensory_motor_memory = sensory_motor_memory
         self.actuators = actuators
+        self.actuator_names = [actuator['name'] for actuator in actuators]
         self.logger.debug("Initialized sensory motor system")
 
-    def run(self, selected_motor_plan=None, dorsal_update=None):
+    def run(self, selected_behavior :Behavior=None, dorsal_update=None, winning_coalition=None):
+        selected_motor_plan = selected_behavior.find_action(winning_coalition)
         # The dorsal stream update can trigger a change in the selected motor command in the motor plan
         self.current_motor_plan = self.sensory_motor_memory.cue(selected_motor_plan, dorsal_update)
 
@@ -93,8 +97,11 @@ class SensoryMotorSystem:
             self.logger.debug(f"No plan selected, randomly chose: {self.current_motor_plan.name}")
 
         self.current_motor_commands = self.motor_plan_execution.run(self.current_motor_plan, dorsal_update)
-        if any(actuator not in self.actuators for actuator in self.current_motor_commands):
-            self.logger.warning(f"Actuator {actuator} not in {self.actuators}")
+
+        # Check if the motor commands are valid
+        for actuator in self.current_motor_commands:
+            if actuator not in self.actuator_names:
+                self.logger.warning(f"Actuator {actuator} not in {self.actuators}")
 
         self.logger.info(f"Executing motor commands: {self.current_motor_commands}")
     
