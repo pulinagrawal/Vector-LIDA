@@ -75,21 +75,23 @@ def combine_nodes(nodes, method='text'):
         return _average_embedding_combine(nodes) 
 
 # Assume EmbeddingModel is a placeholder for your actual embedding model with an encode method
-class EmbeddingModel:
+class EmbeddingFunction:
+    def __init__(self, model_name='nomic-embed-text'):
+        self.model_name = model_name
+
+    def __call__(self, texts):
+        # Tokenize the input text
+        return np.array(ollama.embeddings(self.model_name, texts)['embedding'])
+
+class GenerationFunction:
     def __init__(self, model_name='llama2'):
         self.model_name = model_name
 
-    def encode(self, text):
-        # Tokenize the input text
-        return np.array(ollama.embeddings(self.model_name, text)['embedding'])
-
-    def generate(self, prompt):
+    def __call__(self, prompt):
         return ollama.generate(self.model_name, prompt)
 
 
-embedding_model = EmbeddingModel()
-embed = lambda text: embedding_model.encode(text)
-generate = lambda prompt: embedding_model.generate(prompt)
-create_node = lambda text, activation=1.0: Node(embed(text), text, activation=activation)
+embed = EmbeddingFunction()
+generate = GenerationFunction()
 get_similarity = lambda x, y: 1-cosine_distance(x, y)
 # get_similarity = lambda x, y: 1/(1+np.sqrt(np.linalg.norm(x - y)))

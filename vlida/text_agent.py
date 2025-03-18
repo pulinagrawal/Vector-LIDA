@@ -1,3 +1,4 @@
+from signal import alarm
 import sys
 from pathlib import Path
 
@@ -55,47 +56,40 @@ motor_plans = [MotorPlan(name='generate_text', policy=lambda dorsal: {'console_o
 from lidapy.agent import run_reactive_lida, run_alarm_lida
 
 # reactive agent
-reactive_agent = {
+agent = {
     "sensory_system": SensorySystem(sensory_memory=SensoryMemory(sensors=sensors)),
     "sensory_motor_system": SensoryMotorSystem(actuators=actuators, motor_plans=motor_plans),
 }
 
-run_reactive_lida(environment=SimpleTextEnvironment(), lida_agent=reactive_agent, steps=2)
+# run_reactive_lida(environment=SimpleTextEnvironment(), lida_agent=agent, steps=2)
 
-exit(0)
+# exit(0)
 # alarm agent
 pam = PerceptualAssociativeMemory(memory=VectorStore())
 procedural_memory = ProceduralMemory(motor_plans=motor_plans)
-procedural_system = ProceduralSystem(procedural_memory=procedural_memory)
-sensory_motor_memory = SensoryMotorMemory(motor_plans=motor_plans)
-sensory_motor_system = SensoryMotorSystem(sensory_motor_memory=sensory_motor_memory)
 
-alarm_agent = {
+alarm_agent_modules = {
     "sensory_system": SensorySystem(pam, sensory_memory=SensoryMemory(sensors=sensors)),
-    "procedural_system": procedural_system,
-    "sensory_motor_system": SensoryMotorSystem(sensory_motor_memory=SensoryMotorMemory(motor_plans=motor_plans)),
+    "procedural_system": ProceduralSystem(procedural_memory=procedural_memory),
 }
+agent |= alarm_agent_modules
 
-run_alarm_lida(environment=SimpleTextEnvironment(), lida_agent=alarm_agent, steps=2)
+# run_alarm_lida(environment=SimpleTextEnvironment(), lida_agent=agent, steps=2)
 
 # full agent
-sensory_system = SensorySystem(pam, sensory_memory=SensoryMemory(sensors=sensors))
-procedural_memory = ProceduralMemory(motor_plans=motor_plans)
-procedural_system = ProceduralSystem(procedural_memory=procedural_memory)
+sensory_system = agent['sensory_system']
+procedural_system = agent['procedural_system']
 csm = CurrentSituationalModel(ccq_maxlen=10, sbcs=[SBC()], memories=[sensory_system.pam])
 global_workspace = GlobalWorkspace(attention_codelets=[AttentionCodelet()],
                                    broadcast_receivers=[csm, 
                                                         sensory_system.pam,
                                                         procedural_system.pm])
-sensory_motor_memory = SensoryMotorMemory(motor_plans=motor_plans)
-sensory_motor_system = SensoryMotorSystem(sensory_motor_memory=sensory_motor_memory)
 
-full_agent = {
-    "sensory_system": sensory_system,
+full_agent_modules = {
     "csm": csm,
     "gw": global_workspace,
-    "procedural_system": procedural_system,
-    "sensory_motor_system": sensory_motor_system,
 }
 
-run_lida(environment=SimpleTextEnvironment(), lida_agent=full_agent, steps=2)
+agent |= full_agent_modules
+
+run_lida(environment=SimpleTextEnvironment(), lida_agent=agent, steps=2)
