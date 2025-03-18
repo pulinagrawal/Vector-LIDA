@@ -110,12 +110,12 @@ def run_alarm_lida(environment, lida_agent, steps=100):
 
         associated_nodes = lida_agent.sensory_system.process(current_stimuli)
 
-        selected_motor_plan = lida_agent.procedural_system.run(
+        selected_behavior = lida_agent.procedural_system.run(
             Coalition(associated_nodes, AttentionCodelet())
         )
 
         motor_commands = lida_agent.sensory_motor_system.run(
-            selected_motor_plan=selected_motor_plan, dorsal_update=associated_nodes
+            selected_behavior=selected_behavior, dorsal_update=associated_nodes
         )
         motor_commands = lida_agent.sensory_motor_system.get_motor_commands()
 

@@ -52,6 +52,7 @@ class MotorPlanExecution:
 
 
 class SensoryMotorMemory:
+    # TODO: the implementation needs to be verified with multiple motor plans
     def __init__(self, motor_plans):
         self.logger = get_logger(self.__class__.__name__)
         self.motor_plans = motor_plans
