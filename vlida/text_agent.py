@@ -30,28 +30,39 @@ configure_logging({
 
 class SimpleTextEnvironment(Environment):
   def run_commands(self, motor_commands):
+    global actuators
     print(f"Running commands: {motor_commands}")
+    print("Output:")
+    for command in motor_commands:
+        for actuator in actuators:
+            if actuator['name'] == command:
+                actuator['processor'](motor_commands[command])
 
   def receive_sensory_stimuli(self):
-      return {'input_text': 'hehe'}
+      return {'input_text':input("Enter text: ")}
 
 def process_text(text):
     return vNode(content=text, vector=embed(text), activation=1.0)
 
+import numpy as np
+vNode.similarity_function = lambda x,y: np.dot(x.vector, y.vector)
+
 # Initialize the LIDA agent
 sensors = [{'name': 'input_text', 'modality': 'text', 'processor': process_text}]
-motor_plans = [MotorPlan(name='generate_text', policy=lambda dorsal: generate(' '.join([x.content for x in dorsal])).response)]
+actuators = [{'name': 'console_out', 'modality': 'text', 'processor': lambda x: print(x)}]
+motor_plans = [MotorPlan(name='generate_text', policy=lambda dorsal: {'console_out': generate(' '.join([x.content for x in dorsal])).response})]
 
 from lidapy.agent import run_reactive_lida, run_alarm_lida
 
 # reactive agent
 reactive_agent = {
     "sensory_system": SensorySystem(sensory_memory=SensoryMemory(sensors=sensors)),
-    "sensory_motor_system": SensoryMotorSystem(sensory_motor_memory=SensoryMotorMemory(motor_plans=motor_plans)),
+    "sensory_motor_system": SensoryMotorSystem(actuators=actuators, motor_plans=motor_plans),
 }
 
 run_reactive_lida(environment=SimpleTextEnvironment(), lida_agent=reactive_agent, steps=2)
 
+exit(0)
 # alarm agent
 pam = PerceptualAssociativeMemory(memory=VectorStore())
 procedural_memory = ProceduralMemory(motor_plans=motor_plans)

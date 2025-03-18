@@ -14,7 +14,6 @@ class VectorStore(Memory):
     def find_associated_nodes(self, node):
         # Find similar nodes
         similar_nodes = self.find_similar_nodes(node.vector, self.similarity_threshold)
-        logging.warning(f"PRCP_MEM: Associated nodes: {similar_nodes}")        
         return similar_nodes
 
     def find_similar_nodes(self, vector, threshold):
@@ -34,7 +33,6 @@ class VectorStore(Memory):
                 assert False, f"Node is not a VectorNode: {node}"
             new_node = vNode(vector=node.vector, content=node.content, activation=node.activation, tags=['pam'])
             self.add_node(new_node)
-            logging.warning(f"PRCP_MEM: Added to vector store: {new_node}")        
 
     def learn(self, nodes):
         pass
