@@ -56,6 +56,14 @@ class SensoryMotorMemory:
         self.logger = get_logger(self.__class__.__name__)
         self.motor_plans = motor_plans
         self.logger.debug(f"Initialized with {len(motor_plans)} motor plans")
+        # Store mappings as {motor_plan: [(dorsal_update, strength), ...]}
+        self.motor_plan_dorsal_map = {plan: [] for plan in motor_plans}
+        # Default initial strength for new associations
+        self.initial_strength = 0.5
+        # Learning rate for strengthening associations
+        self.learning_rate = 0.1
+        # Threshold for similarity matching
+        self.similarity_threshold = 0.6
       
     def cue(self, selected_motor_plan, dorsal_update):
         """
@@ -63,14 +71,114 @@ class SensoryMotorMemory:
         
         Args:
             selected_motor_plan: The motor plan selected by the procedural system
-            dorsal_update: The current sensory input nodes
+            dorsal_update: The current sensory input nodes (list of nodes)
             
         Returns:
             The motor plan modified by the dorsal update
         """
         if selected_motor_plan:
             self.logger.debug(f"Cueing with motor plan: {selected_motor_plan.name}")
-        return selected_motor_plan
+        if dorsal_update:
+            self.logger.debug(f"Cueing with dorsal update: {dorsal_update}")
+        
+        # If we have a selected motor plan already, use it
+        if selected_motor_plan:
+            return selected_motor_plan
+            
+        # Otherwise, try to find a motor plan based on dorsal update similarity
+        if dorsal_update:
+            best_plan = self._find_best_motor_plan(dorsal_update)
+            if best_plan:
+                self.logger.debug(f"Found motor plan via similarity: {best_plan.name}")
+                return best_plan
+                
+        return None
+
+    def learn(self, motor_plan, dorsal_update):
+        """
+        Learn or strengthen association between a motor plan and dorsal update
+        
+        Args:
+            motor_plan: The motor plan to associate
+            dorsal_update: The dorsal update (list of Node objects) to associate
+        """
+        if not motor_plan or not dorsal_update:
+            return
+            
+        # Check if we already have this dorsal update
+        for i, (existing_update, strength) in enumerate(self.motor_plan_dorsal_map[motor_plan]):
+            # Use our list similarity function to check if these lists are similar
+            if self._calculate_list_similarity(dorsal_update, existing_update) > self.similarity_threshold:
+                # Strengthen existing association
+                new_strength = min(1.0, strength + self.learning_rate)
+                self.motor_plan_dorsal_map[motor_plan][i] = (existing_update, new_strength)
+                self.logger.debug(f"Strengthened association for {motor_plan.name}: {new_strength}")
+                return
+                
+        # Add new association
+        self.motor_plan_dorsal_map[motor_plan].append((dorsal_update, self.initial_strength))
+        self.logger.debug(f"Created new association for {motor_plan.name}")
+    
+    def _calculate_node_similarity(self, node1, node2):
+        """
+        Calculate similarity between two nodes
+        """
+        # If nodes have a similarity method, use it
+        if hasattr(node1, 'similarity') and callable(getattr(node1, 'similarity')):
+            return node1.similarity(node2)
+        
+        # Otherwise compare by ID or content if available
+        if hasattr(node1, 'id') and hasattr(node2, 'id'):
+            return 1.0 if node1.id == node2.id else 0.0
+        
+        # Last resort: direct equality comparison
+        return 1.0 if node1 == node2 else 0.0
+    
+    def _calculate_list_similarity(self, nodes1, nodes2):
+        """
+        Calculate similarity between two lists of nodes
+        
+        Returns a similarity score 0.0-1.0
+        """
+        if not nodes1 or not nodes2:
+            return 0.0
+        
+        # Calculate best matches for each node in first list
+        total_similarity = 0
+        for node1 in nodes1:
+            best_match = max([self._calculate_node_similarity(node1, node2) for node2 in nodes2], default=0.0)
+            total_similarity += best_match
+        
+        # Average similarity across all nodes
+        return total_similarity / len(nodes1)
+            
+    def _find_best_motor_plan(self, dorsal_update):
+        """
+        Find the motor plan with the strongest association to the given dorsal update
+        
+        Args:
+            dorsal_update: Current dorsal update (list of nodes) to match against
+            
+        Returns:
+            The best matching motor plan or None
+        """
+        best_plan = None
+        best_score = 0.0
+        
+        for plan in self.motor_plans:
+            for stored_update, strength in self.motor_plan_dorsal_map[plan]:
+                # Calculate similarity score using our list similarity function
+                similarity = self._calculate_list_similarity(dorsal_update, stored_update)
+                score = similarity * strength
+                
+                if score > best_score:
+                    best_score = score
+                    best_plan = plan
+                    
+        # Only return the plan if it exceeds some minimum confidence
+        if best_score > 0.3:
+            return best_plan
+        return None
 
 class SensoryMotorSystem:
     def __init__(self, actuators, motor_plans, sensory_motor_memory=None, motor_plan_execution=None):
@@ -87,13 +195,17 @@ class SensoryMotorSystem:
         self.logger.debug("Initialized sensory motor system")
 
     def run(self, selected_behavior :Behavior=None, dorsal_update=None, winning_coalition=None):
-        selected_motor_plan = selected_behavior.find_action(winning_coalition)
+        selected_motor_plan = None
+        if winning_coalition is not None and selected_behavior is not None:
+            selected_motor_plan = selected_behavior.find_action(winning_coalition)
+
         # The dorsal stream update can trigger a change in the selected motor command in the motor plan
         self.current_motor_plan = self.sensory_motor_memory.cue(selected_motor_plan, dorsal_update)
 
         # select a random motor plan if no plan is selected
         if self.current_motor_plan is None:
             self.current_motor_plan = random.choice(self.sensory_motor_memory.motor_plans)
+            self.sensory_motor_memory.learn(self.current_motor_plan, dorsal_update)
             self.logger.debug(f"No plan selected, randomly chose: {self.current_motor_plan.name}")
 
         self.current_motor_commands = self.motor_plan_execution.run(self.current_motor_plan, dorsal_update)
