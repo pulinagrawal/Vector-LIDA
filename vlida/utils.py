@@ -1,4 +1,5 @@
 from math import comb
+import sys
 from matplotlib.pyplot import cla
 import numpy as np
 from scipy.spatial.distance import cosine as cosine_distance
@@ -87,8 +88,8 @@ class GenerationFunction:
     def __init__(self, model_name='llama2'):
         self.model_name = model_name
 
-    def __call__(self, prompt):
-        return ollama.generate(self.model_name, prompt)
+    def __call__(self, prompt, system_prompt=''):
+        return ollama.generate(self.model_name, prompt, system=system_prompt)
 
 
 embed = EmbeddingFunction()

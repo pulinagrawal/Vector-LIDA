@@ -1,10 +1,14 @@
 from signal import alarm
 import sys
 from pathlib import Path
+import logging
+
 
 sys.path.append(str(Path(__file__).parents[1]))
 sys.path.append(str(Path(__file__).parents[2]))
 
+
+from lidapy.sensors import feature_detector
 from lidapy.actuators import MotorPlan
 from lidapy.pam import PerceptualAssociativeMemory
 from lidapy.ss import SensorySystem, SensoryMemory
@@ -19,15 +23,17 @@ from lidapy.agent import Environment, run_lida
 from vlida.pam import VectorStore
 from vlida.utils import VectorNode as vNode, embed, generate
 
-import logging
-
 from lidapy.utils import configure_logging
 
+# Configure logging with more specific names for the procedural system
 configure_logging({
-   'httpx': logging.WARN,
-   'all': logging.WARN,
+   'httpx': logging.ERROR,  
+   'all': logging.ERROR,
+   # Try different possible logger names for the procedural system
+   'ps': logging.DEBUG,
+   # Keep other modules at WARNING
+   'lidapy': logging.ERROR,
 })
-
 
 class SimpleTextEnvironment(Environment):
   def run_commands(self, motor_commands):
@@ -42,22 +48,36 @@ class SimpleTextEnvironment(Environment):
   def receive_sensory_stimuli(self):
       return {'input_text':input("Enter text: ")}
 
-def process_text(text):
-    return vNode(content=text, vector=embed(text), activation=1.0)
 
 import numpy as np
 vNode.similarity_function = lambda x,y: np.dot(x.vector, y.vector)
 
 # Initialize the LIDA agent
-sensors = [{'name': 'input_text', 'modality': 'text', 'processor': process_text}]
+@feature_detector
+def text_detector(sensory_stimuli):
+    # Process the input text and create a vNode
+    text = sensory_stimuli['input_text']
+    return vNode(content=text, vector=embed(text), activation=1.0)
+
+sensors = [{'name': 'input_text', 'modality': 'text'}]
+feature_detectors = [text_detector]
 actuators = [{'name': 'console_out', 'modality': 'text', 'processor': lambda x: print(x)}]
-motor_plans = [MotorPlan(name='generate_text', policy=lambda dorsal: {'console_out': generate(' '.join([x.content for x in dorsal])).response})]
+motor_plans = [MotorPlan(name='generate_factual_text', 
+                         policy=lambda dorsal: {'console_out': generate(' '.join([x.content for x in dorsal]),
+                                                                        system_prompt='Be factual in your response.'
+                                                                       ).response}),
+               MotorPlan(name='generate_helpful_text', 
+                         policy=lambda dorsal: {'console_out': generate(' '.join([x.content for x in dorsal]),
+                                                                        system_prompt='Be helpful in your response.'
+                                                                       ).response}),
+
+            ]
 
 from lidapy.agent import run_reactive_lida, run_alarm_lida
 
 # reactive agent
 agent = {
-    "sensory_system": SensorySystem(sensory_memory=SensoryMemory(sensors=sensors)),
+    "sensory_system": SensorySystem(sensory_memory=SensoryMemory(sensors=sensors, feature_detectors=feature_detectors)),
     "sensory_motor_system": SensoryMotorSystem(actuators=actuators, motor_plans=motor_plans),
 }
 
@@ -69,7 +89,7 @@ pam = PerceptualAssociativeMemory(memory=VectorStore())
 procedural_memory = ProceduralMemory(motor_plans=motor_plans)
 
 alarm_agent_modules = {
-    "sensory_system": SensorySystem(pam, sensory_memory=SensoryMemory(sensors=sensors)),
+    "sensory_system": SensorySystem(pam, sensory_memory=SensoryMemory(sensors=sensors, feature_detectors=feature_detectors)),
     "procedural_system": ProceduralSystem(procedural_memory=procedural_memory),
 }
 agent |= alarm_agent_modules
@@ -92,4 +112,4 @@ full_agent_modules = {
 
 agent |= full_agent_modules
 
-run_lida(environment=SimpleTextEnvironment(), lida_agent=agent, steps=2)
+run_lida(environment=SimpleTextEnvironment(), lida_agent=agent, steps=5)
