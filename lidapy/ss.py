@@ -1,56 +1,44 @@
 import warnings
 from lidapy.utils import Node, get_logger
-from lidapy.sensors import DEFAULT_PROCESSORS, DEFAULT_SENSORS
+from lidapy.sensors import DEFAULT_SENSORS, DEFAULT_FEATURE_DETECTORS
 from lidapy.pam import PerceptualAssociativeMemory
 
 logger = get_logger(__name__)
 
 class SensoryMemory:
-    def __init__(self, sensors=DEFAULT_SENSORS):
+    def __init__(self, sensors=DEFAULT_SENSORS, feature_detectors=DEFAULT_FEATURE_DETECTORS):
         self.logger = get_logger(self.__class__.__name__)
         
-        self.sensor_processors = {}
+        # Initialize sensors
+        self.sensors = {}
         for sensor in sensors:
             if 'name' not in sensor:
                 raise ValueError(f"Sensor {sensor} does not have a name")
-            if 'modality' not in sensor and 'processor' not in sensor:
-                raise ValueError(f"Sensor {sensor} does not have a modality or processor")
-            if 'processor' in sensor and not callable(sensor['processor']):
-                raise ValueError(f"Processor for sensor {sensor['name']} is not callable")
+            if 'modality' not in sensor:
+                raise ValueError(f"Sensor {sensor} does not have a modality")
+            
+            self.sensors[sensor['name']] = sensor
+        
+        # Initialize feature detectors
+        if feature_detectors is None:
+            self.logger.warn(f"No feature detectors provided. No sensory input will be received by the agent.")
 
-            # Select processor
-            if 'processor' not in sensor:
-                warnings.warn(f"Sensor {sensor['name']} does not have a processor, \
-                               using default processor for {sensor['modality']}")
-                processor = DEFAULT_PROCESSORS[sensor['modality']]
-            else:
-                processor = sensor['processor']
-
-            self.sensor_processors[sensor['name']] = processor
-        self.logger.debug(f"Initialized with {len(sensors)} sensors")
+        self.feature_detectors = feature_detectors
+        self.logger.debug(f"Initialized with {len(sensors)} sensors and {len(feature_detectors)} feature detectors")
 
     def process(self, sensory_stimuli):
         self.logger.debug(f"Processing sensory stimuli: {sensory_stimuli}")
         nodes = []
-        for sensor, value in sensory_stimuli.items():
-            if sensor not in self.sensor_processors:
-                self.logger.warning(f"SENS_MEM: Sensor {sensor} not found in sensor processors. \
-                               Using default processor for {sensor}")
-                continue
-            processed_output = self.sensor_processors[sensor](value)
-            if not isinstance(processed_output, list) and not isinstance(processed_output, Node):
-                raise ValueError(f"SENS_MEM: Processed output is not a list or Node: {processed_output}")
-
-            if isinstance(processed_output, list):
-                for item in processed_output:
-                    if not isinstance(item, Node):
-                        raise ValueError(f"SENS_MEM: Processed output from {sensor} is not a Node: {item}. \
-                                           Please verify the processor function's return.")
-
-            if isinstance(processed_output, Node):
-                processed_output = [processed_output]
-            nodes.extend(processed_output)
-        self.logger.info(f"Processed {len(nodes)} nodes from sensory stimuli")
+        
+        # Run all feature detectors on the sensory data
+        for detector in self.feature_detectors:
+            # Check if we have all required sensors for this detector
+            result = detector(sensory_stimuli)
+            
+            # Process the output to ensure it's a list of Nodes
+            nodes.extend(result)
+        
+        self.logger.info(f"Processed sensory stimuli into {len(nodes)} nodes")
         self.logger.debug(f"Processed nodes: {nodes}")
         return nodes
 

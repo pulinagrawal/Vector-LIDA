@@ -9,19 +9,20 @@ logging.basicConfig(
 )
 
 LIDA_COMPONENTS = {
-    'all': 'lidapy',
-    'sensory': 'lidapy.ss.SensorySystem',
-    'sensory_memory': 'lidapy.ss.SensoryMemory',
-    'pam': 'lidapy.pam.PerceptualAssociativeMemory',
-    'csm': 'lidapy.csm.CurrentSituationalModel',
-    'global_workspace': 'lidapy.global_workspace.GlobalWorkspace',
-    'coalition': 'lidapy.global_workspace.Coalition',
-    'procedural': 'lidapy.ps.ProceduralSystem',
-    'procedural_memory': 'lidapy.ps.ProceduralMemory',
-    'motor': 'lidapy.sms.SensoryMotorSystem',
-    'motor_memory': 'lidapy.sms.SensoryMotorMemory',
-    'attention': 'lidapy.acs.AttentionCodelet',
-    'sbc': 'lidapy.sbcs.StructureBuildingCodelet'
+    'all': 'lidapy.lidapy',
+    'ss': 'lidapy.lidapy.ss.SensorySystem',
+    'lidapy': 'lidapy.lidapy',
+    'sensory_memory': 'lidapy.lidapy.ss.SensoryMemory',
+    'pam': 'lidapy.lidapy.pam.PerceptualAssociativeMemory',
+    'csm': 'lidapy.lidapy.csm.CurrentSituationalModel',
+    'global_workspace': 'lidapy.lidapy.global_workspace.GlobalWorkspace',
+    'coalition': 'lidapy.lidapy.global_workspace.Coalition',
+    'ps': 'lidapy.lidapy.ps.ProceduralSystem',
+    'procedural_memory': 'lidapy.lidapy.ps.ProceduralMemory',
+    'motor': 'lidapy.lidapy.sms.SensoryMotorSystem',
+    'motor_memory': 'lidapy.lidapy.sms.SensoryMotorMemory',
+    'attention': 'lidapy.lidapy.acs.AttentionCodelet',
+    'sbc': 'lidapy.lidapy.sbcs.StructureBuildingCodelet'
 }
 
 def configure_logging(components=None, level=logging.INFO):
@@ -42,18 +43,36 @@ def configure_logging(components=None, level=logging.INFO):
             'pam': logging.INFO         # Normal logs for PAM
         })
     """
+    # Reset handler configurations to ensure we don't have duplicate handlers
+    root_logger = logging.getLogger()
+    if root_logger.handlers:
+        formatter = root_logger.handlers[0].formatter
+        for handler in root_logger.handlers:
+            handler.setLevel(logging.NOTSET)  # Set to NOTSET to respect logger levels
+    
     if components is None:
         # Set all components to the same level
         logging.getLogger('lidapy').setLevel(level)
         return
 
-    # Set specific levels for each component
+    # First, resolve component names to logger names
+    logger_levels = {}
     for component, comp_level in components.items():
         if component in LIDA_COMPONENTS:
-            logging.getLogger(LIDA_COMPONENTS[component]).setLevel(comp_level)
-            continue
+            logger_name = LIDA_COMPONENTS[component]
         else:
-            logging.getLogger(component).setLevel(comp_level)
+            logger_name = component
+        logger_levels[logger_name] = comp_level
+
+    lidapy_logger = logging.getLogger(LIDA_COMPONENTS['all'])
+    # Now apply all the logger levels
+    for logger_name  in lidapy_logger.manager.loggerDict.keys():
+        logger.propagate = True
+        logging.getLogger(logger_name).setLevel(log_level)
+        # Make sure logging propagation is enabled for proper hierarchy
+
+    # Print applied logger levels for debugging
+    logging.getLogger('lidapy').info(f"Applied logger levels: {processed_levels}")
 
 def get_logger(name):
     return logging.getLogger(f"lidapy.{name}")
