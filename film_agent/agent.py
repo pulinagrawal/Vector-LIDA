@@ -4,6 +4,10 @@ from pathlib import Path
 import time
 import os
 import glob
+import threading
+import queue
+from collections import deque
+import traceback
 
 sys.path.append(str(Path(__file__).parents[1]))
 
@@ -29,165 +33,238 @@ from lidapy.sms import MotorPlan, SensoryMotorMemory, SensoryMotorSystem
 
 from film_agent.pam import DefaultPAMMemory
 #endregion
+
+# Add custom exceptions for better error handling
+class RecordingError(Exception):
+    """Exception raised for errors in the recording process."""
+    pass
+
+class ThreadError(Exception):
+    """Exception raised for thread-related errors."""
+    pass
+
+class FrameProcessingError(Exception):
+    """Exception raised for errors in frame processing."""
+    pass
+
 #region Environment
 class FilmEnvironment(Environment):
-    """Environment that captures video from camera and records based on movement detection.
-    
-    Uses CLIP embeddings to compare current frames with reference frames of 
-    throwing/not-throwing to determine when to start and stop recording.
-    """
-    def __init__(self, render_mode=None, video_source=0, 
+    def __init__(self, video_source=0, 
                  throwing_reference_folder=None, not_throwing_reference_folder=None,
-                 output_dir="recordings"):
-        self.action_space = gym.spaces.Discrete(2)  # Two actions: record/stop
+                 output_dir="recordings", fps=30.0):
+        self.action_space = gym.spaces.Discrete(2)
         self.is_recording = False
         self.cap = cv2.VideoCapture(video_source)
-        self.reference_frame = None
         self.current_frame = None
         self.output_dir = output_dir
         self.video_writer = None
         self.current_video_path = None
-        
-        # Create output directory if it doesn't exist
+        self.fps = fps
+        self.frame_interval = 1.0 / fps
+        self.last_frame_time = 0
+
+        self.recording_thread = None
+        self.recording_queue = queue.Queue(maxsize=60)
+        self.should_record = False
+        self.thread_active = False
+        self.thread_lock = threading.Lock()
+        self.last_heartbeat_time = 0
+
         os.makedirs(output_dir, exist_ok=True)
-        
-        # Load reference frames for comparing throwing/not-throwing actions
-        self.throwing_references = []
-        self.not_throwing_references = []
-        
-        # Load all throwing reference images from folder
-        if throwing_reference_folder and os.path.isdir(throwing_reference_folder):
-            self.throwing_references = self.load_images_from_folder(throwing_reference_folder)
-            print(f"Loaded {len(self.throwing_references)} throwing reference images from {throwing_reference_folder}")
-                    
-        # Load all not-throwing reference images from folder
-        if not_throwing_reference_folder and os.path.isdir(not_throwing_reference_folder):
-            self.not_throwing_references = self.load_images_from_folder(not_throwing_reference_folder)
-            print(f"Loaded {len(self.not_throwing_references)} not-throwing reference images from {not_throwing_reference_folder}")
+
+        self.throwing_references = self.load_images_from_folder(throwing_reference_folder)
+        self.not_throwing_references = self.load_images_from_folder(not_throwing_reference_folder)
 
     def load_images_from_folder(self, folder_path):
-        """Load all images from a folder"""
-        images = []
-        # Look for common image extensions
+        if not folder_path or not os.path.isdir(folder_path):
+            return []
         image_extensions = ['*.jpg', '*.jpeg', '*.png', '*.bmp']
-        image_paths = []
-        
-        for ext in image_extensions:
-            image_paths.extend(glob.glob(os.path.join(folder_path, ext)))
-            # Also look in subdirectories
-            image_paths.extend(glob.glob(os.path.join(folder_path, '**', ext), recursive=True))
-        
-        for image_path in image_paths:
-            img = self.load_reference_image(image_path)
-            if img is not None:
-                images.append(img)
-                
-        return images
+        image_paths = [p for ext in image_extensions for p in glob.glob(os.path.join(folder_path, '**', ext), recursive=True)]
+        return [self.load_reference_image(p) for p in image_paths if self.load_reference_image(p) is not None]
 
     def load_reference_image(self, image_path):
-        """Load a reference image from a file path"""
         try:
             image = cv2.imread(image_path)
-            if image is None:
-                print(f"Error: Could not read image from {image_path}")
-                return None
-            return cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-        except Exception as e:
-            print(f"Error loading reference image {image_path}: {e}")
+            return cv2.cvtColor(image, cv2.COLOR_BGR2RGB) if image is not None else None
+        except Exception:
             return None
 
-    def start_recording(self):
-        """Initialize VideoWriter and start recording"""
-        if self.is_recording:
-            return  # Already recording
-        
-        timestamp = time.strftime("%Y%m%d-%H%M%S")
-        self.current_video_path = os.path.join(self.output_dir, f"recording_{timestamp}.avi")
-        
-        # Get dimensions of the frame
-        height, width = self.current_frame.shape[:2]
-        
-
-        fps = 30.0
-        
-        self.video_writer = cv2.VideoWriter(
-            self.current_video_path,
-            cv2.VideoWriter_fourcc(*'MJPG'),
-            fps,
-            (width, height)
-        )
-                
-        if not self.video_writer.isOpened():
-            print(f"Error: Could not create video writer for {self.current_video_path}")
-            self.video_writer = None
-            return
-        
-        self.is_recording = True
-        print(f"Started recording to {self.current_video_path}")
-        
-        # Write the current frame (first frame)
-        if self.current_frame is not None:
-            # Convert RGB to BGR for OpenCV
-            bgr_frame = cv2.cvtColor(self.current_frame, cv2.COLOR_RGB2BGR)
-            self.video_writer.write(bgr_frame)
-
     def record_frame(self):
-        """Add current frame to the video"""
-        if not self.is_recording or self.video_writer is None or self.current_frame is None:
+        if not self.is_recording or self.current_frame is None:
             return
-        
-        # Convert RGB to BGR for OpenCV
-        bgr_frame = cv2.cvtColor(self.current_frame, cv2.COLOR_RGB2BGR)
-        self.video_writer.write(bgr_frame)
+        now = time.time()
+        if now - self.last_frame_time >= self.frame_interval:
+            try:
+                self.recording_queue.put_nowait(self.current_frame.copy())
+                self.last_frame_time = now
+            except queue.Full:
+                pass
 
     def stop_recording(self):
-        """Stop recording and release VideoWriter"""
-        if not self.is_recording or self.video_writer is None:
-            return
-        
-        self.is_recording = False
-        self.video_writer.release()
-        print(f"Stopped recording. Video saved to {self.current_video_path}")
+        with self.thread_lock:
+            if not self.is_recording:
+                return
+            self.is_recording = False
+            self.should_record = False
+
+        self.recording_queue.put(None)
+
+        if self.recording_thread and self.recording_thread.is_alive():
+            self.recording_thread.join(timeout=5)
+        if self.video_writer:
+            self.video_writer.release()
+            print(f"Video saved to {self.current_video_path}")
+            self.video_writer = None
+
+    def start_recording(self):
+        with self.thread_lock:
+            if self.is_recording:
+                return
+            if self.recording_thread and self.recording_thread.is_alive():
+                self.thread_active = False
+                self.recording_thread.join()
+
+            if self.current_frame is None:
+                raise RecordingError("No current frame available to start recording")
+
+            h, w = self.current_frame.shape[:2]
+            timestamp = time.strftime("%Y%m%d-%H%M%S")
+            self.current_video_path = os.path.join(self.output_dir, f"recording_{timestamp}.avi")
+            fourcc = cv2.VideoWriter_fourcc(*'MJPG')
+            self.video_writer = cv2.VideoWriter(self.current_video_path, fourcc, self.fps, (w, h))
+
+            if not self.video_writer.isOpened():
+                raise RecordingError("Failed to open video writer")
+
+            self.should_record = True
+            self.thread_active = True
+            self.is_recording = True
+            self.last_frame_time = time.time()
+
+            with self.recording_queue.mutex:
+                self.recording_queue.queue.clear()
+
+            self.recording_thread = threading.Thread(target=self._recording_worker, daemon=True)
+            self.recording_thread.start()
+
+    def _recording_worker(self):
+        while self.thread_active:
+            with self.thread_lock:
+                self.last_heartbeat_time = time.time()
+            try:
+                frame = self.recording_queue.get(timeout=0.05)
+                if frame is None:
+                    self.recording_queue.task_done()
+                    break
+                bgr_frame = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
+                self.video_writer.write(bgr_frame)
+                self.recording_queue.task_done()
+            except queue.Empty:
+                time.sleep(0.005)
+
+        if self.video_writer:
+            self.video_writer.release()
         self.video_writer = None
+        self.thread_active = False
+
+    def close(self):
+        if self.is_recording:
+            self.stop_recording()
+        if self.cap:
+            self.cap.release()
+
+    # Explicitly implement required abstract methods
+    def receive_sensory_stimuli(self):
+        """Read frame with rate-limiting for more consistent processing"""
+        try:
+            ret, frame = self.cap.read()
+            if not ret or frame is None:
+                raise FrameProcessingError("Failed to read frame from camera")
+            
+            # Convert to RGB format
+            try:
+                self.current_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+            except Exception as e:
+                raise FrameProcessingError(f"Error converting frame: {e}")
+            
+            # If we're recording, add this frame to video queue
+            if self.is_recording and self.thread_active:
+                try:
+                    self.record_frame()
+                except Exception as e:
+                    raise RecordingError(f"Error recording frame: {e}")
+            
+            return self.current_frame
+        except Exception as e:
+            print(f"ERROR: {e}")
+            traceback.print_exc()
+            return None
 
     def run_commands(self, commands):
-        """Execute motor commands for recording control"""
-        if commands is None:
-            return
+        """Execute motor commands for recording control
         
+        This method is required by the Environment abstract base class.
+        
+        Args:
+            commands: Dictionary containing commands
+            
+        Returns:
+            Current recording state
+        """
+        if commands is None:
+            return self.is_recording
+
         if 'record' in commands:
             if commands['record'] == 0:  # Start recording
                 self.start_recording()
-            else:  # Stop recording
+            elif commands['record'] == 1:  # Stop recording
                 self.stop_recording()
-                
-        return self.is_recording
+            # If None, maintain current state
     
-    def receive_sensory_stimuli(self):
-        """Read frame from video feed and convert to RGB format"""
-        ret, frame = self.cap.read()
-        if not ret:
-            return None
-            
-        self.current_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        return self.is_recording
         
-        # If we're recording, add this frame to the video
-        if self.is_recording and self.video_writer is not None:
-            self.record_frame()
+    def step(self, action):
+        """Take a step in the environment based on the action
+        
+        This method is required by some Environment implementations.
+        
+        Args:
+            action: Action to take
             
-        return self.current_frame
-
-    def close(self):
-        """Clean up resources"""
-        if self.video_writer is not None:
-            self.video_writer.release()
-            self.video_writer = None
+        Returns:
+            Tuple of (observation, reward, done, info)
+        """
+        # Execute the action (record or not)
+        if action == 0:  # Record
+            self.start_recording()
+        elif action == 1:  # Stop recording
+            self.stop_recording()
             
-        if self.cap is not None:
-            self.cap.release()
+        # Get next observation
+        observation = self.receive_sensory_stimuli()
+        reward = 0  # No reward in this environment
+        done = observation is None  # Done if no more frames
+        info = {"is_recording": self.is_recording}
+        
+        return observation, reward, done, info
+        
+    def reset(self):
+        """Reset the environment
+        
+        This method is required by some Environment implementations.
+        
+        Returns:
+            Initial observation
+        """
+        # Stop any active recording
+        if self.is_recording:
+            self.stop_recording()
             
-        self.is_recording = False
-        return None
+        # Clear any cached state
+        self.current_frame = None
+        
+        # Get first observation
+        return self.receive_sensory_stimuli()
 #endregion
 
 
@@ -254,16 +331,9 @@ def vision_processor(frame, identifier=None):
                 image_features = vision_model.encode_image(processed_frame)
                 image_features /= image_features.norm(dim=-1, keepdim=True)
             except RuntimeError as e:
-                print(f"Error during model inference: {e}")
-                print("Trying with smaller batch...")
-                # If we hit memory issues, try processing with CPU
-                cpu_model = vision_model.to('cpu')
-                cpu_frame = processed_frame.to('cpu')
-                image_features = cpu_model.encode_image(cpu_frame)
-                image_features /= image_features.norm(dim=-1, keepdim=True)
-                # Move back to original device
-                vision_model.to(device)
-                image_features = image_features.to(device)
+                print(f"ERROR: Model inference failed: {e}")
+                traceback.print_exc()
+                raise FrameProcessingError(f"CLIP model inference error: {e}")
         
         # Create Node with features for comparison
         node = Node(content="frame_features", activation=1.0)
@@ -277,14 +347,34 @@ def vision_processor(frame, identifier=None):
         return result
         
     except Exception as e:
-        print(f"Error processing frame: {e}")
-        import traceback
+        print(f"ERROR: Frame processing failed: {e}")
         traceback.print_exc()
-        return []
+        raise FrameProcessingError(f"Vision processing error: {e}")
 
-# Define similarity function for nodes
-def similarity_function(node1, node2):
-    return node1.similarity(node2)
+# Define direct similarity function for nodes
+def direct_cosine_similarity(node1, node2):
+    """Calculate cosine similarity between two nodes directly using their features"""
+    if hasattr(node1, 'features') and hasattr(node2, 'features'):
+        try:
+            similarity = torch.nn.functional.cosine_similarity(
+                node1.features, node2.features
+            ).item()
+            return similarity
+        except Exception as e:
+            print(f"Error calculating similarity: {e}")
+            return 0.0
+    return 0.0
+
+# Replace the recursive similarity function with a direct implementation
+def similarity_function(cls, node1, node2):
+    """Class method for node similarity calculation that avoids recursion
+    
+    Args:
+        cls: The class (automatically provided when used as a class method)
+        node1: First Node object
+        node2: Second Node object
+    """
+    return direct_cosine_similarity(node1, node2)
 
 Node.similarity_function = classmethod(similarity_function)
 
@@ -295,29 +385,29 @@ pam = PerceptualAssociativeMemory(memory=DefaultPAMMemory())
 sm = SensoryMemory(sensors=sensors)
 
 def action_function(dorsal_update=None):
-    """Convert perception nodes to motor commands for recording actions"""
+    """Convert perception nodes to motor commands based on content"""
     if dorsal_update:
         for node in dorsal_update:
-            if node.content == "throwing":
-                return {"record": 0}  # Start recording
-            elif node.content == "not throwing":
-                return {"record": 1}  # Stop recording
+            # Direct check for content
+            if isinstance(node.content, str):
+                if "throwing" == node.content:
+                    print("ACTION FUNCTION: Detected throwing - starting recording")
+                    return {"record": 0}  # Start recording
+                elif "not throwing" == node.content:
+                    print("ACTION FUNCTION: Detected not throwing - stopping recording")
+                    return {"record": 1}  # Stop recording
     
-    return {"record": None}
+    return {"record": None}  # No change in recording state
 
-# Create motor plans and schemes
-mps = [
-    MotorPlan("record", action_function)
-]
-contexts = [None, 'G', 'H']
-schemes = [SchemeUnit(context=[Node(content=context, activation=1)] if context else None, action=mp) 
-           for context, mp in zip(contexts, mps)] 
+# Replace the individual action functions with a single action function that directly checks node content
+mps = [MotorPlan("record", action_function)]
 
-# Set up cognitive components
-acs = [AttentionCodelet()]
+# Create a single scheme with no context to be more direct
+schemes = [SchemeUnit(context=None, action=mps[0])]
+
 pm = ProceduralMemory(schemes=schemes)
+acs = [AttentionCodelet()]
 
-# Assemble LIDA agent
 lida_agent = {
     'sensory_system': SensorySystem(pam=pam, sensory_memory=sm),
     'csm': CurrentSituationalModel(),
@@ -326,7 +416,7 @@ lida_agent = {
     'sensory_motor_system': SensoryMotorSystem(actuators=actuators, motor_plans=mps),
 }
 
-def minimally_conscious_agent(environment, lida_agent, steps=100, similarity_threshold=0.8):
+def minimally_conscious_agent(environment, lida_agent, steps=100):
     """Run the cognitive cycle of the LIDA agent for a specified number of steps"""
     lida_agent = SimpleNamespace(**lida_agent)
     current_motor_commands = {'record': 0}
@@ -338,12 +428,16 @@ def minimally_conscious_agent(environment, lida_agent, steps=100, similarity_thr
     # Process throwing references
     print(f"Processing {len(environment.throwing_references)} throwing reference images...")
     for i, ref_img in enumerate(environment.throwing_references):
-        emb = vision_processor(ref_img, identifier=f"throwing_ref_{i}")
-        if emb:
-            throwing_embeddings.append(emb)
+        try:
+            emb = vision_processor(ref_img, identifier=f"throwing_ref_{i}")
+            if emb:
+                throwing_embeddings.append(emb)
+        except Exception as e:
+            print(f"ERROR: Failed to process reference image {i}: {e}")
+            # Continue with other reference images
     
     # Process not-throwing references
-    print(f"Processing {len(environment.not_throwing_references)} not-throwing reference images...")
+    print(f"Processing {len(environment.not_throwing_references)} not_throwing reference images...")
     for i, ref_img in enumerate(environment.not_throwing_references):
         emb = vision_processor(ref_img, identifier=f"not_throwing_ref_{i}")
         if emb:
@@ -400,13 +494,17 @@ def minimally_conscious_agent(environment, lida_agent, steps=100, similarity_thr
             associated_nodes.append(not_throwing_node)
 
             # Make decision based on which category has higher similarity
-            decision = "throwing" if throwing_similarity > not_throwing_similarity else "not throwing"
-            decision_node = Node(content=decision, activation=1.0)
+            if throwing_similarity > not_throwing_similarity:
+                decision = "throwing"
+            else:
+                decision = "not throwing"
+                
+            # Use a high activation to ensure it's considered important
+            decision_node = Node(content=decision, activation=0.99)
             associated_nodes.append(decision_node)
             
-            # Print debug info for the first few frames
-            if _ < 5:
-                print(f"Frame {_}: Throwing: {throwing_similarity:.4f}, Not-throwing: {not_throwing_similarity:.4f}, Decision: {decision}")
+            print(f"Frame {_}: Throwing: {throwing_similarity:.4f}, Not-throwing: {not_throwing_similarity:.4f}, Decision: '{decision}'")
+            print(f"Action based on decision: {'Start Recording' if decision == 'throwing' else 'Stop Recording'}")
 
         # Update current situational model with new percepts
         lida_agent.csm.run(associated_nodes)
@@ -414,30 +512,89 @@ def minimally_conscious_agent(environment, lida_agent, steps=100, similarity_thr
         # Broadcast to global workspace
         winning_coalition = lida_agent.gw.run(lida_agent.csm)
 
-        # Action selection
+        # Action selection with enhanced debugging
         if winning_coalition is not None:
+            # Fix: Check if winning_coalition is a Coalition object with nodes attribute
+            if hasattr(winning_coalition, 'nodes'):
+                print(f"Winning coalition nodes: {[node.content for node in winning_coalition.nodes if hasattr(node, 'content')]}")
+            else:
+                print(f"Winning coalition: {winning_coalition}")
+            
+            # Run action directly based on winning coalition decisions
+            motor_commands = {"record": None}  # Default: no change
+            
+            if hasattr(winning_coalition, 'nodes'):
+                for node in winning_coalition.nodes:
+                    if hasattr(node, 'content'):
+                        if node.content == "throwing":
+                            print(f"Directly starting recording based on 'throwing' decision")
+                            motor_commands = {"record": 0}
+                            break
+                        elif node.content == "not throwing":
+                            print(f"Directly stopping recording based on 'not throwing' decision")
+                            motor_commands = {"record": 1}
+                            break
+            
+            # Keep the regular behavior system as a backup
             selected_behavior = lida_agent.procedural_system.run(winning_coalition)
             if selected_behavior is not None:
-                # Execute selected actions
-                current_motor_commands = lida_agent.sensory_motor_system.run(
+                try:
+                    scheme_context = "None" if selected_behavior.scheme.context is None else [
+                        n.content for n in selected_behavior.scheme.context if hasattr(n, 'content')
+                    ]
+                    print(f"Selected behavior: context={scheme_context}, action={selected_behavior.scheme.action_stream[0].action.name}")
+                except Exception as e:
+                    print(f"Error displaying scheme context: {e}")
+                    print(f"Selected behavior: {selected_behavior}")
+                
+                behavior_commands = lida_agent.sensory_motor_system.run(
                     selected_behavior=selected_behavior, 
                     dorsal_update=associated_nodes,
                     winning_coalition=winning_coalition
                 )
-                current_motor_commands = lida_agent.sensory_motor_system.get_motor_commands()
+                behavior_commands = lida_agent.sensory_motor_system.get_motor_commands()
                 
-                # Execute recording commands
-                environment.run_commands(current_motor_commands)
+                # Only use behavior commands if they're not None
+                if behavior_commands and 'record' in behavior_commands and behavior_commands['record'] is not None:
+                    motor_commands = behavior_commands
+            
+            # Execute the determined commands
+            print(f"Final motor commands: {motor_commands}")
+            environment.run_commands(motor_commands)
 
 if __name__ == '__main__':
-    # Initialize environment with reference image folders
-    env = FilmEnvironment(
-        video_source=0,
-        throwing_reference_folder=r"C:\Users\nmdig\CVReaserch\Vector-LIDA\film_agent\frames\throwing",
-        not_throwing_reference_folder=r"C:\Users\nmdig\CVReaserch\Vector-LIDA\film_agent\frames\not_throwing",
-        output_dir=r"C:\Users\nmdig\CVReaserch\Vector-LIDA\film_agent\recordings"
-    )
+    # Initialize environment with reference image folders and reduced FPS for better playback
     try:
-        minimally_conscious_agent(env, lida_agent, steps=100)
-    finally:
-        env.close()
+        env = FilmEnvironment(
+            video_source=0,
+            throwing_reference_folder=r"C:\Users\nmdig\CVReaserch\Vector-LIDA\film_agent\frames\throwing",
+            not_throwing_reference_folder=r"C:\Users\nmdig\CVReaserch\Vector-LIDA\film_agent\frames\not_throwing",
+            output_dir=r"C:\Users\nmdig\CVReaserch\Vector-LIDA\film_agent\recordings",
+            fps=15.0  # Lower fps for more natural playback speed
+        )
+        
+        try:
+            minimally_conscious_agent(env, lida_agent, steps=1000)
+        except KeyboardInterrupt:
+            print("Interrupted by user, shutting down...")
+        except Exception as e:
+            print(f"ERROR: Agent execution failed: {e}")
+            traceback.print_exc()
+        finally:
+            print("Cleaning up resources...")
+            # Force immediate cleanup without waiting for queue
+            with env.thread_lock:
+                env.thread_active = False
+                env.should_record = False
+                env.is_recording = False
+                
+                # Force clear any pending queue items
+                with env.recording_queue.mutex:
+                    env.recording_queue.queue.clear()
+                    
+            # Now close properly
+            env.close()
+            print("Done!")
+    except Exception as e:
+        print(f"ERROR: Environment initialization failed: {e}")
+        traceback.print_exc()

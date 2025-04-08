@@ -16,3 +16,8 @@ Intial Setup
 	Impovement Attempts
 		- Including multiple reference frames and taking the average
 		
+	First Results
+		- It records whenever I am in the frame. 
+		- It does not record when the frame is empty ever though.
+		- Choppy video Results	
+			- Attempting to multi-thread the video recording to smooth out the recording
