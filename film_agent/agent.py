@@ -8,6 +8,7 @@ import threading
 import queue
 from collections import deque
 import traceback
+import platform
 
 sys.path.append(str(Path(__file__).parents[1]))
 
@@ -33,6 +34,20 @@ from lidapy.sms import MotorPlan, SensoryMotorMemory, SensoryMotorSystem
 
 from film_agent.pam import DefaultPAMMemory
 #endregion
+
+# Add color formatting for error messages
+def print_error(message):
+    """Print error message in red color"""
+    # ANSI color codes for red text
+    RED = '\033[91m'
+    RESET = '\033[0m'
+    
+    # Enable ANSI color codes on Windows
+    if platform.system() == 'Windows':
+        os.system('')  # Enables ANSI escape sequences in Windows terminal
+    
+    # Print the error message in red
+    print(f"{RED}ERROR: {message}{RESET}")
 
 # Add custom exceptions for better error handling
 class RecordingError(Exception):
@@ -194,9 +209,9 @@ class FilmEnvironment(Environment):
                 except Exception as e:
                     raise RecordingError(f"Error recording frame: {e}")
             
-            return self.current_frame
+            return self.current_frame # TODO attach to a sensor
         except Exception as e:
-            print(f"ERROR: {e}")
+            print_error(f"{e}")
             traceback.print_exc()
             return None
 
@@ -290,6 +305,7 @@ def compute_average_embedding(embeddings_list):
     # Stack all embeddings and compute the mean
     stacked = torch.cat([emb[0].features for emb in embeddings_list], dim=0)
     avg_embedding = torch.mean(stacked, dim=0, keepdim=True)
+
     # Normalize the average embedding
     avg_embedding /= avg_embedding.norm(dim=-1, keepdim=True)
     
@@ -331,7 +347,7 @@ def vision_processor(frame, identifier=None):
                 image_features = vision_model.encode_image(processed_frame)
                 image_features /= image_features.norm(dim=-1, keepdim=True)
             except RuntimeError as e:
-                print(f"ERROR: Model inference failed: {e}")
+                print_error(f"Model inference failed: {e}")
                 traceback.print_exc()
                 raise FrameProcessingError(f"CLIP model inference error: {e}")
         
@@ -347,7 +363,7 @@ def vision_processor(frame, identifier=None):
         return result
         
     except Exception as e:
-        print(f"ERROR: Frame processing failed: {e}")
+        print_error(f"Frame processing failed: {e}")
         traceback.print_exc()
         raise FrameProcessingError(f"Vision processing error: {e}")
 
@@ -419,7 +435,6 @@ lida_agent = {
 def minimally_conscious_agent(environment, lida_agent, steps=100):
     """Run the cognitive cycle of the LIDA agent for a specified number of steps"""
     lida_agent = SimpleNamespace(**lida_agent)
-    current_motor_commands = {'record': 0}
     
     # Process all reference images and compute category averages
     throwing_embeddings = []
@@ -433,7 +448,7 @@ def minimally_conscious_agent(environment, lida_agent, steps=100):
             if emb:
                 throwing_embeddings.append(emb)
         except Exception as e:
-            print(f"ERROR: Failed to process reference image {i}: {e}")
+            print_error(f"Failed to process reference image {i}: {e}")
             # Continue with other reference images
     
     # Process not-throwing references
@@ -512,7 +527,7 @@ def minimally_conscious_agent(environment, lida_agent, steps=100):
         # Broadcast to global workspace
         winning_coalition = lida_agent.gw.run(lida_agent.csm)
 
-        # Action selection with enhanced debugging
+        # Action selection 
         if winning_coalition is not None:
             # Fix: Check if winning_coalition is a Coalition object with nodes attribute
             if hasattr(winning_coalition, 'nodes'):
@@ -570,7 +585,7 @@ if __name__ == '__main__':
             throwing_reference_folder=r"C:\Users\nmdig\CVReaserch\Vector-LIDA\film_agent\frames\throwing",
             not_throwing_reference_folder=r"C:\Users\nmdig\CVReaserch\Vector-LIDA\film_agent\frames\not_throwing",
             output_dir=r"C:\Users\nmdig\CVReaserch\Vector-LIDA\film_agent\recordings",
-            fps=15.0  # Lower fps for more natural playback speed
+            fps=30
         )
         
         try:
@@ -578,7 +593,7 @@ if __name__ == '__main__':
         except KeyboardInterrupt:
             print("Interrupted by user, shutting down...")
         except Exception as e:
-            print(f"ERROR: Agent execution failed: {e}")
+            print_error(f"Agent execution failed: {e}")
             traceback.print_exc()
         finally:
             print("Cleaning up resources...")
@@ -596,5 +611,5 @@ if __name__ == '__main__':
             env.close()
             print("Done!")
     except Exception as e:
-        print(f"ERROR: Environment initialization failed: {e}")
+        print_error(f"Environment initialization failed: {e}")
         traceback.print_exc()

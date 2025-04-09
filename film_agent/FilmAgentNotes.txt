@@ -2,7 +2,6 @@ CV Research Rough notes/ Ideas
 
 Intial Setup
 	- Take Prof. A's Enviromnment and modifying to fit the CV problem more closly
-	- Need to run through written code with Prof. to sanity check
 	- Will need some arbitrary frames from non-examples of throwing
 	- Using cv2 for camera managment
 	- Using apple openclip to handle the embedding of frames
@@ -21,3 +20,7 @@ Intial Setup
 		- It does not record when the frame is empty ever though.
 		- Choppy video Results	
 			- Attempting to multi-thread the video recording to smooth out the recording
+
+	Multi-threading works now to record a little better
+	Still thinks throwing is the activity if whenever I am in frame
+	Even when it's just my still head
