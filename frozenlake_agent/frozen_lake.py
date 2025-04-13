@@ -72,12 +72,12 @@ class FrozenLakeEnvironment(Environment):
 
     def update_position(self, state):
         #updating the agents position based on the action taken
-        desc = self.env.unwrapped.desc
+        desc = self.env.unwrapped.desc # type: ignore
         self.row, self.col = state // desc.shape[1], state % desc.shape[1]
 
     def get_surrounding_tiles(self, row, col):
         #gathering information about the tiles surrounding the agent
-        desc = self.env.unwrapped.desc
+        desc = self.env.unwrapped.desc # type: ignore
         surrounding_tiles = {}
         directions = {
             "up":(max(row - 1, 0), col),
