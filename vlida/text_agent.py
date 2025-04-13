@@ -53,7 +53,6 @@ import numpy as np
 vNode.similarity_function = lambda x,y: np.dot(x.vector, y.vector)
 
 # Initialize the LIDA agent
-@feature_detector
 def text_detector(sensory_stimuli):
     # Process the input text and create a vNode
     text = sensory_stimuli['input_text']

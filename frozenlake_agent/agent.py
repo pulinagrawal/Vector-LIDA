@@ -19,6 +19,11 @@ from lidapy.sms import MotorPlan, SensoryMotorMemory, SensoryMotorSystem
 from frozenlake_agent.pam import DefaultPAMMemory
 from frozen_lake import FrozenLakeEnvironment
 
+# The edit distance algorithm computes the minimal number of insertions, deletions, or substitutions 
+# required to transform one vision string into another. For example, for 'FHFF' and 'FHHH', an edit 
+# distance of 1 indicates that the visions are very similar. This is particularly useful in the Frozen 
+# Lake Environment for assessing how alike two states are, given that holes are represented by 'H' and 
+# goals by 'G'.
 
 def editDistRec(s1, s2, m, n):
 
@@ -57,17 +62,18 @@ def similarity_function(cls, one_node, other_node):
     edit_distance = editDistance(content1, content2)
     return 1./edit_distance
 
-Node.similarity_function = classmethod(similarity_function)
+Node.similarity_function = classmethod(similarity_function) # type: ignore
 
-vision_processor = lambda x: Node(content=x, activation=1)
-reward_processor = lambda x: Node(content=x, activation=1)
+vision_processor = lambda x: Node(content=x['vision_sensor'], activation=1)
+reward_processor = lambda x: Node(content=x['reward'], activation=1)
 sensors = [
-    {"name": "vision_sensor", "modality": "image", "processor": vision_processor},
-    {"name": "reward", "modality": "internal_state", "processor": reward_processor}
+    {"name": "vision_sensor", "modality": "image"},
+    {"name": "reward", "modality": "internal_state"}
 ]
+feature_detectors = [vision_processor]
 actuators = [{"name": "move"}]
 pam = PerceptualAssociativeMemory(memory=DefaultPAMMemory())
-sm = SensoryMemory(sensors=sensors)
+sm = SensoryMemory(sensors=sensors, feature_detectors=feature_detectors)
 # single expression infinite random number iterator
 
 actions = ['left', 'down', 'right', 'up']
@@ -89,6 +95,7 @@ def seek_goal(dorsal_update):
     move = random.choice(goal_indices)  # Choose a move from the available indices
     return {'move': move}
 
+# Next three lines allows us to define a mapping between contexts and schemes
 mps = [MotorPlan('random_move', random_move),
        MotorPlan('seek_goal', seek_goal),
        MotorPlan('avoid_hole', avoid_hole)]
@@ -100,11 +107,10 @@ schemes = [SchemeUnit(context=[Node(content=context, activation=1)]
            for context, mp in zip(contexts, mps)] 
 
 acs = [AttentionCodelet()]
-pm = ProceduralMemory(schemes=schemes)  # Initialize with your motor plans
-# pm = ProceduralMemory(motor_plans=mps)  # Initialize with your motor plans
+pm = ProceduralMemory(schemes=schemes)  # type: ignore
 
 lida_agent = {
-    'sensory_system': SensorySystem(pam=pam, sensory_memory=sm),  # Initialize with your sensory system
+    'sensory_system': SensorySystem(pam=pam, sensory_memory=sm),  
     'csm': CurrentSituationalModel(),
     'gw': GlobalWorkspace(attention_codelets=acs, broadcast_receivers=[pm]),
     'procedural_system': ProceduralSystem(procedural_memory=pm),
