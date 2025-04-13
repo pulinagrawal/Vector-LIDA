@@ -1,4 +1,3 @@
-from attr import assoc
 from lidapy.memory import Memory
 
 class DefaultPAMMemory(Memory):

@@ -1,0 +1,26 @@
+CV Research Rough notes/ Ideas
+
+Intial Setup
+	- Take Prof. A's Enviromnment and modifying to fit the CV problem more closly
+	- Will need some arbitrary frames from non-examples of throwing
+	- Using cv2 for camera managment
+	- Using apple openclip to handle the embedding of frames
+	- Have a collection of throwing frames
+	- Comparing the live frames similarity to the throwing and not throwing frame in order to make the decision
+	- Scheme seems to be choosing record but is not recording
+	Issue
+		- When I am in frame it thinks it is throwing
+		- If I cover the camera then it senses as not throwing
+		- Not "learning" or imporoving, it is purely comparing to the "known" frames
+	Impovement Attempts
+		- Including multiple reference frames and taking the average
+		
+	First Results
+		- It records whenever I am in the frame. 
+		- It does not record when the frame is empty ever though.
+		- Choppy video Results	
+			- Attempting to multi-thread the video recording to smooth out the recording
+
+	Multi-threading works now to record a little better
+	Still thinks throwing is the activity if whenever I am in frame
+	Even when it's just my still head

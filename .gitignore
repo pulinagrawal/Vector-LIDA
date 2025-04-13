@@ -3,3 +3,6 @@ __pycache__/
 
 # vscode files
 .vscode/
+
+# recordings folder
+recordings/
