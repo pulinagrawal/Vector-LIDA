@@ -2,7 +2,6 @@
 import sys
 from pathlib import Path
 import time
-import glob
 import threading
 import queue
 import traceback
@@ -19,7 +18,7 @@ from PIL import Image
 
 # Import LIDA components
 from lidapy.utils import Node
-from lidapy.agent import Environment 
+from lidapy.agent import Environment, minimally_conscious_agent
 from lidapy.acs import AttentionCodelet
 from lidapy.csm import CurrentSituationalModel
 from lidapy.pam import PerceptualAssociativeMemory
@@ -61,9 +60,10 @@ class FrameProcessingError(Exception):
 #region Environment
 class FilmEnvironment(Environment):
     def __init__(self, video_source=0, 
-                 throwing_reference_folder=None, not_throwing_reference_folder=None,
+                 reference_image_folders=None,
                  output_dir="recordings", fps=30.0, 
                  display_frames=True, display_frequency=1):
+        super(FilmEnvironment, self).__init__()
         self.action_space = gym.spaces.Discrete(2)
         self.is_recording = False
         self.cap = cv2.VideoCapture(video_source)
@@ -95,18 +95,31 @@ class FilmEnvironment(Environment):
         # Create output directory using pathlib
         Path(output_dir).mkdir(exist_ok=True)
 
-        self.throwing_references = self.load_images_from_folder(throwing_reference_folder)
-        self.not_throwing_references = self.load_images_from_folder(not_throwing_reference_folder)
+        if reference_image_folders is not None:
+            self.reference_images = {folder: self.load_images_from_folder(folder) for folder in reference_image_folders}
+
+    def collect_embeddings(self, folder):
+        # Process throwing references
+        embeddings = []
+        print(f"Processing {len(self.reference_images[folder])} throwing reference images...")
+        for i, ref_img in enumerate(self.reference_images[folder]):
+            try:
+                emb = vision_processor(ref_img, identifier=f"throwing_ref_{i}")
+                if emb:
+                    embeddings.append(emb)
+            except Exception as e:
+                print_error(f"Failed to process reference image {i}: {e}")
+                # Continue with other reference images
+        
+        return embeddings
 
     def load_images_from_folder(self, folder_path):
         if not folder_path:
             raise ValueError("Folder path cannot be None")
-            return []
         
-        folder = Path(folder_path)
+        folder = Path('film_agent/frames')/folder_path
         if not folder.is_dir():
             raise ValueError("Folder path is not a directory")
-            return []
             
         image_extensions = ['*.jpg', '*.jpeg', '*.png', '*.bmp']
         image_paths = []
@@ -115,7 +128,6 @@ class FilmEnvironment(Environment):
             
         if len(image_paths) == 0:
             raise ValueError(f"No images found in folder: {folder_path}")
-            return []
 
         return [self.load_reference_image(p) for p in image_paths if self.load_reference_image(p) is not None]
 
@@ -371,11 +383,7 @@ def compute_average_embedding(embeddings_list):
     # Normalize the average embedding
     avg_embedding /= avg_embedding.norm(dim=-1, keepdim=True)
     
-    # Create a node to hold the average embedding
-    avg_node = Node(content="average_features", activation=1.0)
-    avg_node.features = avg_embedding
-    
-    return [avg_node]
+    return avg_embedding
 
 def vision_processor(frame, identifier=None):
     """Process a video frame using CLIP to extract semantic features
@@ -457,44 +465,44 @@ def similarity_function(cls, node1, node2):
 Node.similarity_function = classmethod(similarity_function)
 
 # Set up LIDA components
-sensors = [{"name": "vision_sensor", "modality": "image", "processor": vision_processor}]
+sensors = [{"name": "vision_sensor", "modality": "image"}]
+feature_detectors = [vision_processor]
 actuators = [{"name": "record", "modality": "video", "processor": None}]
 pam = PerceptualAssociativeMemory(memory=DefaultPAMMemory())
-sm = SensoryMemory(sensors=sensors)
+sm = SensoryMemory(sensors=sensors, feature_detectors=feature_detectors)
 
-def action_function(dorsal_update=None):
+def record_function(dorsal_update=None):
     """Convert perception nodes to motor commands based on content"""
-    if dorsal_update:
-        for node in dorsal_update:
-            # Direct check for content
-            if isinstance(node.content, str):
-                if "throwing" == node.content:
-                    print("ACTION FUNCTION: Detected throwing - starting recording")
-                    return {"record": 0}  # Start recording
-                elif "not throwing" == node.content:
-                    print("ACTION FUNCTION: Detected not throwing - stopping recording")
-                    return {"record": 1}  # Stop recording
-    
-    return {"record": None}  # No change in recording state
+    return {"record": 0}  # start recording
 
+def stop_function(dorsal_update=None):
+    """Convert perception nodes to motor commands based on content"""
+    return {"record": 1}  # stop recording
+    
 # Replace the individual action functions with a single action function that directly checks node content
-mps = [MotorPlan("record", action_function)]
+mps = [MotorPlan("record", record_function), 
+       MotorPlan("stop", stop_function)
+      ]  
 
 # Create a single scheme with no context to be more direct
-schemes = [SchemeUnit(context=None, action=mps[0])]
+throwing_ref_node = Node(content="throwing", activation=1.0)
+schemes = [SchemeUnit(context=None, action=mps[1]), 
+           SchemeUnit(context=[throwing_ref_node], action=mps[0])
+          ]
 
 pm = ProceduralMemory(schemes=schemes)
 acs = [AttentionCodelet()]
 
 lida_agent = {
-    'sensory_system': SensorySystem(pam=pam, sensory_memory=sm),
-    'csm': CurrentSituationalModel(),
-    'gw': GlobalWorkspace(attention_codelets=acs, broadcast_receivers=[pm]),
-    'procedural_system': ProceduralSystem(procedural_memory=pm),
-    'sensory_motor_system': SensoryMotorSystem(actuators=actuators, motor_plans=mps),
+'sensory_system': SensorySystem(pam=pam, sensory_memory=sm),
+'csm': CurrentSituationalModel(),
+'gw': GlobalWorkspace(attention_codelets=acs, broadcast_receivers=[pm]),
+'procedural_system': ProceduralSystem(procedural_memory=pm),
+'sensory_motor_system': SensoryMotorSystem(actuators=actuators, motor_plans=mps),
 }
 
-def minimally_conscious_agent(environment, lida_agent, steps=100):
+
+def minimally_conscious_agent_nathan(environment, lida_agent, steps=100):
     """Run the cognitive cycle of the LIDA agent for a specified number of steps"""
     lida_agent = SimpleNamespace(**lida_agent)
     
@@ -502,23 +510,6 @@ def minimally_conscious_agent(environment, lida_agent, steps=100):
     throwing_embeddings = []
     not_throwing_embeddings = []
     
-    # Process throwing references
-    print(f"Processing {len(environment.throwing_references)} throwing reference images...")
-    for i, ref_img in enumerate(environment.throwing_references):
-        try:
-            emb = vision_processor(ref_img, identifier=f"throwing_ref_{i}")
-            if emb:
-                throwing_embeddings.append(emb)
-        except Exception as e:
-            print_error(f"Failed to process reference image {i}: {e}")
-            # Continue with other reference images
-    
-    # Process not-throwing references
-    print(f"Processing {len(environment.not_throwing_references)} not_throwing reference images...")
-    for i, ref_img in enumerate(environment.not_throwing_references):
-        emb = vision_processor(ref_img, identifier=f"not_throwing_ref_{i}")
-        if emb:
-            not_throwing_embeddings.append(emb)
     
     # Compute average embeddings for each category
     if throwing_embeddings:
@@ -644,12 +635,12 @@ if __name__ == '__main__':
     try:
         env = FilmEnvironment(
             video_source=0,
-            throwing_reference_folder="film_agent/frames/pulin",
-            not_throwing_reference_folder="film_agent/frames/without_pulin",
+            reference_image_folders=["pulin", "without_pulin"],
             output_dir="film_agent/recordings",
             fps=30
         )
         
+        throwing_ref_node.features = compute_average_embedding(env.collect_embeddings("pulin"))
         try:
             minimally_conscious_agent(env, lida_agent, steps=1000)
         except KeyboardInterrupt:
