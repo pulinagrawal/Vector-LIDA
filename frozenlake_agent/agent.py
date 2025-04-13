@@ -59,15 +59,16 @@ def similarity_function(cls, one_node, other_node):
 
 Node.similarity_function = classmethod(similarity_function)
 
-vision_processor = lambda x: Node(content=x, activation=1)
-reward_processor = lambda x: Node(content=x, activation=1)
+vision_processor = lambda x: Node(content=x['vision_sensor'], activation=1)
+reward_processor = lambda x: Node(content=x['reward'], activation=1)
 sensors = [
-    {"name": "vision_sensor", "modality": "image", "processor": vision_processor},
-    {"name": "reward", "modality": "internal_state", "processor": reward_processor}
+    {"name": "vision_sensor", "modality": "image"},
+    {"name": "reward", "modality": "internal_state"}
 ]
+feature_detectors = [vision_processor]
 actuators = [{"name": "move"}]
 pam = PerceptualAssociativeMemory(memory=DefaultPAMMemory())
-sm = SensoryMemory(sensors=sensors)
+sm = SensoryMemory(sensors=sensors, feature_detectors=feature_detectors)
 # single expression infinite random number iterator
 
 actions = ['left', 'down', 'right', 'up']

@@ -68,11 +68,10 @@ def configure_logging(components=None, level=logging.INFO):
     # Now apply all the logger levels
     for logger_name  in lidapy_logger.manager.loggerDict.keys():
         logger.propagate = True
-        logging.getLogger(logger_name).setLevel(log_level)
+        if logger_name in logger_levels:
+            logging.getLogger(logger_name).setLevel(logger_levels[logger_name])
         # Make sure logging propagation is enabled for proper hierarchy
 
-    # Print applied logger levels for debugging
-    logging.getLogger('lidapy').info(f"Applied logger levels: {processed_levels}")
 
 def get_logger(name):
     return logging.getLogger(f"lidapy.{name}")
