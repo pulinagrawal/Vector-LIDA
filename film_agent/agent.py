@@ -486,7 +486,8 @@ mps = [MotorPlan("record", record_function),
 
 # Create a single scheme with no context to be more direct
 throwing_ref_node = Node(content="throwing", activation=1.0)
-schemes = [SchemeUnit(context=None, action=mps[1]), 
+other_ref_node = Node(content="not throwing", activation=1.0)
+schemes = [SchemeUnit(context=[other_ref_node], action=mps[1]), 
            SchemeUnit(context=[throwing_ref_node], action=mps[0])
           ]
 
@@ -641,6 +642,7 @@ if __name__ == '__main__':
         )
         
         throwing_ref_node.features = compute_average_embedding(env.collect_embeddings("pulin"))
+        other_ref_node.features = compute_average_embedding(env.collect_embeddings("without_pulin"))
         try:
             minimally_conscious_agent(env, lida_agent, steps=1000)
         except KeyboardInterrupt:
