@@ -7,12 +7,12 @@ import random
 from types import SimpleNamespace
 
 from lidapy.utils import Node
-from lidapy.agent import Environment 
 from lidapy.acs import AttentionCodelet
 from lidapy.csm import CurrentSituationalModel
 from lidapy.pam import PerceptualAssociativeMemory
 from lidapy.global_workspace import GlobalWorkspace
 from lidapy.ss import SensoryMemory, SensorySystem
+from lidapy.agent import minimally_conscious_agent
 from lidapy.ps import ProceduralMemory, ProceduralSystem, SchemeUnit
 from lidapy.sms import MotorPlan, SensoryMotorMemory, SensoryMotorSystem
 
@@ -117,62 +117,9 @@ lida_agent = {
     'sensory_motor_system': SensoryMotorSystem(actuators=actuators, motor_plans=mps),
 }
 
-def run_reactive_lida(environment, lida_agent, steps=100):
-
-    if not isinstance(environment, Environment):
-        raise ValueError("environment must be an instance of Environment class")
-
-    lida_agent = SimpleNamespace(**lida_agent)
-    current_motor_commands = {'move': 0}
-    current_stimuli = environment.execute(current_motor_commands)
-    for _ in range(steps):
-        current_stimuli = environment.execute(motor_commands=current_motor_commands)
-
-        associated_nodes = lida_agent.sensory_system.process(current_stimuli)
-        lida_agent.sensory_motor_system.dorsal_stream_update(associated_nodes)
-
-        current_motor_commands = lida_agent.sensory_motor_system.run(selected_behavior=None)
-        current_motor_commands = lida_agent.sensory_motor_system.get_motor_commands()
-
-def run_alarm_lida(environment, lida_agent, steps=100):
-
-    if not isinstance(environment, Environment):
-        raise ValueError("environment must be an instance of Environment class")
-
-    lida_agent = SimpleNamespace(**lida_agent)
-    current_motor_commands = {'move': 0}
-    current_stimuli = environment.execute(current_motor_commands)
-    from lidapy.global_workspace import Coalition
-    for _ in range(steps):
-        current_stimuli = environment.execute(motor_commands=current_motor_commands)
-
-        associated_nodes = lida_agent.sensory_system.process(current_stimuli)
-        # lida_agent.sensory_motor_system.dorsal_stream_update(associated_nodes)
-
-        selected_motor_plan = lida_agent.procedural_system.run(Coalition(associated_nodes, AttentionCodelet()))
-
-        current_motor_commands = lida_agent.sensory_motor_system.run(selected_motor_plan=selected_motor_plan,
-                                                             dorsal_update=associated_nodes)
-        current_motor_commands = lida_agent.sensory_motor_system.get_motor_commands()
-
-def minimally_conscious_agent(environment, lida_agent, steps=100):
-    lida_agent = SimpleNamespace(**lida_agent)
-    current_motor_commands = {'move': 0}
-    current_stimuli = environment.execute(current_motor_commands)
-    for _ in range(steps):
-        current_stimuli = environment.execute(motor_commands=current_motor_commands)
-        associated_nodes = lida_agent.sensory_system.process(current_stimuli)
-
-        lida_agent.csm.run(associated_nodes)
-        winning_coalition = lida_agent.gw.run(lida_agent.csm)
-
-        selected_behavior = lida_agent.procedural_system.run(winning_coalition)
-        current_motor_commands = lida_agent.sensory_motor_system.run(selected_behavior=selected_behavior, 
-                                                                     dorsal_update=associated_nodes,
-                                                                     winning_coalition=winning_coalition)
-        current_motor_commands = lida_agent.sensory_motor_system.get_motor_commands()
-
-
 if __name__ == '__main__':
     env = FrozenLakeEnvironment()
+    # Add logging capability to the environment
+    # import logging
+    # env.logger = logging.getLogger('FrozenLakeEnvironment')
     minimally_conscious_agent(env, lida_agent, steps=100)

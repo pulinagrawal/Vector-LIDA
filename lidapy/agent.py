@@ -59,7 +59,7 @@ class Environment(ABC):
 
     def execute(self, motor_commands):
         if not motor_commands:
-            self.logger.warn("No motor commands provided to execute.")
+            self.logger.warning("No motor commands provided to execute.")
 
         if motor_commands:
             if len(motor_commands):
@@ -119,6 +119,21 @@ def run_alarm_lida(environment, lida_agent, steps=100):
         )
         motor_commands = lida_agent.sensory_motor_system.get_motor_commands()
 
+def minimally_conscious_agent(environment, lida_agent, steps=100):
+    lida_agent = SimpleNamespace(**lida_agent)
+    current_motor_commands = None
+    for _ in range(steps):
+        current_stimuli = environment.execute(motor_commands=current_motor_commands)
+        associated_nodes = lida_agent.sensory_system.process(current_stimuli)
+
+        lida_agent.csm.run(associated_nodes)
+        winning_coalition = lida_agent.gw.run(lida_agent.csm)
+
+        selected_behavior = lida_agent.procedural_system.run(winning_coalition)
+        current_motor_commands = lida_agent.sensory_motor_system.run(selected_behavior=selected_behavior, 
+                                                                     dorsal_update=associated_nodes,
+                                                                     winning_coalition=winning_coalition)
+        current_motor_commands = lida_agent.sensory_motor_system.get_motor_commands()
 
 def run_lida(environment, lida_agent, steps=100):
     if not isinstance(environment, Environment):

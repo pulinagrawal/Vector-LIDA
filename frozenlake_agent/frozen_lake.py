@@ -11,6 +11,7 @@ class FrozenLakeEnvironment(Environment):
     col = 0     #Data to hold the current column the agent occupies
     row = 0     # Data to hold the current row the agent occupies
     def __init__(self, render_mode="human", size=8):
+        super(FrozenLakeEnvironment, self).__init__()
     #def __init__(self):
         #generating the frozen lake environment
         self.env = gym.make(
@@ -22,7 +23,6 @@ class FrozenLakeEnvironment(Environment):
 
         self.action_space = self.env.action_space  # action_space attribute
         self._step_out = None
-        self.start = True
         #self.col = 0 #Agents column position
         #self.row = 0 #Agents row position
 
@@ -30,31 +30,28 @@ class FrozenLakeEnvironment(Environment):
     def reset(self):
         #interacting with the environment by using Reset()
         state, info = self.env.reset()
+        done = False
+        truncated = False
         self.col, self.row = 0, 0 #Assuming the agent is started at (0,0)
         surrounding_tiles = self.get_surrounding_tiles(self.row, self.col)
-        return state, info, surrounding_tiles, self.col, self.row
+        return state, info, done, truncated, info, surrounding_tiles
 
     # perform an action in environment:
     def step(self, action, render=True):
-        #perform and update
         if render:
             self.render()
-        state, reward, done, truncated, info = self.env.step(action)
+        state, reward, done, truncated, info = self.env.step(action if action else 0) # type: ignore
         self.update_position(state) #updating the agents position based on the action
         surrounding_tiles = self.get_surrounding_tiles(self.row, self.col)
         return state, reward, done, truncated, info, surrounding_tiles     # action chosen by the agent
-        # ^returns state, reward, done, truncated, info
 
     def run_commands(self, motor_commands):    
-        if self.start:
-            self.reset()
-            self.start = False
-        action = motor_commands['move'] if len(motor_commands) > 0 else 0
+        action = motor_commands['move']
         self._step_out = self.step(action)
     
     def receive_sensory_stimuli(self):
         if self._step_out is None:
-            return {}
+            self._step_out = self.reset()
         state, reward, done, truncated, info, surrounding_tiles = self._step_out
         order = ['left', 'down', 'right', 'up']
         stimuli = {'vision_sensor': ''.join([surrounding_tiles[x] for x in order]),
