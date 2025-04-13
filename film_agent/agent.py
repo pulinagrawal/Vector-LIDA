@@ -2,21 +2,17 @@
 import sys
 from pathlib import Path
 import time
-import os
 import glob
 import threading
 import queue
-from collections import deque
 import traceback
 import platform
 
 sys.path.append(str(Path(__file__).parents[1]))
 
-import random
 import gymnasium as gym
 from types import SimpleNamespace
 import cv2
-import numpy as np
 import open_clip
 import torch
 from PIL import Image
@@ -66,7 +62,8 @@ class FrameProcessingError(Exception):
 class FilmEnvironment(Environment):
     def __init__(self, video_source=0, 
                  throwing_reference_folder=None, not_throwing_reference_folder=None,
-                 output_dir="recordings", fps=30.0):
+                 output_dir="recordings", fps=30.0, 
+                 display_frames=True, display_frequency=1):
         self.action_space = gym.spaces.Discrete(2)
         self.is_recording = False
         self.cap = cv2.VideoCapture(video_source)
@@ -77,6 +74,16 @@ class FilmEnvironment(Environment):
         self.fps = fps
         self.frame_interval = 1.0 / fps
         self.last_frame_time = 0
+        
+        # Add parameters for frame display
+        self.display_frames = display_frames
+        self.display_frequency = display_frequency
+        self.frame_count = 0
+        self.window_name = "Film Environment"
+        
+        if self.display_frames:
+            cv2.namedWindow(self.window_name, cv2.WINDOW_NORMAL)
+            cv2.resizeWindow(self.window_name, 800, 600)
 
         self.recording_thread = None
         self.recording_queue = queue.Queue(maxsize=60)
@@ -85,21 +92,36 @@ class FilmEnvironment(Environment):
         self.thread_lock = threading.Lock()
         self.last_heartbeat_time = 0
 
-        os.makedirs(output_dir, exist_ok=True)
+        # Create output directory using pathlib
+        Path(output_dir).mkdir(exist_ok=True)
 
         self.throwing_references = self.load_images_from_folder(throwing_reference_folder)
         self.not_throwing_references = self.load_images_from_folder(not_throwing_reference_folder)
 
     def load_images_from_folder(self, folder_path):
-        if not folder_path or not os.path.isdir(folder_path):
+        if not folder_path:
+            raise ValueError("Folder path cannot be None")
             return []
+        
+        folder = Path(folder_path)
+        if not folder.is_dir():
+            raise ValueError("Folder path is not a directory")
+            return []
+            
         image_extensions = ['*.jpg', '*.jpeg', '*.png', '*.bmp']
-        image_paths = [p for ext in image_extensions for p in glob.glob(os.path.join(folder_path, '**', ext), recursive=True)]
+        image_paths = []
+        for ext in image_extensions:
+            image_paths.extend(list(folder.glob(f"**/{ext}")))
+            
+        if len(image_paths) == 0:
+            raise ValueError(f"No images found in folder: {folder_path}")
+            return []
+
         return [self.load_reference_image(p) for p in image_paths if self.load_reference_image(p) is not None]
 
     def load_reference_image(self, image_path):
         try:
-            image = cv2.imread(image_path)
+            image = cv2.imread(str(image_path))
             return cv2.cvtColor(image, cv2.COLOR_BGR2RGB) if image is not None else None
         except Exception:
             return None
@@ -144,7 +166,7 @@ class FilmEnvironment(Environment):
 
             h, w = self.current_frame.shape[:2]
             timestamp = time.strftime("%Y%m%d-%H%M%S")
-            self.current_video_path = os.path.join(self.output_dir, f"recording_{timestamp}.avi")
+            self.current_video_path = str(Path(self.output_dir) / f"recording_{timestamp}.avi")
             fourcc = cv2.VideoWriter_fourcc(*'MJPG')
             self.video_writer = cv2.VideoWriter(self.current_video_path, fourcc, self.fps, (w, h))
 
@@ -187,6 +209,10 @@ class FilmEnvironment(Environment):
             self.stop_recording()
         if self.cap:
             self.cap.release()
+        
+        # Also close the display window if it exists
+        if self.display_frames:
+            cv2.destroyWindow(self.window_name)
 
     # Explicitly implement required abstract methods
     def receive_sensory_stimuli(self):
@@ -208,6 +234,42 @@ class FilmEnvironment(Environment):
                     self.record_frame()
                 except Exception as e:
                     raise RecordingError(f"Error recording frame: {e}")
+            
+            # Display frame with recording indicator if enabled
+            if self.display_frames and (self.frame_count % self.display_frequency == 0):
+                # Create a copy of the frame for display (BGR format for OpenCV)
+                display_frame = cv2.cvtColor(self.current_frame.copy(), cv2.COLOR_RGB2BGR)
+                
+                # Add timestamp
+                timestamp = time.strftime("%Y-%m-%d %H:%M:%S")
+                cv2.putText(display_frame, timestamp, (10, 30), 
+                            cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 0), 2)
+                cv2.putText(display_frame, timestamp, (10, 30), 
+                            cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 255), 1)
+                
+                # Add frame counter
+                cv2.putText(display_frame, f"Frame: {self.frame_count}", (10, 60), 
+                            cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 0), 2)
+                cv2.putText(display_frame, f"Frame: {self.frame_count}", (10, 60), 
+                            cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 255), 1)
+                
+                # Add recording indicator
+                if self.is_recording:
+                    # Red circle and "REC" text to indicate recording
+                    cv2.circle(display_frame, (display_frame.shape[1] - 40, 30), 15, (0, 0, 255), -1)
+                    cv2.putText(display_frame, "REC", (display_frame.shape[1] - 80, 40), 
+                                cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
+                
+                # Show the frame
+                cv2.imshow(self.window_name, display_frame)
+                
+                # Process any keyboard input (with a short timeout)
+                key = cv2.waitKey(1) & 0xFF
+                if key == 27:  # ESC key
+                    raise KeyboardInterrupt("ESC key pressed")
+            
+            # Increment frame counter
+            self.frame_count += 1
             
             return self.current_frame # TODO attach to a sensor
         except Exception as e:
@@ -582,9 +644,9 @@ if __name__ == '__main__':
     try:
         env = FilmEnvironment(
             video_source=0,
-            throwing_reference_folder=r"C:\Users\nmdig\CVReaserch\Vector-LIDA\film_agent\frames\throwing",
-            not_throwing_reference_folder=r"C:\Users\nmdig\CVReaserch\Vector-LIDA\film_agent\frames\not_throwing",
-            output_dir=r"C:\Users\nmdig\CVReaserch\Vector-LIDA\film_agent\recordings",
+            throwing_reference_folder="film_agent/frames/pulin",
+            not_throwing_reference_folder="film_agent/frames/without_pulin",
+            output_dir="film_agent/recordings",
             fps=30
         )
         
