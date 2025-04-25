@@ -6,7 +6,7 @@ import threading
 import queue
 import traceback
 import platform
-
+import os
 sys.path.append(str(Path(__file__).parents[1]))
 
 import gymnasium as gym
@@ -63,12 +63,16 @@ class FilmEnvironment(Environment):
                  reference_image_folders=None,
                  output_dir="recordings", fps=30.0, 
                  display_frames=True, display_frequency=1):
+        # Ensure output_dir is not None and is a valid path
+        if output_dir is None:
+            raise ValueError("output_dir cannot be None. Please provide a valid directory path.")
+        
         super(FilmEnvironment, self).__init__()
         self.action_space = gym.spaces.Discrete(2)
         self.is_recording = False
         self.cap = cv2.VideoCapture(video_source)
         self.current_frame = None
-        self.output_dir = output_dir
+        self.output_dir = str(Path(output_dir))  # Convert to string to ensure compatibility
         self.video_writer = None
         self.current_video_path = None
         self.fps = fps
@@ -93,7 +97,7 @@ class FilmEnvironment(Environment):
         self.last_heartbeat_time = 0
 
         # Create output directory using pathlib
-        Path(output_dir).mkdir(exist_ok=True)
+        Path(self.output_dir).mkdir(parents=True, exist_ok=True)  # Ensure the directory exists
 
         if reference_image_folders is not None:
             self.reference_images = {folder: self.load_images_from_folder(folder) for folder in reference_image_folders}
@@ -636,13 +640,13 @@ if __name__ == '__main__':
     try:
         env = FilmEnvironment(
             video_source=0,
-            reference_image_folders=["pulin", "without_pulin"],
+            reference_image_folders=["throwing", "not_throwing"],
             output_dir="film_agent/recordings",
             fps=30
         )
         
-        throwing_ref_node.features = compute_average_embedding(env.collect_embeddings("pulin"))
-        other_ref_node.features = compute_average_embedding(env.collect_embeddings("without_pulin"))
+        throwing_ref_node.features = compute_average_embedding(env.collect_embeddings("throwing"))
+        other_ref_node.features = compute_average_embedding(env.collect_embeddings("not_throwing"))
         try:
             minimally_conscious_agent(env, lida_agent, steps=1000)
         except KeyboardInterrupt:
