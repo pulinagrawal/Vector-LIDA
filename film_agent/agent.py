@@ -379,15 +379,22 @@ def compute_average_embedding(embeddings_list):
     """Compute the average embedding from a list of embeddings"""
     if not embeddings_list:
         return None
-        
-    # Stack all embeddings and compute the mean
-    stacked = torch.cat([emb[0].features for emb in embeddings_list], dim=0)
-    avg_embedding = torch.mean(stacked, dim=0, keepdim=True)
 
-    # Normalize the average embedding
-    avg_embedding /= avg_embedding.norm(dim=-1, keepdim=True)
-    
-    return avg_embedding
+    try:
+        # Extract features if the objects have a 'features' attribute, otherwise use the objects directly
+        features_list = [emb.features if hasattr(emb, 'features') else emb for emb in embeddings_list]
+        
+        # Stack all embeddings and compute the mean
+        stacked = torch.cat(features_list, dim=0)
+        avg_embedding = torch.mean(stacked, dim=0, keepdim=True)
+
+        # Normalize the average embedding
+        avg_embedding /= avg_embedding.norm(dim=-1, keepdim=True)
+        
+        return avg_embedding
+    except Exception as e:
+        print_error(f"Error computing average embedding: {e}")
+        return None
 
 def vision_processor(frame, identifier=None):
     """Process a video frame using CLIP to extract semantic features
@@ -444,14 +451,15 @@ def vision_processor(frame, identifier=None):
 # Define direct similarity function for nodes
 def direct_cosine_similarity(node1, node2):
     """Calculate cosine similarity between two nodes directly using their features"""
-    if hasattr(node1, 'features') and hasattr(node2, 'features'):
+    if (hasattr(node1, 'features') and node1.features is not None and 
+        hasattr(node2, 'features') and node2.features is not None):
         try:
             similarity = torch.nn.functional.cosine_similarity(
                 node1.features, node2.features
             ).item()
             return similarity
         except Exception as e:
-            print(f"Error calculating similarity: {e}")
+            print_error(f"Error calculating similarity: {e}")
             return 0.0
     return 0.0
 
