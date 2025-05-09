@@ -2,11 +2,11 @@ import cv2
 from pathlib import Path
 
 # Create directory to store captured frames if it doesn't exist
-save_dir = Path('film_agent/frames')/'pulin'
+save_dir = Path('film_agent/frames')/'not_throwing'
 save_dir.mkdir(exist_ok=True)
 
 # Initialize the camera (0 for default camera)
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(r'film_agent\test_data\videos\text1.mp4')
 if not cap.isOpened():
     raise Exception("Could not open the camera.")
 

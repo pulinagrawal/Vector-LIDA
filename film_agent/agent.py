@@ -78,7 +78,7 @@ class FilmEnvironment(Environment):
         self.fps = fps
         self.frame_interval = 1.0 / fps
         self.last_frame_time = 0
-        
+
         # Add parameters for frame display
         self.display_frames = display_frames
         self.display_frequency = display_frequency
@@ -238,9 +238,21 @@ class FilmEnvironment(Environment):
             if not ret or frame is None:
                 raise FrameProcessingError("Failed to read frame from camera")
             
+            # Debug: print frame shape before processing
+            #print(f"Original frame shape: {frame.shape}, min: {frame.min()}, max: {frame.max()}")
+            
             # Convert to RGB format
             try:
-                self.current_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+                frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+                # Debug: print frame shape after color conversion
+                #print(f"After BGR2RGB: {frame.shape}, min: {frame.min()}, max: {frame.max()}")
+                
+                # Rotate frame 90 degrees clockwise
+                frame = cv2.rotate(frame, cv2.ROTATE_90_CLOCKWISE)
+                # Debug: print frame shape after rotation
+                #print(f"After rotation: {frame.shape}, min: {frame.min()}, max: {frame.max()}")
+                
+                self.current_frame = frame
             except Exception as e:
                 raise FrameProcessingError(f"Error converting frame: {e}")
             
@@ -381,9 +393,29 @@ def compute_average_embedding(embeddings_list):
         return None
 
     try:
-        # Extract features if the objects have a 'features' attribute, otherwise use the objects directly
-        features_list = [emb.features if hasattr(emb, 'features') else emb for emb in embeddings_list]
+        features_list = []
+        for emb in embeddings_list:
+            # Handle different embedding structures
+            if hasattr(emb, 'features') and emb.features is not None:
+                # Case 1: emb is a Node object with features attribute
+                features_list.append(emb.features)
+            elif isinstance(emb, torch.Tensor):
+                # Case 2: emb is already a tensor
+                features_list.append(emb)
+            elif isinstance(emb, list) and len(emb) > 0:
+                # Case 3: emb is a list
+                if hasattr(emb[0], 'features') and emb[0].features is not None:
+                    # Case 3.1: first element has features
+                    features_list.append(emb[0].features)
+                elif isinstance(emb[0], torch.Tensor):
+                    # Case 3.2: first element is a tensor
+                    features_list.append(emb[0])
+            # Skip emb if we can't extract features from it
         
+        if not features_list:
+            print_error("No valid features found in embeddings list")
+            return None
+            
         # Stack all embeddings and compute the mean
         stacked = torch.cat(features_list, dim=0)
         avg_embedding = torch.mean(stacked, dim=0, keepdim=True)
@@ -394,6 +426,7 @@ def compute_average_embedding(embeddings_list):
         return avg_embedding
     except Exception as e:
         print_error(f"Error computing average embedding: {e}")
+        traceback.print_exc()  # Add stack trace for easier debugging
         return None
 
 def vision_processor(frame, identifier=None):
@@ -451,15 +484,14 @@ def vision_processor(frame, identifier=None):
 # Define direct similarity function for nodes
 def direct_cosine_similarity(node1, node2):
     """Calculate cosine similarity between two nodes directly using their features"""
-    if (hasattr(node1, 'features') and node1.features is not None and 
-        hasattr(node2, 'features') and node2.features is not None):
+    if hasattr(node1, 'features') and hasattr(node2, 'features'):
         try:
             similarity = torch.nn.functional.cosine_similarity(
                 node1.features, node2.features
             ).item()
             return similarity
         except Exception as e:
-            print_error(f"Error calculating similarity: {e}")
+            print(f"Error calculating similarity: {e}")
             return 0.0
     return 0.0
 

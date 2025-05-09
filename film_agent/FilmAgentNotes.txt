@@ -24,3 +24,7 @@ Intial Setup
 	Multi-threading works now to record a little better
 	Still thinks throwing is the activity if whenever I am in frame
 	Even when it's just my still head
+
+Testing
+	Static without rotating the frames and video 
+	
