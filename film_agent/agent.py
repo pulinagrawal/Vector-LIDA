@@ -1,7 +1,9 @@
 #region Imports
 import traceback
 import sys
+import numpy as np
 from pathlib import Path
+from PIL import Image
 
 sys.path.append(str(Path(__file__).parents[1]))
 
@@ -36,14 +38,20 @@ def vision_processor(frame):
     image_features = clip_image_encoder(frame)
     
     # Create Node with features for comparison
-    node = Node(content="frame_features", activation=1.0)
+    node = Node(content="frame features", activation=1.0)
     node.features = image_features
     result = [node]
     
     return result
         
+def combine_features(self, node1, node2):
+    """Combine features of two nodes by averaging them"""
+    combined_features = compute_average_embedding([node1, node2])
+    return combined_features
 
 Node.similarity_function = classmethod(similarity_function)
+Node.combine_features_function = classmethod(combine_features)
+
 
 # Set up LIDA components
 sensors = [{"name": "vision_sensor", "modality": "image"}]
@@ -54,11 +62,11 @@ sm = SensoryMemory(sensors=sensors, feature_detectors=feature_detectors)
 
 def record_function(dorsal_update=None):
     """Convert perception nodes to motor commands based on content"""
-    return {"record": 0}  # start recording
+    return {"record": 0, "display": "recording"}  # start recording
 
 def stop_function(dorsal_update=None):
     """Convert perception nodes to motor commands based on content"""
-    return {"record": 1}  # stop recording
+    return {"record": 1, "display": "not recording"}  # stop recording
     
 # Replace the individual action functions with a single action function that directly checks node content
 mps = [MotorPlan("record", record_function), 
@@ -70,10 +78,19 @@ def action_node(content):
     node.features = clip_text_encoder(content)
     return node
 
-action1_node = action_node("a person sitting down")
-action2_node = action_node("a white wall")
-schemes = [SchemeUnit(context=[action1_node], action=mps[1]), 
-           SchemeUnit(context=[action2_node], action=mps[0])
+def frame_node(frame):
+    node = Node(content="frame features", activation=1.0)
+    node.features = clip_image_encoder(frame)
+    return node
+
+action1_node = action_node("a person holding a pen")
+action2_node = action_node("a person sitting down in front of a wall")
+action3_node = action_node("a white wall")
+frame1_result = frame_node(np.array(Image.open(Path("film_agent/frames/pulin/frame_1.jpg"))))
+frame2_result = frame_node(np.array(Image.open(Path("film_agent/frames/pulin/frame_2.jpg"))))
+schemes = [SchemeUnit(context=[action1_node, frame2_result], action=mps[0]), 
+           SchemeUnit(context=[action2_node, frame1_result], action=mps[1]),
+           SchemeUnit(context=[], action=mps[1])
           ]
 
 pm = ProceduralMemory(schemes=schemes)

@@ -1,10 +1,13 @@
+from multiprocessing import context
 import sys
 from pathlib import Path
+
+from zmq import has
 
 sys.path.append(str(Path(__file__).parents[1]))
 
 from typing import List, Union
-
+from itertools import product
 from lidapy.utils import Node, Decayable, get_logger
 from lidapy.actuators import MotorPlan
 from lidapy.global_workspace import Coalition
@@ -64,7 +67,7 @@ class Scheme:
     def get_context_match_score(self, coalition) -> float:
         if len(self.context) == 0:
             self.logger.debug("No context, returning default score 0.3")
-            return 0.3 # If no context, assume zero match
+            return 0.05 # If no context, assume zero match
 
         match_score = 0
         for node in self.context:
@@ -123,11 +126,19 @@ class ProceduralMemory:
     
     def receive_broadcast(self, coalition):
         self.logger.debug(f"Received broadcast coalition: {coalition}")
-        self.learn_schemes(coalition)
 
-    def learn_schemes(self, coalition):
-        self.logger.debug(f"Learning schemes from coalition: {coalition}")
-        pass
+    def learn_schemes(self, best_matching_scheme, winning_coalition):
+        self.logger.debug(f"Learning new scheme from {best_matching_scheme} and coalition {winning_coalition}")
+        new_context = {node.content: node.copy() for node in best_matching_scheme.context}
+        for node in winning_coalition.get_nodes():
+            if node.content in new_context:
+                new_context[node.content].combine_features(node)
+            else:
+                new_context[node.content] = node.copy()
+        new_scheme = Scheme(context=list(new_context.values()), 
+                            action_stream=best_matching_scheme.action_stream,
+                            result=best_matching_scheme.result)
+        self.schemes.append(new_scheme)
 
     def find_best_matching_scheme(self, coalition :Node) -> Scheme:
         best_scheme = max(self.schemes, key=lambda scheme: scheme.get_context_match_score(coalition))
@@ -138,6 +149,7 @@ class ProceduralMemory:
         self.logger.debug(f"Running with winning coalition: {winning_coalition}")
         self.receive_broadcast(winning_coalition)
         best_scheme = self.find_best_matching_scheme(winning_coalition)
+        self.learn_schemes(best_scheme, winning_coalition)
         return best_scheme
 
 class Behavior:

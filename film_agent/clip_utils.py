@@ -13,8 +13,8 @@ print(f"Using device: {device} for CLIP model")
 tokenizer = open_clip.get_tokenizer('hf-hub:apple/MobileCLIP-B-OpenCLIP')
 
 def clip_text_encoder(text):
-    text_features = model.encode_text(tokenizer(text)).squeeze(0)
-    text_features /= text_features.norm(dim=-1, keepdim=True)
+    text_features = model.encode_text(tokenizer(text))
+    return text_features.squeeze(0).tolist()
 
 def clip_image_encoder(frame):
     # Convert numpy array to PIL Image first
@@ -27,8 +27,7 @@ def clip_image_encoder(frame):
     with torch.no_grad():
         try:
             image_features = vision_model.encode_image(processed_frame)
-            image_features /= image_features.norm(dim=-1, keepdim=True)
         except RuntimeError as e:
             print_error(f"Model inference failed: {e}")
             traceback.print_exc()
-    return image_features
+    return image_features.squeeze(0).tolist()

@@ -1,3 +1,8 @@
+import platform
+import torch
+import os
+from torch import tensor
+
 # Add color formatting for error messages
 def print_error(message):
     """Print error message in red color"""
@@ -23,13 +28,13 @@ def compute_average_embedding(embeddings_list):
         features_list = [emb.features if hasattr(emb, 'features') else emb for emb in embeddings_list]
         
         # Stack all embeddings and compute the mean
-        stacked = torch.cat(features_list, dim=0)
-        avg_embedding = torch.mean(stacked, dim=0, keepdim=True)
+        features_list = tensor(features_list)
+        avg_embedding = torch.mean(features_list, dim=0, keepdim=True)
 
         # Normalize the average embedding
         avg_embedding /= avg_embedding.norm(dim=-1, keepdim=True)
         
-        return avg_embedding
+        return avg_embedding.squeeze(0).tolist()
     except Exception as e:
         print_error(f"Error computing average embedding: {e}")
         return None
@@ -42,7 +47,8 @@ def direct_cosine_similarity(node1, node2):
         hasattr(node2, 'features') and node2.features is not None):
         try:
             similarity = torch.nn.functional.cosine_similarity(
-                node1.features, node2.features
+                tensor(node1.features).unsqueeze(0),
+                tensor(node2.features).unsqueeze(0)
             ).item()
             return similarity
         except Exception as e:

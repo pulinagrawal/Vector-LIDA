@@ -1,6 +1,8 @@
+from numpy import isin
 import randomname
 import logging
 from abc import abstractmethod, ABC
+import copy
 
 # Configure logging
 logging.basicConfig(
@@ -121,6 +123,14 @@ class Node:
 
     def similarity(self, other_node):
         return self.__class__.similarity_function(self, other_node)
+
+    def combine_features(self, other_node):
+            features = self.__class__.combine_features_function(self, other_node)
+            self.features = features if isinstance(features, list) else features.squeeze(0).tolist()
+        
+    def copy(self):
+        self.features = self.features.tolist() if not isinstance(self.features, list) else self.features
+        return copy.deepcopy(self)
 
 def link_nodes(node1, node2):
     node1.links.append(node2)

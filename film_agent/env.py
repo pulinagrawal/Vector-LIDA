@@ -44,6 +44,9 @@ class FilmEnvironment(Environment):
         self.frame_count = 0
         self.window_name = "Film Environment"
         
+        # Initialize display_texts for custom text overlays
+        self.display_texts = []
+        
         if self.display_frames:
             cv2.namedWindow(self.window_name, cv2.WINDOW_NORMAL)
             cv2.resizeWindow(self.window_name, 800, 600)
@@ -60,6 +63,8 @@ class FilmEnvironment(Environment):
 
         if reference_image_folders is not None:
             self.reference_images = {folder: self.load_images_from_folder(folder) for folder in reference_image_folders}
+          
+        self.text_id = self.add_display_text("", position=(10, 90), font_scale=0.7, color=(255, 255, 255), thickness=1, outline=True)
 
     def collect_embeddings(self, folder):
         # Process throwing references
@@ -235,6 +240,16 @@ class FilmEnvironment(Environment):
                     cv2.putText(display_frame, "REC", (display_frame.shape[1] - 80, 40), 
                                 cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
                 
+                # Add custom display texts
+                for text_item in self.display_texts:
+                    if text_item['outline']:
+                        cv2.putText(display_frame, text_item['text'], text_item['position'], 
+                                    cv2.FONT_HERSHEY_SIMPLEX, text_item['font_scale'], (0, 0, 0), 
+                                    text_item['thickness'] + 1)
+                    cv2.putText(display_frame, text_item['text'], text_item['position'], 
+                                cv2.FONT_HERSHEY_SIMPLEX, text_item['font_scale'], text_item['color'], 
+                                text_item['thickness'])
+                
                 # Show the frame
                 cv2.imshow(self.window_name, display_frame)
                 
@@ -272,33 +287,12 @@ class FilmEnvironment(Environment):
             elif commands['record'] == 1:  # Stop recording
                 self.stop_recording()
             # If None, maintain current state
+        if 'display' in commands:
+            self.update_display_text(self.text_id, text=commands['display'])
+        else:
+            self.update_display_text(self.text_id, text="")
     
         return self.is_recording
-        
-    def step(self, action):
-        """Take a step in the environment based on the action
-        
-        This method is required by some Environment implementations.
-        
-        Args:
-            action: Action to take
-            
-        Returns:
-            Tuple of (observation, reward, done, info)
-        """
-        # Execute the action (record or not)
-        if action == 0:  # Record
-            self.start_recording()
-        elif action == 1:  # Stop recording
-            self.stop_recording()
-            
-        # Get next observation
-        observation = self.receive_sensory_stimuli()
-        reward = 0  # No reward in this environment
-        done = observation is None  # Done if no more frames
-        info = {"is_recording": self.is_recording}
-        
-        return observation, reward, done, info
         
     def reset(self):
         """Reset the environment
@@ -317,4 +311,81 @@ class FilmEnvironment(Environment):
         
         # Get first observation
         return self.receive_sensory_stimuli()
+
+    def add_display_text(self, text, position=(10, 90), font_scale=0.7, color=(255, 255, 255), thickness=1, outline=True):
+        """Add text to be displayed on the video frame.
+        
+        Args:
+            text (str): Text to display on the frame
+            position (tuple): (x, y) coordinates for text placement
+            font_scale (float): Font scale factor
+            color (tuple): Text color in BGR format (default: white)
+            thickness (int): Text thickness
+            outline (bool): Whether to add black outline for better visibility
+            
+        Returns:
+            int: Index of the added text item (can be used to update or remove it later)
+        """
+        text_item = {
+            'text': text,
+            'position': position,
+            'font_scale': font_scale,
+            'color': color,
+            'thickness': thickness,
+            'outline': outline
+        }
+        self.display_texts.append(text_item)
+        return len(self.display_texts) - 1  # Return index for future reference
+        
+    def update_display_text(self, index, text=None, position=None, font_scale=None, color=None, thickness=None, outline=None):
+        """Update previously added text properties.
+        
+        Args:
+            index (int): Index of the text item to update
+            text (str, optional): New text to display
+            position (tuple, optional): New position
+            font_scale (float, optional): New font scale
+            color (tuple, optional): New text color
+            thickness (int, optional): New thickness
+            outline (bool, optional): Whether to add outline
+            
+        Returns:
+            bool: True if update successful, False otherwise
+        """
+        if index < 0 or index >= len(self.display_texts):
+            return False
+            
+        if text is not None:
+            self.display_texts[index]['text'] = text
+        if position is not None:
+            self.display_texts[index]['position'] = position
+        if font_scale is not None:
+            self.display_texts[index]['font_scale'] = font_scale
+        if color is not None:
+            self.display_texts[index]['color'] = color
+        if thickness is not None:
+            self.display_texts[index]['thickness'] = thickness
+        if outline is not None:
+            self.display_texts[index]['outline'] = outline
+            
+        return True
+        
+    def remove_display_text(self, index):
+        """Remove text from display.
+        
+        Args:
+            index (int): Index of the text item to remove
+            
+        Returns:
+            bool: True if removal successful, False otherwise
+        """
+        if index < 0 or index >= len(self.display_texts):
+            return False
+            
+        self.display_texts.pop(index)
+        return True
+        
+    def clear_display_texts(self):
+        """Remove all custom text overlays from display."""
+        self.display_texts = []
 #endregion
