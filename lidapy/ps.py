@@ -40,6 +40,8 @@ class Scheme:
         if result is None: 
             result = []
             
+        self.activation = 1.0
+        self.base_activation = .50
         self.context = context   # List[Node]
         self.action_stream = action_stream  # List[Union[Scheme, MotorPlan]]
         self.result = result     # List[Node]
@@ -89,15 +91,10 @@ class Scheme:
 
 class SchemeUnit(Scheme):
     def __init__(self, context: List[Node]=None, action: MotorPlan=None, result: List[Node]=None):  # type: ignore
+        Scheme.__init__(self, context=context, action_stream=[], result=result)
         self.logger = get_logger(self.__class__.__name__)
 
-        if context is None:
-            context = []
-        if result is None:
-            result = []
-        self.context = context  # a Node
         self.action = action    # a MotorPlan
-        self.result = result    # a Node
         self.action_stream = [self]  # a list of MotorPlans
     
     def __repr__(self) -> str:
@@ -106,6 +103,9 @@ class SchemeUnit(Scheme):
 class ProceduralMemory:
     def __init__(self, motor_plans: List[MotorPlan]=None, schemes :List[Scheme]=None): # type: ignore
         self.schemes = []
+        self.decayables = [Decayable(self.schemes, decay_rate=0.9, decay_attribute='activation'),
+                           Decayable(self.schemes, decay_rate=0.95, decay_attribute='base_activation')
+                          ]
         self.logger = get_logger(self.__class__.__name__)
         
         if motor_plans is None and schemes is None:
@@ -128,6 +128,7 @@ class ProceduralMemory:
         self.logger.debug(f"Received broadcast coalition: {coalition}")
 
     def learn_schemes(self, best_matching_scheme, winning_coalition):
+        best_matching_scheme.base_activation *= 1.01
         self.logger.debug(f"Learning new scheme from {best_matching_scheme} and coalition {winning_coalition}")
         new_context = {node.content: node.copy() for node in best_matching_scheme.context}
         for node in winning_coalition.get_nodes():
@@ -141,11 +142,23 @@ class ProceduralMemory:
         self.schemes.append(new_scheme)
 
     def find_best_matching_scheme(self, coalition :Node) -> Scheme:
-        best_scheme = max(self.schemes, key=lambda scheme: scheme.get_context_match_score(coalition))
+        scheme_set = []
+        for scheme in self.schemes:
+            score = scheme.get_context_match_score(coalition)
+            scheme_set.append((scheme, score))
+
+        # best_scheme = max(self.schemes, key=lambda scheme: scheme.get_context_match_score(coalition))
+        best_scheme = max(scheme_set, key=lambda x: x[1])[0]
         self.logger.info(f"Found best matching scheme {best_scheme} with score {best_scheme.get_context_match_score(coalition):.3f}")
         return best_scheme # type: ignore
 
+    def decay(self):
+        for decayable in self.decayables:
+            decayable.decay()
+        self.logger.debug("Decayed all schemes")
+
     def run(self, winning_coalition):
+        self.decay()
         self.logger.debug(f"Running with winning coalition: {winning_coalition}")
         self.receive_broadcast(winning_coalition)
         best_scheme = self.find_best_matching_scheme(winning_coalition)
