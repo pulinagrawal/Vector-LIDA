@@ -84,12 +84,15 @@ def frame_node(frame):
     return node
 
 action1_node = action_node("a person holding a pen")
-action2_node = action_node("a person sitting down in front of a wall")
+action2_node = action_node("a person holding something in their hand in front of them")
+action4_node = action_node("a person sitting down in front of a wall")
 action3_node = action_node("a white wall")
 frame1_result = frame_node(np.array(Image.open(Path("film_agent/frames/pulin/frame_1.jpg"))))
 frame2_result = frame_node(np.array(Image.open(Path("film_agent/frames/pulin/frame_2.jpg"))))
-schemes = [SchemeUnit(context=[action1_node, frame2_result], action=mps[0]), 
+frame3_result = frame_node(np.array(Image.open(Path("film_agent/frames/pulin/frame_3.jpg"))))
+schemes = [SchemeUnit(context=[action1_node, frame3_result], action=mps[0]), 
            SchemeUnit(context=[action2_node, frame1_result], action=mps[1]),
+           SchemeUnit(context=[action4_node, frame2_result], action=mps[1]),
            SchemeUnit(context=[], action=mps[1])
           ]
 
