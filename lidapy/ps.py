@@ -40,7 +40,7 @@ class Scheme:
             result = []
             
         self.activation = 1.0
-        self.base_activation = .50
+        self.base_activation = 1.0
         self.context = context   # List[Node]
         self.action_stream = action_stream  # List[Union[Scheme, MotorPlan]]
         self.result = result     # List[Node]
@@ -103,7 +103,7 @@ class ProceduralMemory:
     def __init__(self, motor_plans: List[MotorPlan]=None, schemes :List[Scheme]=None): # type: ignore
         self.schemes = []
         self.decayables = [Decayable(self.schemes, decay_rate=0.9, decay_attribute='activation'),
-                           Decayable(self.schemes, decay_rate=0.95, decay_attribute='base_activation')
+                           Decayable(self.schemes, decay_rate=0.991, decay_attribute='base_activation', threshold=0.1)
                           ]
         self.logger = get_logger(self.__class__.__name__)
         
@@ -135,9 +135,11 @@ class ProceduralMemory:
                 new_context[node.content].combine_features(node)
             else:
                 new_context[node.content] = node.copy()
-        new_scheme = Scheme(context=list(new_context.values()), 
-                            action_stream=best_matching_scheme.action_stream,
+        new_scheme = SchemeUnit(context=list(new_context.values()), 
+                            action=best_matching_scheme.action,
                             result=best_matching_scheme.result)
+        best_matching_scheme.base_activation = max(best_matching_scheme.base_activation*1.01, 1.0)
+        new_scheme.base_activation = max(best_matching_scheme.base_activation*1.01, 1.0)
         self.schemes.append(new_scheme)
 
     def find_best_matching_scheme(self, coalition :Node) -> Scheme:

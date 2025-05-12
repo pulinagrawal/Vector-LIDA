@@ -307,6 +307,11 @@ def plot_parameter_impact(results, parameter_name, output_path=None, title=None)
 
         # Pick colors for each embedding usage
         colors = {'with_ref': '#1f77b4', 'no_ref': '#aec7e8'}
+        
+        # Track min/max y values for dynamic y-axis scaling
+        min_y_value = float('inf')
+        max_y_value = float('-inf')
+        
         for key, color in colors.items():
             if key in data:
                 x_values = []
@@ -318,8 +323,14 @@ def plot_parameter_impact(results, parameter_name, output_path=None, title=None)
                         values = data[key][param_value]
                         if values:  # Check if we have any values
                             x_values.append(param_value)
-                            y_values.append(np.mean(values))
-                            std_values.append(np.std(values) if len(values) > 1 else 0)
+                            mean_value = np.mean(values)
+                            y_values.append(mean_value)
+                            std_val = np.std(values) if len(values) > 1 else 0
+                            std_values.append(std_val)
+                            
+                            # Update min/max for y-axis scaling
+                            min_y_value = min(min_y_value, mean_value - std_val)
+                            max_y_value = max(max_y_value, mean_value + std_val)
 
                 if x_values:  # Only plot if we have data points
                     plt.errorbar(x_values, y_values, yerr=std_values, 
@@ -355,10 +366,11 @@ def plot_parameter_impact(results, parameter_name, output_path=None, title=None)
 
         plt.legend(loc='best', frameon=True, fancybox=True, shadow=True)
         plt.grid(True, alpha=0.3)
-
-        # Ensure y-axis starts from 0
-        ymin, ymax = plt.ylim()
-        plt.ylim(0, ymax * 1.1)
+        
+        # Dynamic y-axis scaling with padding
+        if min_y_value != float('inf') and max_y_value != float('-inf'):
+            y_padding = (max_y_value - min_y_value) * 0.1  # 10% padding
+            plt.ylim(max(0, min_y_value - y_padding), max_y_value + y_padding)
 
         plt.tight_layout()
 
@@ -411,6 +423,9 @@ def plot_confidence_comparison(results, output_path=None, title=None):
     
     plt.figure(figsize=(14, 10))
     
+    # Track min/max y values for dynamic y-axis scaling
+    all_y_values = []
+    
     # Plot for each agent type
     for agent_results, agent_type, color_base in [
         (ema_results, 'EMA', '#2ca02c'), 
@@ -443,8 +458,14 @@ def plot_confidence_comparison(results, output_path=None, title=None):
             
             for conf, accuracies in sorted(values.items()):
                 x_values.append(conf)
-                y_values.append(np.mean(accuracies))
-                err_values.append(np.std(accuracies) if len(accuracies) > 1 else 0)
+                mean_accuracy = np.mean(accuracies)
+                std_accuracy = np.std(accuracies) if len(accuracies) > 1 else 0
+                y_values.append(mean_accuracy)
+                err_values.append(std_accuracy)
+                
+                # Store for dynamic y-axis scaling
+                all_y_values.append(mean_accuracy - std_accuracy)
+                all_y_values.append(mean_accuracy + std_accuracy)
             
             if x_values:
                 plt.errorbar(x_values, y_values, yerr=err_values,
@@ -473,9 +494,17 @@ def plot_confidence_comparison(results, output_path=None, title=None):
     plt.legend(loc='lower right', frameon=True, fancybox=True, shadow=True)
     plt.grid(True, alpha=0.3)
     
-    # Ensure y-axis starts from 0
-    ymin, ymax = plt.ylim()
-    plt.ylim(0, ymax * 1.1)
+    # More compact y-axis scaling with reduced padding
+    if all_y_values:
+        min_y = min(all_y_values)
+        max_y = max(all_y_values)
+        y_range = max_y - min_y
+        
+        # Use a smaller range by setting a reasonable bottom limit and reducing top padding
+        # Find a reasonable minimum that's close to the lowest data point but still looks good
+        bottom_limit = max(0.5, min_y - y_range * 0.02)  # Never go below 0.5 for accuracy plots
+        # Add just enough padding at the top for annotations but keep it compact
+        plt.ylim(bottom_limit, max_y + y_range * 0.08)
     
     plt.tight_layout()
     

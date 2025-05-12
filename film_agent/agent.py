@@ -107,11 +107,11 @@ def frame_node(frame):
 
 action1_node = action_node("throwing")
 action2_node = action_node("not throwing")
-frame1_result = frame_node(np.array(Image.open(Path(r"film_agent\frames\throwing\CottonDiscus_0.jpg"))))
+frame1_result = frame_node(np.array(Image.open(Path(r"film_agent\frames\frame_5.jpg"))))
 frame2_result = frame_node(np.array(Image.open(Path(r"film_agent\frames\not_throwing\20250401_163936.jpg"))))
 schemes = [SchemeUnit(context=[action1_node, frame1_result], action=mps[0]), 
            SchemeUnit(context=[action2_node, frame2_result], action=mps[1]),
-           SchemeUnit(context=[], action=mps[0])
+           SchemeUnit(context=[], action=mps[1])
           ]
 
 pm = ProceduralMemory(schemes=schemes)
