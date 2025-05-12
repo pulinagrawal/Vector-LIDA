@@ -1,6 +1,8 @@
+from numpy import isin
 import randomname
 import logging
 from abc import abstractmethod, ABC
+import copy
 
 # Configure logging
 logging.basicConfig(
@@ -81,20 +83,41 @@ logger = get_logger(__name__)
 random_name = lambda: randomname.get_name()
 
 class Decayable:
-    def __init__(self, items, threshold=0.01):
+    def __init__(self, items, threshold=0.01, decay_rate=0.99, decay_attribute='activation'):
         self._decayable_items = items
         self.threshold = threshold
+        self.decay_rate = decay_rate
         self.logger = get_logger(self.__class__.__name__)
+        self.decay = self.decay_activation if decay_attribute == 'activation' else self.decay_base_activation
 
-    def decay(self):
+    def decay_base_activation(self):
+        initial_count = len(self._decayable_items)
+        # Create a copy that works for both lists and sets
+        items_copy = list(self._decayable_items)
+        for item in items_copy:
+            if hasattr(item, 'base_activation'):
+                old_activation = item.base_activation
+                item.base_activation *= self.decay_rate
+                if item.base_activation < self.threshold:
+                    self._decayable_items.remove(item)
+                    self.logger.debug(f"Removed item {item} with activation {item.base_activation:.3f}")
+                else:
+                    self.logger.debug(f"Decayed item {item} from {old_activation:.3f} to {item.activation:.3f}")
+            else:
+                raise ValueError(f"Item {item} does not have an activation attribute")
+        removed_count = initial_count - len(self._decayable_items)
+        if removed_count > 0:
+            self.logger.info(f"Removed {removed_count} items below threshold {self.threshold}")
+
+    def decay_activation(self):
         initial_count = len(self._decayable_items)
         # Create a copy that works for both lists and sets
         items_copy = list(self._decayable_items)
         for item in items_copy:
             if hasattr(item, 'activation'):
                 old_activation = item.activation
-                item.activation *= 0.9
-                if item.activation < self.threshold:
+                item.activation *= self.decay_rate
+                if item.activation < self.threshold and (not hasattr(item, 'base_activation') or item.base_activation < self.threshold):
                     self._decayable_items.remove(item)
                     self.logger.debug(f"Removed item {item} with activation {item.activation:.3f}")
                 else:
@@ -121,6 +144,14 @@ class Node:
 
     def similarity(self, other_node):
         return self.__class__.similarity_function(self, other_node)
+
+    def combine_features(self, other_node):
+            features = self.__class__.combine_features_function(self, other_node)
+            self.features = features if isinstance(features, list) else features.squeeze(0).tolist()
+        
+    def copy(self):
+        self.features = self.features.tolist() if not isinstance(self.features, list) else self.features
+        return copy.deepcopy(self)
 
 def link_nodes(node1, node2):
     node1.links.append(node2)
