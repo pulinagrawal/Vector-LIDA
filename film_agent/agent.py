@@ -1,8 +1,10 @@
 #region Imports
 import traceback
+import torch
 import sys
 import numpy as np
 from pathlib import Path
+from torch import tensor
 from PIL import Image
 
 sys.path.append(str(Path(__file__).parents[1]))
@@ -44,7 +46,28 @@ def vision_processor(frame):
     
     return result
         
-def combine_features(self, node1, node2):
+def compute_average_embedding(embeddings_list):
+    """Compute the average embedding from a list of embeddings"""
+    if not embeddings_list:
+        return None
+
+    try:
+        # Extract features if the objects have a 'features' attribute, otherwise use the objects directly
+        features_list = [emb.features if hasattr(emb, 'features') else emb for emb in embeddings_list]
+        
+        # Stack all embeddings and compute the mean
+        features_list = tensor(features_list)
+        avg_embedding = torch.mean(features_list, dim=0, keepdim=True)
+
+        # Normalize the average embedding
+        avg_embedding /= avg_embedding.norm(dim=-1, keepdim=True)
+        
+        return avg_embedding.squeeze(0).tolist()
+    except Exception as e:
+        print_error(f"Error computing average embedding: {e}")
+        return None
+
+def combine_features(self, node1, node2) -> list:
     """Combine features of two nodes by averaging them"""
     combined_features = compute_average_embedding([node1, node2])
     return combined_features
