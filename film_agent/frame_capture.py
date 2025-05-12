@@ -10,8 +10,10 @@ cap = cv2.VideoCapture(r'film_agent\test_data\videos\text1.mp4')
 if not cap.isOpened():
     raise Exception("Could not open the camera.")
 
-# Counter for frame filenames
-frame_count = 0
+# Counter for frame filenames (continue numbering from existing files)
+existing_files = save_dir.glob('frame_*.jpg')
+frame_numbers = [int(f.stem.split('_')[1]) for f in existing_files if f.stem.split('_')[1].isdigit()]
+frame_count = max(frame_numbers, default=0)
 
 print("Press 's' to capture a frame, 'q' to quit")
 
