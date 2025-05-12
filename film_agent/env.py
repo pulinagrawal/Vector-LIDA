@@ -29,7 +29,7 @@ class FilmEnvironment(Environment):
         super(FilmEnvironment, self).__init__()
         self.action_space = gym.spaces.Discrete(2)
         self.is_recording = False
-        self.cap = cv2.VideoCapture(video_source)
+        self.cap = cv2.VideoCapture(r"film_agent\test_data\videos\text1.mp4")
         self.current_frame = None
         self.output_dir = str(Path(output_dir))  # Convert to string to ensure compatibility
         self.video_writer = None

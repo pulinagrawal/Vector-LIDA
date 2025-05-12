@@ -8,6 +8,7 @@ from PIL import Image
 model, _, preprocess_val = open_clip.create_model_and_transforms('hf-hub:apple/MobileCLIP-B-OpenCLIP')
 # Move model to CPU to avoid CUDA memory issues
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+device = torch.device("cpu")
 vision_model = model.to(device)
 print(f"Using device: {device} for CLIP model")
 tokenizer = open_clip.get_tokenizer('hf-hub:apple/MobileCLIP-B-OpenCLIP')

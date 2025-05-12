@@ -2,7 +2,6 @@ from multiprocessing import context
 import sys
 from pathlib import Path
 
-from zmq import has
 
 sys.path.append(str(Path(__file__).parents[1]))
 
