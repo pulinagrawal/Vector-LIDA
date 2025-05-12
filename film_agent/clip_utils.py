@@ -5,16 +5,22 @@ import open_clip
 import torch
 from PIL import Image
 
-model, _, preprocess_val = open_clip.create_model_and_transforms('hf-hub:apple/MobileCLIP-B-OpenCLIP')
-# Move model to CPU to avoid CUDA memory issues
+# Set device consistently first
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-device = torch.device("cpu")
-vision_model = model.to(device)
+
+# Create model and move it to the right device
+model, _, preprocess_val = open_clip.create_model_and_transforms('hf-hub:apple/MobileCLIP-B-OpenCLIP')
+model = model.to(device)
+vision_model = model  # Use the same model instance
 print(f"Using device: {device} for CLIP model")
 tokenizer = open_clip.get_tokenizer('hf-hub:apple/MobileCLIP-B-OpenCLIP')
 
 def clip_text_encoder(text):
-    text_features = model.encode_text(tokenizer(text))
+    # Move tokenized text to the same device as the model
+    tokenized_text = tokenizer(text).to(device)
+    # Process text with model
+    with torch.no_grad():
+        text_features = model.encode_text(tokenized_text)
     return text_features.squeeze(0).tolist()
 
 def clip_image_encoder(frame):

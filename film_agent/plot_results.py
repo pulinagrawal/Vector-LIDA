@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# filepath: c:\Users\Nathan\CVResearch\Vector-LIDA\film_agent\plot_results_no_selflearning.py
 import os
 import sys
 import json
@@ -142,82 +144,56 @@ def plot_overall_accuracy(results, output_path=None, title=None):
     accuracy_values = []
     colors = []
     error_bars = []
-      # Add static (baseline)
+    
+    # Add static (baseline)
     if static_results:
         categories.append("Static")
-        accuracies = [r['accuracy'] for r in static_results if r['accuracy'] is not None]
-        if accuracies:  # Check if list is not empty
-            accuracy_values.append(np.mean(accuracies))
-            error_bars.append(np.std(accuracies) if len(accuracies) > 1 else 0)
-            colors.append('#7f7f7f')  # Gray
-        else:
-            # Remove the category if no valid data
-            categories.pop()
+        accuracies = [r['accuracy'] for r in static_results]
+        accuracy_values.append(np.mean(accuracies))
+        error_bars.append(np.std(accuracies) if len(accuracies) > 1 else 0)
+        colors.append('#7f7f7f')  # Gray
     
     # Add adaptive with reference embeddings
     if adaptive_with_ref_results:
         categories.append("Adaptive\n(with ref)")
-        accuracies = [r['accuracy'] for r in adaptive_with_ref_results if r['accuracy'] is not None]
-        if accuracies:  # Check if list is not empty
-            accuracy_values.append(np.mean(accuracies))
-            error_bars.append(np.std(accuracies) if len(accuracies) > 1 else 0)
-            colors.append('#1f77b4')  # Blue
-        else:
-            # Remove the category if no valid data
-            categories.pop()
+        accuracies = [r['accuracy'] for r in adaptive_with_ref_results]
+        accuracy_values.append(np.mean(accuracies))
+        error_bars.append(np.std(accuracies) if len(accuracies) > 1 else 0)
+        colors.append('#1f77b4')  # Blue
     
     # Add adaptive without reference embeddings
     if adaptive_no_ref_results:
         categories.append("Adaptive\n(no ref)")
-        accuracies = [r['accuracy'] for r in adaptive_no_ref_results if r['accuracy'] is not None]
-        if accuracies:  # Check if list is not empty
-            accuracy_values.append(np.mean(accuracies))
-            error_bars.append(np.std(accuracies) if len(accuracies) > 1 else 0)
-            colors.append('#aec7e8')  # Light blue
-        else:
-            # Remove the category if no valid data
-            categories.pop()
-      # Add EMA with reference embeddings
+        accuracies = [r['accuracy'] for r in adaptive_no_ref_results]
+        accuracy_values.append(np.mean(accuracies))
+        error_bars.append(np.std(accuracies) if len(accuracies) > 1 else 0)
+        colors.append('#aec7e8')  # Light blue
+    
+    # Add EMA with reference embeddings
     if ema_with_ref_results:
         categories.append("EMA\n(with ref)")
-        accuracies = [r['accuracy'] for r in ema_with_ref_results if r['accuracy'] is not None]
-        if accuracies:  # Check if list is not empty
-            accuracy_values.append(np.mean(accuracies))
-            error_bars.append(np.std(accuracies) if len(accuracies) > 1 else 0)
-            colors.append('#2ca02c')  # Green
-        else:
-            # Remove the category if no valid data
-            categories.pop()
-            
-    # Add EMA without reference embeddings
+        accuracies = [r['accuracy'] for r in ema_with_ref_results]
+        accuracy_values.append(np.mean(accuracies))
+        error_bars.append(np.std(accuracies) if len(accuracies) > 1 else 0)
+        colors.append('#2ca02c')  # Green
+      # Add EMA without reference embeddings
     if ema_no_ref_results:
         categories.append("EMA\n(no ref)")
-        accuracies = [r['accuracy'] for r in ema_no_ref_results if r['accuracy'] is not None]
-        if accuracies:  # Check if list is not empty
-            accuracy_values.append(np.mean(accuracies))
-            error_bars.append(np.std(accuracies) if len(accuracies) > 1 else 0)
-            colors.append('#98df8a')  # Light green
-        else:
-            # Remove the category if no valid data
-            categories.pop()
-      # Create the plot with more height to accommodate x-axis labels
-    plt.figure(figsize=(14, 10))
+        accuracies = [r['accuracy'] for r in ema_no_ref_results]
+        accuracy_values.append(np.mean(accuracies))
+        error_bars.append(np.std(accuracies) if len(accuracies) > 1 else 0)
+        colors.append('#98df8a')  # Light green
     
-    # Check if we have any valid data points
-    if not categories or not accuracy_values:
-        plt.text(0.5, 0.5, "No valid data available for plotting", 
-                ha='center', va='center', fontsize=BIGGER_SIZE, fontweight='bold')
-        plt.xlim(0, 1)
-        plt.ylim(0, 1)
-    else:
-        # Bar chart with error bars
-        bars = plt.bar(categories, accuracy_values, color=colors, yerr=error_bars, 
-                      capsize=10, edgecolor='black', linewidth=1.5, alpha=0.7)
-        
-        # Add exact values on top of bars
-        for bar, value in zip(bars, accuracy_values):
-            plt.text(bar.get_x() + bar.get_width() / 2, value + 0.02, f"{value:.2%}", 
-                     ha='center', va='bottom', fontweight='bold', fontsize=MEDIUM_SIZE)
+    # Create the plot with more height to accommodate x-axis labels
+    plt.figure(figsize=(14, 10))
+      # Bar chart with error bars
+    bars = plt.bar(categories, accuracy_values, color=colors, yerr=error_bars, 
+                  capsize=10, edgecolor='black', linewidth=1.5, alpha=0.7)
+    
+    # Add exact values on top of bars
+    for bar, value in zip(bars, accuracy_values):
+        plt.text(bar.get_x() + bar.get_width() / 2, value + 0.02, f"{value:.2%}", 
+                 ha='center', va='bottom', fontweight='bold', fontsize=MEDIUM_SIZE)
     
     plt.ylabel('Accuracy', fontsize=MEDIUM_SIZE, fontweight='bold')
     plt.ylim(0, max(accuracy_values) * 1.2)  # Add some space above the bars
@@ -229,31 +205,23 @@ def plot_overall_accuracy(results, output_path=None, title=None):
     # Set font weight for x-axis tick labels
     for label in plt.gca().get_xticklabels():
         label.set_fontweight('bold')
-      # Add count of runs for each category below the axis (only if we have categories)
-    if categories:
-        plt.annotate('Runs:', xy=(-0.15, -0.15), xycoords='axes fraction', fontsize=SMALL_SIZE, fontweight='bold')
-        
-        # Get counts for each category
-        category_result_map = {
-            "Static": static_results,
-            "Adaptive\n(with ref)": adaptive_with_ref_results,
-            "Adaptive\n(no ref)": adaptive_no_ref_results,
-            "EMA\n(with ref)": ema_with_ref_results,
-            "EMA\n(no ref)": ema_no_ref_results
-        }
-        
-        # Count only results with valid accuracy values for each displayed category
-        counts = []
-        for category in categories:
-            if category in category_result_map:
-                valid_results = [r for r in category_result_map[category] if r.get('accuracy') is not None]
-                counts.append(len(valid_results))
-            else:
-                counts.append(0)
-                
-        for i, (category, count) in enumerate(zip(categories, counts)):
-            plt.annotate(f"n={count}", xy=(i, -0.1), xycoords=('data', 'axes fraction'), 
-                         ha='center', fontsize=SMALL_SIZE)
+    
+    # Add count of runs for each category below the axis
+    plt.annotate('Runs:', xy=(-0.15, -0.15), xycoords='axes fraction', fontsize=SMALL_SIZE, fontweight='bold')
+    counts = [
+        len(static_results), 
+        len(adaptive_with_ref_results), 
+        len(adaptive_no_ref_results), 
+        len(ema_with_ref_results), 
+        len(ema_no_ref_results)
+    ]
+    
+    # Only include categories with data
+    counts = [count for i, count in enumerate(counts) if i < len(categories)]
+    
+    for i, (category, count) in enumerate(zip(categories, counts)):
+        plt.annotate(f"n={count}", xy=(i, -0.1), xycoords=('data', 'axes fraction'), 
+                     ha='center', fontsize=SMALL_SIZE)
       # Title
     if title:
         plt.title(title, fontweight='bold')
@@ -277,112 +245,232 @@ def plot_overall_accuracy(results, output_path=None, title=None):
     return plt.gcf()
 
 def plot_parameter_impact(results, parameter_name, output_path=None, title=None):
-    """Plot the impact of a specific parameter on accuracy"""
+    """Plot the impact of a specific parameter on accuracy, separating EMA and Adaptive agents"""
+    # Define which parameters are valid for which agent types
+    parameter_agent_mapping = {
+        'confidence_threshold': ['adaptive', 'ema'],
+        'ema_alpha': ['ema'],  # EMA alpha only applies to EMA agents
+        'motion_threshold': ['adaptive', 'ema'],
+        'bootstrapping_frames': ['adaptive', 'ema']
+    }
+    
     # Filter results that have the specified parameter
     filtered_results = [r for r in results if parameter_name in r['metadata'] and r['metadata'][parameter_name] is not None]
     
     if not filtered_results:
         print(f"No results found with parameter '{parameter_name}'")
         return None
+
+    # Get agent types that should use this parameter
+    valid_agent_types = parameter_agent_mapping.get(parameter_name, ['adaptive', 'ema'])
     
-    # Group by agent type and parameter value
-    agent_types = set()
-    param_values = set()
-    data = {}
-    
-    for result in filtered_results:
-        agent_type = result['metadata'].get('agent_type')
-        use_initial_embeddings = result['metadata'].get('use_initial_embeddings')
-        param_value = result['metadata'].get(parameter_name)
+    # Separate results for EMA and Adaptive agents
+    ema_results = [r for r in filtered_results if r['metadata'].get('agent_type') == 'ema']
+    adaptive_results = [r for r in filtered_results if r['metadata'].get('agent_type') == 'adaptive']
+
+    def plot_agent_type(agent_results, agent_type, output_path_suffix):
+        # Skip plotting if this agent type doesn't use this parameter
+        if agent_type.lower() not in valid_agent_types:
+            print(f"Parameter '{parameter_name}' is not used by {agent_type} agents - skipping plot")
+            return None
         
-        # Create a more descriptive agent type label
-        agent_type_label = f"{agent_type}"
-        if use_initial_embeddings is not None:
-            agent_type_label += " (with ref)" if use_initial_embeddings else " (no ref)"
+        if not agent_results:
+            print(f"No results found for {agent_type} agents with parameter '{parameter_name}'")
+            return None
+
+        # Group by parameter value and embedding usage
+        param_values = set()
+        data = {}
+
+        for result in agent_results:
+            use_initial_embeddings = result['metadata'].get('use_initial_embeddings')
+            param_value = result['metadata'].get(parameter_name)
+
+            # Create a descriptive key combining reference usage
+            key = f"{'with_ref' if use_initial_embeddings else 'no_ref'}"
+
+            param_values.add(param_value)
+
+            if key not in data:
+                data[key] = {}
             
-        agent_types.add(agent_type_label)
-        param_values.add(param_value)
-        
-        key = (agent_type_label, param_value)
-        if key not in data:
-            data[key] = []
-        data[key].append(result['accuracy'])
-    
-    # Sort parameter values
-    param_values = sorted(list(param_values))
-    agent_types = sorted(list(agent_types))
-    
-    # Create the plot
-    plt.figure(figsize=(12, 8))
-    
-    # Pick colors for each agent type
-    colors = plt.cm.tab10(np.linspace(0, 1, len(agent_types)))
-    for i, agent_type in enumerate(agent_types):
-        agent_accuracies = []
-        agent_errors = []
-        for param_value in param_values:
-            key = (agent_type, param_value)
-            if key in data:
-                # Filter out None values
-                valid_values = [v for v in data[key] if v is not None]
-                if valid_values:  # Check if we have any valid values
-                    agent_accuracies.append(np.mean(valid_values))
-                    agent_errors.append(np.std(valid_values) if len(valid_values) > 1 else 0)
-                else:
-                    agent_accuracies.append(None)  # No valid data for this combination
-                    agent_errors.append(None)
-            else:
-                agent_accuracies.append(None)  # No data for this combination
-                agent_errors.append(None)
-        
-        # Plot only if we have data for this agent type
-        valid_indices = [i for i, x in enumerate(agent_accuracies) if x is not None]
-        if valid_indices:
-            valid_params = [param_values[i] for i in valid_indices]
-            valid_accuracies = [agent_accuracies[i] for i in valid_indices]
-            valid_errors = [agent_errors[i] for i in valid_indices]
-              # Line plot with error bars
-            plt.errorbar(valid_params, valid_accuracies, yerr=valid_errors, 
-                        fmt='o-', label=agent_type, color=colors[i % len(colors)], 
-                        capsize=5, linewidth=2, markersize=8, alpha=0.8)
-            
-            # Add values as text
-            for j, (x, y, err) in enumerate(zip(valid_params, valid_accuracies, valid_errors)):
-                plt.text(x, y + 0.02, f"{y:.2%}", ha='center', va='bottom', 
-                        fontweight='bold', fontsize=9, color=colors[i % len(colors)])
+            if param_value not in data[key]:
+                data[key][param_value] = []
                 
-                # Add sample size if we have runs
-                key = (agent_type, x)  # Reconstruct the key for this specific point
-                if key in data:
-                    # Count valid data points
-                    valid_points = [v for v in data[key] if v is not None]
-                    if valid_points:
-                        plt.text(x, y - 0.02, f"n={len(valid_points)}", ha='center', va='top', 
-                                fontsize=7, alpha=0.7, color=colors[i % len(colors)])
+            data[key][param_value].append(result['accuracy'])
+
+        # Sort parameter values
+        param_values = sorted(list(param_values))
+
+        # Create the plot
+        plt.figure(figsize=(12, 8))
+
+        # Pick colors for each embedding usage
+        colors = {'with_ref': '#1f77b4', 'no_ref': '#aec7e8'}
+        for key, color in colors.items():
+            if key in data:
+                x_values = []
+                y_values = []
+                std_values = []
+
+                for param_value in param_values:
+                    if param_value in data[key]:
+                        values = data[key][param_value]
+                        if values:  # Check if we have any values
+                            x_values.append(param_value)
+                            y_values.append(np.mean(values))
+                            std_values.append(np.std(values) if len(values) > 1 else 0)
+
+                if x_values:  # Only plot if we have data points
+                    plt.errorbar(x_values, y_values, yerr=std_values, 
+                                fmt='o-', label=f"{key}", color=color, 
+                                capsize=5, linewidth=2, markersize=8, alpha=0.8)
+
+                    # Add values as text
+                    for x, y, err in zip(x_values, y_values, std_values):
+                        plt.text(x, y + 0.02, f"{y:.2%}", ha='center', va='bottom', 
+                                fontweight='bold', fontsize=9, color=color)
+
+        # Parameter labels
+        param_display_name = {
+            'confidence_threshold': 'Confidence Threshold',
+            'ema_alpha': 'EMA Alpha',
+            'motion_threshold': 'Motion Threshold',
+            'bootstrapping_frames': 'Bootstrapping Frames'
+        }.get(parameter_name, parameter_name)
+
+        plt.xlabel(param_display_name, fontsize=MEDIUM_SIZE, fontweight='bold')
+        plt.ylabel('Accuracy', fontsize=MEDIUM_SIZE, fontweight='bold')
+
+        # Title
+        if title:
+            plt.title(f"{title} - {agent_type}", fontweight='bold')
+        else:
+            plt.title(f'Impact of {param_display_name} on Accuracy - {agent_type}', fontweight='bold')
+
+        # Add timestamp
+        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        plt.annotate(f"Generated: {timestamp}", xy=(1, -0.1), xycoords='axes fraction', 
+                     ha='right', fontsize=8, alpha=0.7)
+
+        plt.legend(loc='best', frameon=True, fancybox=True, shadow=True)
+        plt.grid(True, alpha=0.3)
+
+        # Ensure y-axis starts from 0
+        ymin, ymax = plt.ylim()
+        plt.ylim(0, ymax * 1.1)
+
+        plt.tight_layout()
+
+        # Save or show the plot
+        if output_path:
+            agent_output_path = output_path.replace(".png", f"_{agent_type.lower()}.png")
+            plt.savefig(agent_output_path, bbox_inches='tight', dpi=300)
+            print(f"Saved plot to {agent_output_path}")
+        else:
+            plt.show()
+
+        return plt.gcf()
+
+    plot_results = []
     
-    # Parameter labels
-    param_display_name = {
-        'confidence_threshold': 'Confidence Threshold',
-        'ema_alpha': 'EMA Alpha',
-        'motion_threshold': 'Motion Threshold',
-        'bootstrapping_frames': 'Bootstrapping Frames'
-    }.get(parameter_name, parameter_name)
+    # Plot for EMA agents if parameter applies to them
+    if 'ema' in valid_agent_types:
+        ema_fig = plot_agent_type(ema_results, "EMA", output_path)
+        if ema_fig:
+            plot_results.append(ema_fig)
+        else:
+            print(f"INFO: No plot was created for EMA agents with parameter '{parameter_name}'")
+
+    # Plot for Adaptive agents if parameter applies to them
+    if 'adaptive' in valid_agent_types:
+        adaptive_fig = plot_agent_type(adaptive_results, "Adaptive", output_path)
+        if adaptive_fig:
+            plot_results.append(adaptive_fig)
+        else:
+            print(f"INFO: No plot was created for Adaptive agents with parameter '{parameter_name}'")
+            
+    if not plot_results:
+        print(f"WARNING: No plots were created for parameter '{parameter_name}'")
+            
+    return plot_results
+
+def plot_confidence_comparison(results, output_path=None, title=None):
+    """Generate a specialized plot comparing confidence thresholds for different agent types"""
+    # Filter results that have confidence_threshold parameter
+    filtered_results = [r for r in results if 'confidence_threshold' in r['metadata'] 
+                        and r['metadata']['confidence_threshold'] is not None]
     
-    plt.xlabel(param_display_name, fontsize=MEDIUM_SIZE, fontweight='bold')
+    if not filtered_results:
+        print("No results found with confidence threshold parameter")
+        return None
+        
+    # Separate by agent type
+    ema_results = [r for r in filtered_results if r['metadata'].get('agent_type') == 'ema']
+    adaptive_results = [r for r in filtered_results if r['metadata'].get('agent_type') == 'adaptive']
+    
+    plt.figure(figsize=(14, 10))
+    
+    # Plot for each agent type
+    for agent_results, agent_type, color_base in [
+        (ema_results, 'EMA', '#2ca02c'), 
+        (adaptive_results, 'Adaptive', '#1f77b4')
+    ]:
+        # Group by confidence threshold and embedding usage
+        conf_values = {}
+        
+        for result in agent_results:
+            use_initial_embeddings = result['metadata'].get('use_initial_embeddings')
+            conf = result['metadata'].get('confidence_threshold')
+            
+            key = f"{agent_type} ({'with ref' if use_initial_embeddings else 'no ref'})"
+            
+            if key not in conf_values:
+                conf_values[key] = {}
+            
+            if conf not in conf_values[key]:
+                conf_values[key][conf] = []
+                
+            conf_values[key][conf].append(result['accuracy'])
+                
+        # Plot data
+        for i, (key, values) in enumerate(conf_values.items()):
+            color = color_base if 'with ref' in key else f"#{int(color_base[1:3], 16):02x}{int(color_base[3:5], 16):02x}{min(int(color_base[5:7], 16) + 90, 255):02x}"
+            
+            x_values = []
+            y_values = []
+            err_values = []
+            
+            for conf, accuracies in sorted(values.items()):
+                x_values.append(conf)
+                y_values.append(np.mean(accuracies))
+                err_values.append(np.std(accuracies) if len(accuracies) > 1 else 0)
+            
+            if x_values:
+                plt.errorbar(x_values, y_values, yerr=err_values,
+                          fmt='o-', label=key, color=color,
+                          linewidth=2, markersize=8, capsize=5)
+                
+                # Add text values
+                for x, y in zip(x_values, y_values):
+                    plt.text(x, y + 0.01, f"{y:.2%}", ha='center', va='bottom',
+                            fontweight='bold', fontsize=9, color=color)
+    
+    plt.xlabel('Confidence Threshold', fontsize=MEDIUM_SIZE, fontweight='bold')
     plt.ylabel('Accuracy', fontsize=MEDIUM_SIZE, fontweight='bold')
     
     # Title
     if title:
         plt.title(title, fontweight='bold')
     else:
-        plt.title(f'Impact of {param_display_name} on Accuracy', fontweight='bold')
+        plt.title('Impact of Confidence Threshold on Accuracy', fontweight='bold')
     
     # Add timestamp
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     plt.annotate(f"Generated: {timestamp}", xy=(1, -0.1), xycoords='axes fraction', 
-                 ha='right', fontsize=8, alpha=0.7)
+                ha='right', fontsize=8, alpha=0.7)
     
-    plt.legend(loc='best', frameon=True, fancybox=True, shadow=True)
+    plt.legend(loc='lower right', frameon=True, fancybox=True, shadow=True)
     plt.grid(True, alpha=0.3)
     
     # Ensure y-axis starts from 0
@@ -401,10 +489,17 @@ def plot_parameter_impact(results, parameter_name, output_path=None, title=None)
 
 def main():
     parser = argparse.ArgumentParser(description="Plot accuracy results for different agent types")
-    parser.add_argument("--results_dir", help="Directory containing JSON result files")
-    parser.add_argument("--output", help="Output directory for plots")
-    parser.add_argument("--batch_name", default=None, help="Custom batch name for plots")
-    parser.add_argument("--parameter", default=None, help="Parameter to analyze impact (e.g., confidence_threshold, ema_alpha)")
+    parser.add_argument("results_dir", help="Directory containing JSON result files")
+    parser.add_argument("--output-dir", default="plots", help="Directory to save output plots")
+    parser.add_argument("--overall", action="store_true", help="Generate overall accuracy comparison plot")
+    parser.add_argument("--confidence", action="store_true", help="Generate confidence threshold comparison plot")
+    parser.add_argument("--ema-alpha", action="store_true", help="Generate EMA alpha parameter impact plot")
+    parser.add_argument("--motion", action="store_true", help="Generate motion threshold parameter impact plot")
+    parser.add_argument("--bootstrap", action="store_true", help="Generate bootstrapping frames parameter impact plot")
+    parser.add_argument("--all", action="store_true", help="Generate all plots")
+    parser.add_argument("--batch-name", default="batch", help="Name for the batch of results (used in filenames)")
+    parser.add_argument("--confidence-only", action="store_true", help="Generate only the confidence threshold comparison plot for adaptive and EMA agents")
+    parser.add_argument("--parameter", help="Generate a parameter impact plot for the specified parameter")
     args = parser.parse_args()
 
     # Load results
@@ -414,7 +509,7 @@ def main():
         return
 
     # Create output directory
-    output_dir = args.output
+    output_dir = args.output_dir
     if output_dir:
         os.makedirs(output_dir, exist_ok=True)
     else:
@@ -425,21 +520,64 @@ def main():
     if not batch_name:
         batch_name = os.path.basename(os.path.normpath(args.results_dir))
     
-    # Overall accuracy plot
-    output_path = os.path.join(output_dir, f"{batch_name}_accuracy_comparison.png")
-    plot_overall_accuracy(results, output_path, title=f"Agent Accuracy Comparison - {batch_name}")
+    # Check if we should only generate the confidence comparison plot
+    if args.confidence_only:
+        output_path = os.path.join(output_dir, f"{batch_name}_confidence_comparison.png")
+        plot_confidence_comparison(results, output_path, 
+                                  title=f"Confidence Threshold Impact - {batch_name}")
+        return
     
-    # Parameter impact plots if requested
+    # Generate plots based on arguments
+    if args.overall or args.all:
+        output_path = os.path.join(output_dir, f"{batch_name}_accuracy_comparison.png")
+        plot_overall_accuracy(results, output_path, 
+                            title=f"Agent Accuracy Comparison - {batch_name}")
+    
+    # Parameter impact plots
     if args.parameter:
         output_path = os.path.join(output_dir, f"{batch_name}_{args.parameter}_impact.png")
         plot_parameter_impact(results, args.parameter, output_path, 
                             title=f"Impact of {args.parameter} on Accuracy - {batch_name}")
-    else:
+    
+    # Generate specific parameter plots if requested
+    if args.confidence or args.all:
+        output_path = os.path.join(output_dir, f"{batch_name}_confidence_impact.png")
+        plot_parameter_impact(results, 'confidence_threshold', output_path, 
+                             title=f"Impact of Confidence Threshold - {batch_name}")
+        
+        # Also generate the specialized confidence comparison plot
+        output_path = os.path.join(output_dir, f"{batch_name}_confidence_comparison.png")
+        plot_confidence_comparison(results, output_path, 
+                                 title=f"Confidence Threshold Impact - {batch_name}")
+    
+    if args.ema_alpha or args.all:
+        output_path = os.path.join(output_dir, f"{batch_name}_ema_alpha_impact.png")
+        plot_parameter_impact(results, 'ema_alpha', output_path, 
+                             title=f"Impact of EMA Alpha - {batch_name}")
+    
+    if args.motion or args.all:
+        output_path = os.path.join(output_dir, f"{batch_name}_motion_threshold_impact.png")
+        plot_parameter_impact(results, 'motion_threshold', output_path, 
+                             title=f"Impact of Motion Threshold - {batch_name}")
+    
+    if args.bootstrap or args.all:
+        output_path = os.path.join(output_dir, f"{batch_name}_bootstrapping_frames_impact.png")
+        plot_parameter_impact(results, 'bootstrapping_frames', output_path, 
+                             title=f"Impact of Bootstrapping Frames - {batch_name}")
+                             
+    # If no specific plots were requested, generate default plots
+    if not any([args.overall, args.confidence, args.ema_alpha, args.motion, 
+                args.bootstrap, args.all, args.parameter]):
+        # Overall accuracy plot
+        output_path = os.path.join(output_dir, f"{batch_name}_accuracy_comparison.png")
+        plot_overall_accuracy(results, output_path, 
+                             title=f"Agent Accuracy Comparison - {batch_name}")
+        
         # Generate common parameter analysis plots
         for param in ['confidence_threshold', 'ema_alpha']:
             output_path = os.path.join(output_dir, f"{batch_name}_{param}_impact.png")
             plot_parameter_impact(results, param, output_path, 
-                                title=f"Impact of {param} on Accuracy - {batch_name}")
+                                 title=f"Impact of {param} on Accuracy - {batch_name}")
 
 if __name__ == "__main__":
     main()

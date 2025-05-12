@@ -3,6 +3,7 @@ import traceback
 import torch
 import sys
 import numpy as np
+import cv2
 from pathlib import Path
 from torch import tensor
 from PIL import Image
@@ -46,26 +47,24 @@ def vision_processor(frame):
     
     return result
         
-def compute_average_embedding(embeddings_list):
-    """Compute the average embedding from a list of embeddings"""
-    if not embeddings_list:
-        return None
-
-    try:
-        # Extract features if the objects have a 'features' attribute, otherwise use the objects directly
-        features_list = [emb.features if hasattr(emb, 'features') else emb for emb in embeddings_list]
-        
-        # Stack all embeddings and compute the mean
-        features_list = tensor(features_list)
-        avg_embedding = torch.mean(features_list, dim=0, keepdim=True)
-
-        # Normalize the average embedding
-        avg_embedding /= avg_embedding.norm(dim=-1, keepdim=True)
-        
-        return avg_embedding.squeeze(0).tolist()
-    except Exception as e:
-        print_error(f"Error computing average embedding: {e}")
-        return None
+# This is just a wrapper that forwards to the function in utils.py
+def compute_average_embedding(embeddings_list, ema_mode=True, prev_embedding=None, env=None):
+    """Compute the average embedding from a list of embeddings.
+    
+    This is a wrapper for the main implementation in utils.py.
+    
+    Args:
+        embeddings_list: List of embeddings to average
+        ema_mode: If True, use exponential moving average instead of simple average
+        prev_embedding: Previous EMA value (only used if ema_mode=True)
+        env: FilmEnvironment instance to get EMA parameters from
+    
+    Returns:
+        The averaged embedding (or EMA updated embedding if in EMA mode)
+    """
+    # Forward to the implementation in utils.py
+    from film_agent.utils import compute_average_embedding as compute_avg_emb_impl
+    return compute_avg_emb_impl(embeddings_list, ema_mode, prev_embedding, env)
 
 def combine_features(self, node1, node2) -> list:
     """Combine features of two nodes by averaging them"""
@@ -106,17 +105,13 @@ def frame_node(frame):
     node.features = clip_image_encoder(frame)
     return node
 
-action1_node = action_node("a person holding a pen")
-action2_node = action_node("a person holding something in their hand in front of them")
-action4_node = action_node("a person sitting down in front of a wall")
-action3_node = action_node("a white wall")
+action1_node = action_node("throwing")
+action2_node = action_node("not throwing")
 frame1_result = frame_node(np.array(Image.open(Path(r"film_agent\frames\throwing\CottonDiscus_0.jpg"))))
-frame2_result = frame_node(np.array(Image.open(Path(r"film_agent\frames\throwing\CottonDiscus_0.jpg"))))
-frame3_result = frame_node(np.array(Image.open(Path(r"film_agent\frames\throwing\CottonDiscus_0.jpg"))))
-schemes = [SchemeUnit(context=[action1_node, frame3_result], action=mps[0]), 
-           SchemeUnit(context=[action2_node, frame1_result], action=mps[1]),
-           SchemeUnit(context=[action4_node, frame2_result], action=mps[1]),
-           SchemeUnit(context=[], action=mps[1])
+frame2_result = frame_node(np.array(Image.open(Path(r"film_agent\frames\not_throwing\20250401_163936.jpg"))))
+schemes = [SchemeUnit(context=[action1_node, frame1_result], action=mps[0]), 
+           SchemeUnit(context=[action2_node, frame2_result], action=mps[1]),
+           SchemeUnit(context=[], action=mps[0])
           ]
 
 pm = ProceduralMemory(schemes=schemes)
@@ -137,12 +132,16 @@ if __name__ == '__main__':
         env = FilmEnvironment(
             video_source=0,
             reference_image_folders=["throwing", "not_throwing"],
-            output_dir="film_agent/recordings",
+            output_dir=r"film_agent\test_data\LIDA",
             fps=30
         )
         
         try:
-            minimally_conscious_agent(env, lida_agent, steps=1000)
+            # Get the total number of frames in the video
+            total_frames = int(env.cap.get(cv2.CAP_PROP_FRAME_COUNT))
+            print(f"Processing full video: {total_frames} frames")
+            # Process all frames in the video
+            minimally_conscious_agent(env, lida_agent, steps=total_frames)
         except KeyboardInterrupt:
             print("Interrupted by user, shutting down...")
         except Exception as e:

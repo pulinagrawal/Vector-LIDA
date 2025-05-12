@@ -18,18 +18,45 @@ def print_error(message):
     print(f"{RED}ERROR: {message}{RESET}")
 
 
-def compute_average_embedding(embeddings_list):
-    """Compute the average embedding from a list of embeddings"""
+def compute_average_embedding(embeddings_list, ema_mode=True, prev_embedding=None, env=None):
+    """Compute the average embedding from a list of embeddings
+    
+    Args:
+        embeddings_list: List of embeddings to average
+        ema_mode: If True, use exponential moving average instead of simple average
+        prev_embedding: Previous EMA value (only used if ema_mode=True)
+        env: FilmEnvironment instance to get EMA parameters from
+        
+    Returns:
+        The averaged embedding (or EMA updated embedding if in EMA mode)
+    """
     if not embeddings_list:
-        return None
+        return prev_embedding if ema_mode and prev_embedding is not None else None
 
     try:
         # Extract features if the objects have a 'features' attribute, otherwise use the objects directly
         features_list = [emb.features if hasattr(emb, 'features') else emb for emb in embeddings_list]
         
-        # Stack all embeddings and compute the mean
-        features_list = tensor(features_list)
-        avg_embedding = torch.mean(features_list, dim=0, keepdim=True)
+        if ema_mode and prev_embedding is not None:
+            # Apply EMA update using the first embedding in the list
+            # Get alpha from environment if provided, otherwise use default
+            alpha = env.ema_alpha if env is not None else 0.1
+            
+            # Apply EMA formula: new_ema = alpha * current + (1 - alpha) * previous_ema
+            current_features = tensor(features_list[0])
+            prev_features = tensor(prev_embedding)
+            
+            # Make sure the dimensions match for the calculation
+            if len(current_features.shape) == 1:
+                current_features = current_features.unsqueeze(0)
+            if len(prev_features.shape) == 1:
+                prev_features = prev_features.unsqueeze(0)
+                
+            avg_embedding = alpha * current_features + (1 - alpha) * prev_features
+        else:
+            # Standard averaging
+            features_list = tensor(features_list)
+            avg_embedding = torch.mean(features_list, dim=0, keepdim=True)
 
         # Normalize the average embedding
         avg_embedding /= avg_embedding.norm(dim=-1, keepdim=True)
