@@ -130,18 +130,23 @@ if __name__ == '__main__':
     # Initialize environment with reference image folders and reduced FPS for better playback
     try:
         env = FilmEnvironment(
-            video_source=0,
+            video_source=1,
             reference_image_folders=["throwing", "not_throwing"],
             output_dir=r"film_agent\test_data\LIDA",
+            display_frames=True,
             fps=30
         )
         
         try:
+            current_motor_commands = None
             # Get the total number of frames in the video
-            total_frames = int(env.cap.get(cv2.CAP_PROP_FRAME_COUNT))
-            print(f"Processing full video: {total_frames} frames")
+            while True:
             # Process all frames in the video
-            minimally_conscious_agent(env, lida_agent, steps=total_frames)
+                execute_cognitive_cycle(
+                    current_motor_commands=current_motor_commands, 
+                    environment=env, 
+                    lida_agent=lida_agent
+                )
         except KeyboardInterrupt:
             print("Interrupted by user, shutting down...")
         except Exception as e:

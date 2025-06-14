@@ -50,6 +50,7 @@ from abc import ABC, abstractmethod
 from typing import Any, Dict
 from .utils import get_logger
 
+from tqdm import tqdm
 import logging
 logging.getLogger(__name__).setLevel(logging.INFO)
 
@@ -119,21 +120,26 @@ def run_alarm_lida(environment, lida_agent, steps=100):
         )
         motor_commands = lida_agent.sensory_motor_system.get_motor_commands()
 
+def execute_cognitive_cycle(current_motor_commands, environment, lida_agent):
+    lida_agent = SimpleNamespace(**lida_agent)
+    current_stimuli = environment.execute(motor_commands=current_motor_commands)
+    associated_nodes = lida_agent.sensory_system.process(current_stimuli)
+
+    lida_agent.csm.run(associated_nodes)
+    winning_coalition = lida_agent.gw.run(lida_agent.csm)
+
+    selected_behavior = lida_agent.procedural_system.run(winning_coalition)
+    current_motor_commands = lida_agent.sensory_motor_system.run(selected_behavior=selected_behavior, 
+                                                                    dorsal_update=associated_nodes,
+                                                                    winning_coalition=winning_coalition)
+    return lida_agent.sensory_motor_system.get_motor_commands()
+
 def minimally_conscious_agent(environment, lida_agent, steps=100):
     lida_agent = SimpleNamespace(**lida_agent)
     current_motor_commands = None
-    for _ in range(steps):
-        current_stimuli = environment.execute(motor_commands=current_motor_commands)
-        associated_nodes = lida_agent.sensory_system.process(current_stimuli)
-
-        lida_agent.csm.run(associated_nodes)
-        winning_coalition = lida_agent.gw.run(lida_agent.csm)
-
-        selected_behavior = lida_agent.procedural_system.run(winning_coalition)
-        current_motor_commands = lida_agent.sensory_motor_system.run(selected_behavior=selected_behavior, 
-                                                                     dorsal_update=associated_nodes,
-                                                                     winning_coalition=winning_coalition)
-        current_motor_commands = lida_agent.sensory_motor_system.get_motor_commands()
+    for _ in tqdm(range(steps)):
+        current_motor_commands = execute_cognitive_cycle(
+            current_motor_commands, environment, lida_agent)
 
 def run_lida(environment, lida_agent, steps=100):
     if not isinstance(environment, Environment):
