@@ -10,7 +10,7 @@ sys.path.append(str(Path(__file__).parents[1]))
 
 # Import LIDA components
 from lidapy.utils import Node
-from lidapy.agent import minimally_conscious_agent
+from lidapy.agent import minimally_conscious_agent, execute_cognitive_cycle
 from lidapy.acs import AttentionCodelet
 from lidapy.csm import CurrentSituationalModel
 from lidapy.pam import PerceptualAssociativeMemory
