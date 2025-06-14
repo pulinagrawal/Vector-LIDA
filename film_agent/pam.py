@@ -1,4 +1,12 @@
+import numpy as np
+
+from pathlib import Path
+from PIL import Image
+from sympy import deg
+from lidapy.utils import Node
 from lidapy.memory import Memory
+from film_agent.clip_utils import clip_image_encoder
+from film_agent.utils import compute_average_embedding
 
 class DefaultPAMMemory(Memory):
     def __init__(self):
@@ -16,3 +24,45 @@ class DefaultPAMMemory(Memory):
     def learn(self, nodes):
         for node in nodes:
             self.store(node)
+
+class MobileCLIPPAMMemory(DefaultPAMMemory):
+    def __init__(self, reference_images_map):
+        super(DefaultPAMMemory, self).__init__()
+
+        def frame_node(frame):
+            node = Node(content="frame features", activation=1.0)
+            node.features = clip_image_encoder(frame)
+            return node
+
+        for concept in reference_images_map:
+            node = Node(content=concept, activation=1.0)
+            node.features = compute_average_embedding([frame_node(np.array(Image.open(Path(file)))) for file in reference_images_map[concept]], ema_mode=False)
+            self.store(node)
+
+    def find_associated_nodes(self, node):
+        """
+        Find nodes associated with the given node based on similarity of features.
+        This method overrides the default behavior to use CLIP-based similarity.
+        """
+        associated_nodes = []
+        
+        most_similar = None
+        best_similarity = 0
+        for stored_node in self.nodes:
+            if stored_node != node:
+                similarity = np.dot(node.features, stored_node.features) / (np.linalg.norm(node.features) * np.linalg.norm(stored_node.features))
+                if similarity > best_similarity:
+                    best_similarity = similarity
+                    most_similar = stored_node
+        if most_similar is not None:
+            associated_nodes.append(most_similar)
+        return associated_nodes
+
+    def learn(self, nodes):
+        for node in nodes:
+            # Find associated nodes based on CLIP similarity
+            associated_nodes = self.find_associated_nodes(node)
+            
+            # Link the current node to its associated nodes
+            for associated_node in associated_nodes:
+                associated_node.features = compute_average_embedding([node], prev_embedding=associated_node)

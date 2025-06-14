@@ -100,7 +100,8 @@ class SchemeUnit(Scheme):
         return f"SchemeUnit(context={self.context}, action={self.action}, result={self.result})"
 
 class ProceduralMemory:
-    def __init__(self, motor_plans: List[MotorPlan]=None, schemes :List[Scheme]=None): # type: ignore
+    def __init__(self, motor_plans: List[MotorPlan]=None, schemes :List[Scheme]=None, learn=True): # type: ignore
+        self.learn = learn
         self.schemes = []
         self.decayables = [Decayable(self.schemes, decay_rate=0.9, decay_attribute='activation'),
                            Decayable(self.schemes, decay_rate=0.991, decay_attribute='base_activation', threshold=0.1)
@@ -163,7 +164,8 @@ class ProceduralMemory:
         self.logger.debug(f"Running with winning coalition: {winning_coalition}")
         self.receive_broadcast(winning_coalition)
         best_scheme = self.find_best_matching_scheme(winning_coalition)
-        self.learn_schemes(best_scheme, winning_coalition)
+        if self.learn:
+            self.learn_schemes(best_scheme, winning_coalition)
         return best_scheme
 
 class Behavior:

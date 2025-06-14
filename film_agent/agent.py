@@ -1,11 +1,8 @@
 #region Imports
 import traceback
-import torch
 import sys
 import numpy as np
-import cv2
 from pathlib import Path
-from torch import tensor
 from PIL import Image
 
 sys.path.append(str(Path(__file__).parents[1]))
@@ -23,7 +20,7 @@ from lidapy.ps import ProceduralMemory, ProceduralSystem, SchemeUnit
 from lidapy.sms import MotorPlan, SensoryMotorMemory, SensoryMotorSystem
 
 from film_agent.env import FilmEnvironment
-from film_agent.pam import DefaultPAMMemory
+from film_agent.pam import DefaultPAMMemory, MobileCLIPPAMMemory
 
 from film_agent.utils import compute_average_embedding, print_error
 from film_agent.utils import similarity_function 
@@ -79,7 +76,11 @@ Node.combine_features_function = classmethod(combine_features)
 sensors = [{"name": "vision_sensor", "modality": "image"}]
 feature_detectors = [vision_processor]
 actuators = [{"name": "record", "modality": "video", "processor": None}]
-pam = PerceptualAssociativeMemory(memory=DefaultPAMMemory())
+reference_images_map = {
+    "throwing": [Path(f"film_agent/frames/throwing/frame_{i+1}.jpg") for i in range(5)],
+    "not_throwing": [Path(f"film_agent/frames/not_throwing/frame_{i+1}.jpg") for i in range(5)]
+}
+pam = PerceptualAssociativeMemory(memory=MobileCLIPPAMMemory(reference_images_map=reference_images_map))
 sm = SensoryMemory(sensors=sensors, feature_detectors=feature_detectors)
 
 def record_function(dorsal_update=None):
@@ -116,7 +117,7 @@ schemes = [SchemeUnit(context=[action1_node, throwing], action=mps[0]),
            SchemeUnit(context=[], action=mps[1])
           ]
 
-pm = ProceduralMemory(schemes=schemes)
+pm = ProceduralMemory(schemes=schemes, learn=False)
 acs = [AttentionCodelet()]
 
 lida_agent = {
