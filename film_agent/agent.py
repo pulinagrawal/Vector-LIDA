@@ -48,7 +48,7 @@ def vision_processor(frame):
     return result
         
 # This is just a wrapper that forwards to the function in utils.py
-def compute_average_embedding(embeddings_list, ema_mode=True, prev_embedding=None, env=None):
+def compute_average_embedding(embeddings_list, ema_mode=False, prev_embedding=None, env=None):
     """Compute the average embedding from a list of embeddings.
     
     This is a wrapper for the main implementation in utils.py.
@@ -105,12 +105,14 @@ def frame_node(frame):
     node.features = clip_image_encoder(frame)
     return node
 
-action1_node = action_node("throwing")
-action2_node = action_node("not throwing")
-frame1_result = frame_node(np.array(Image.open(Path(r"film_agent\frames\frame_5.jpg"))))
-frame2_result = frame_node(np.array(Image.open(Path(r"film_agent\frames\not_throwing\20250401_163936.jpg"))))
-schemes = [SchemeUnit(context=[action1_node, frame1_result], action=mps[0]), 
-           SchemeUnit(context=[action2_node, frame2_result], action=mps[1]),
+action1_node = action_node("a person in the act of throwing")
+action2_node = action_node("cloudy sky")
+throwing = Node(content='frame features', activation=1.0)
+notthrowing = Node(content='frame features', activation=1.0)
+throwing.features = compute_average_embedding([frame_node(np.array(Image.open(Path(f"film_agent/frames/throwing/frame_{i+1}.jpg")))) for i in range(5)])
+notthrowing.features = compute_average_embedding([frame_node(np.array(Image.open(Path(f"film_agent/frames/not_throwing/frame_{i+1}.jpg")))) for i in range(5)])
+schemes = [SchemeUnit(context=[action1_node, throwing], action=mps[0]), 
+           SchemeUnit(context=[action2_node, notthrowing], action=mps[1]),
            SchemeUnit(context=[], action=mps[1])
           ]
 

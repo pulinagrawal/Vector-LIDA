@@ -421,7 +421,7 @@ def plot_confidence_comparison(results, output_path=None, title=None):
     ema_results = [r for r in filtered_results if r['metadata'].get('agent_type') == 'ema']
     adaptive_results = [r for r in filtered_results if r['metadata'].get('agent_type') == 'adaptive']
     
-    plt.figure(figsize=(14, 10))
+    plt.figure(figsize=(14, 6))
     
     # Track min/max y values for dynamic y-axis scaling
     all_y_values = []
@@ -502,7 +502,7 @@ def plot_confidence_comparison(results, output_path=None, title=None):
         
         # Use a smaller range by setting a reasonable bottom limit and reducing top padding
         # Find a reasonable minimum that's close to the lowest data point but still looks good
-        bottom_limit = max(0.5, min_y - y_range * 0.02)  # Never go below 0.5 for accuracy plots
+        bottom_limit = min(0.5, min_y - y_range * 0.02)  # Never go below 0.5 for accuracy plots
         # Add just enough padding at the top for annotations but keep it compact
         plt.ylim(bottom_limit, max_y + y_range * 0.08)
     

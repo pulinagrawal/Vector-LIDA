@@ -61,8 +61,8 @@ class FilmEnvironment(Environment):
         "metadata": {
             "agent_type": "LIDA",
             "ema_alpha": self.ema_alpha,
-            "video": "text1.mp4",
-            "labels": "test1.json",
+            "video": "test2.mp4",
+            "labels": "test2.json",
             "test_date": time.strftime("%Y-%m-%d %H:%M:%S"),
         },
         "accuracy": 0.0,
@@ -72,7 +72,7 @@ class FilmEnvironment(Environment):
     }
         self.current_classification = None
         self.classification_confidence = 0.0
-        self.ground_truth_path = r"film_agent\test_data\labels\test1.json"
+        self.ground_truth_path = r"film_agent\test_data\labels\test2.json"
         self.label_intervals = None
         with open(self.ground_truth_path, 'r') as f:
             self.label_intervals = json.load(f)

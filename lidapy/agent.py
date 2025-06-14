@@ -49,7 +49,6 @@ from types import SimpleNamespace
 from abc import ABC, abstractmethod
 from typing import Any, Dict
 from .utils import get_logger
-
 from tqdm import tqdm
 import logging
 logging.getLogger(__name__).setLevel(logging.INFO)

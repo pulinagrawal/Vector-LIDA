@@ -1,0 +1,6804 @@
+{
+  "metadata": {
+    "agent_type": "LIDA",
+    "ema_alpha": 0.9,
+    "video": "test2.mp4",
+    "labels": "test2.json",
+    "test_date": "2025-05-12 22:02:42"
+  },
+  "accuracy": 0.6972193614830072,
+  "total_frames": 971,
+  "correct_frames": 677,
+  "log": [
+    {
+      "frame": 2,
+      "timestamp": 0.07,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 3,
+      "timestamp": 0.1,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 4,
+      "timestamp": 0.13,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 5,
+      "timestamp": 0.17,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 6,
+      "timestamp": 0.2,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 7,
+      "timestamp": 0.23,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 8,
+      "timestamp": 0.27,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 9,
+      "timestamp": 0.3,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 10,
+      "timestamp": 0.33,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 11,
+      "timestamp": 0.37,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 12,
+      "timestamp": 0.4,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 13,
+      "timestamp": 0.43,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 14,
+      "timestamp": 0.47,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 15,
+      "timestamp": 0.5,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 16,
+      "timestamp": 0.53,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 17,
+      "timestamp": 0.57,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 18,
+      "timestamp": 0.6,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 19,
+      "timestamp": 0.63,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 20,
+      "timestamp": 0.67,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 21,
+      "timestamp": 0.7,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 22,
+      "timestamp": 0.73,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 23,
+      "timestamp": 0.77,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 24,
+      "timestamp": 0.8,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 25,
+      "timestamp": 0.83,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 26,
+      "timestamp": 0.87,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 27,
+      "timestamp": 0.9,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 28,
+      "timestamp": 0.93,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 29,
+      "timestamp": 0.97,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 30,
+      "timestamp": 1.0,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 31,
+      "timestamp": 1.03,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 32,
+      "timestamp": 1.07,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 33,
+      "timestamp": 1.1,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 34,
+      "timestamp": 1.13,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 35,
+      "timestamp": 1.17,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 36,
+      "timestamp": 1.2,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 37,
+      "timestamp": 1.23,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 38,
+      "timestamp": 1.27,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 39,
+      "timestamp": 1.3,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 40,
+      "timestamp": 1.33,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 41,
+      "timestamp": 1.37,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 42,
+      "timestamp": 1.4,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 43,
+      "timestamp": 1.43,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 44,
+      "timestamp": 1.47,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 45,
+      "timestamp": 1.5,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 46,
+      "timestamp": 1.53,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 47,
+      "timestamp": 1.57,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 48,
+      "timestamp": 1.6,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 49,
+      "timestamp": 1.63,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 50,
+      "timestamp": 1.67,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 51,
+      "timestamp": 1.7,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 52,
+      "timestamp": 1.73,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 53,
+      "timestamp": 1.77,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 54,
+      "timestamp": 1.8,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 55,
+      "timestamp": 1.83,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 56,
+      "timestamp": 1.87,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 57,
+      "timestamp": 1.9,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 58,
+      "timestamp": 1.93,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 59,
+      "timestamp": 1.97,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 60,
+      "timestamp": 2.0,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 61,
+      "timestamp": 2.03,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 62,
+      "timestamp": 2.07,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 63,
+      "timestamp": 2.1,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 64,
+      "timestamp": 2.13,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 65,
+      "timestamp": 2.17,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 66,
+      "timestamp": 2.2,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 67,
+      "timestamp": 2.23,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 68,
+      "timestamp": 2.27,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 69,
+      "timestamp": 2.3,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 70,
+      "timestamp": 2.33,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 71,
+      "timestamp": 2.37,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 72,
+      "timestamp": 2.4,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 73,
+      "timestamp": 2.43,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 74,
+      "timestamp": 2.47,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 75,
+      "timestamp": 2.5,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 76,
+      "timestamp": 2.53,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 77,
+      "timestamp": 2.57,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 78,
+      "timestamp": 2.6,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 79,
+      "timestamp": 2.63,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 80,
+      "timestamp": 2.67,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 81,
+      "timestamp": 2.7,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 82,
+      "timestamp": 2.73,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 83,
+      "timestamp": 2.77,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 84,
+      "timestamp": 2.8,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 85,
+      "timestamp": 2.83,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 86,
+      "timestamp": 2.87,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 87,
+      "timestamp": 2.9,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 88,
+      "timestamp": 2.93,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 89,
+      "timestamp": 2.97,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 90,
+      "timestamp": 3.0,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 91,
+      "timestamp": 3.03,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 92,
+      "timestamp": 3.07,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 93,
+      "timestamp": 3.1,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 94,
+      "timestamp": 3.13,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 95,
+      "timestamp": 3.17,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 96,
+      "timestamp": 3.2,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 97,
+      "timestamp": 3.23,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 98,
+      "timestamp": 3.27,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 99,
+      "timestamp": 3.3,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 100,
+      "timestamp": 3.33,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 101,
+      "timestamp": 3.37,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 102,
+      "timestamp": 3.4,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 103,
+      "timestamp": 3.43,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 104,
+      "timestamp": 3.47,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 105,
+      "timestamp": 3.5,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 106,
+      "timestamp": 3.53,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 107,
+      "timestamp": 3.57,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 108,
+      "timestamp": 3.6,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 109,
+      "timestamp": 3.63,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 110,
+      "timestamp": 3.67,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 111,
+      "timestamp": 3.7,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 112,
+      "timestamp": 3.73,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 113,
+      "timestamp": 3.77,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 114,
+      "timestamp": 3.8,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 115,
+      "timestamp": 3.83,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 116,
+      "timestamp": 3.87,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 117,
+      "timestamp": 3.9,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 118,
+      "timestamp": 3.93,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 119,
+      "timestamp": 3.97,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 120,
+      "timestamp": 4.0,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 121,
+      "timestamp": 4.03,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 122,
+      "timestamp": 4.07,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 123,
+      "timestamp": 4.1,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 124,
+      "timestamp": 4.13,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 125,
+      "timestamp": 4.17,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 126,
+      "timestamp": 4.2,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 127,
+      "timestamp": 4.23,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 128,
+      "timestamp": 4.27,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 129,
+      "timestamp": 4.3,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 130,
+      "timestamp": 4.33,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 131,
+      "timestamp": 4.37,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 132,
+      "timestamp": 4.4,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 133,
+      "timestamp": 4.43,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 134,
+      "timestamp": 4.47,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 135,
+      "timestamp": 4.5,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 136,
+      "timestamp": 4.53,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 137,
+      "timestamp": 4.57,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 138,
+      "timestamp": 4.6,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 139,
+      "timestamp": 4.63,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 140,
+      "timestamp": 4.67,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 141,
+      "timestamp": 4.7,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 142,
+      "timestamp": 4.73,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 143,
+      "timestamp": 4.77,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 144,
+      "timestamp": 4.8,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 145,
+      "timestamp": 4.83,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 146,
+      "timestamp": 4.87,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 147,
+      "timestamp": 4.9,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 148,
+      "timestamp": 4.93,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 149,
+      "timestamp": 4.97,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 150,
+      "timestamp": 5.0,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 151,
+      "timestamp": 5.03,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 152,
+      "timestamp": 5.07,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 153,
+      "timestamp": 5.1,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 154,
+      "timestamp": 5.13,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 155,
+      "timestamp": 5.17,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 156,
+      "timestamp": 5.2,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 157,
+      "timestamp": 5.23,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 158,
+      "timestamp": 5.27,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 159,
+      "timestamp": 5.3,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 160,
+      "timestamp": 5.33,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 161,
+      "timestamp": 5.37,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 162,
+      "timestamp": 5.4,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 163,
+      "timestamp": 5.43,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 164,
+      "timestamp": 5.47,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 165,
+      "timestamp": 5.5,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 166,
+      "timestamp": 5.53,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 167,
+      "timestamp": 5.57,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 168,
+      "timestamp": 5.6,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 169,
+      "timestamp": 5.63,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 170,
+      "timestamp": 5.67,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 171,
+      "timestamp": 5.7,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 172,
+      "timestamp": 5.73,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 173,
+      "timestamp": 5.77,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 174,
+      "timestamp": 5.8,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 175,
+      "timestamp": 5.83,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 176,
+      "timestamp": 5.87,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 177,
+      "timestamp": 5.9,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 178,
+      "timestamp": 5.93,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 179,
+      "timestamp": 5.97,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 180,
+      "timestamp": 6.0,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 181,
+      "timestamp": 6.03,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 182,
+      "timestamp": 6.07,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 183,
+      "timestamp": 6.1,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 184,
+      "timestamp": 6.13,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 185,
+      "timestamp": 6.17,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 186,
+      "timestamp": 6.2,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 187,
+      "timestamp": 6.23,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 188,
+      "timestamp": 6.27,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 189,
+      "timestamp": 6.3,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 190,
+      "timestamp": 6.33,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 191,
+      "timestamp": 6.37,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 192,
+      "timestamp": 6.4,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 193,
+      "timestamp": 6.43,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 194,
+      "timestamp": 6.47,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 195,
+      "timestamp": 6.5,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 196,
+      "timestamp": 6.53,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 197,
+      "timestamp": 6.57,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 198,
+      "timestamp": 6.6,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 199,
+      "timestamp": 6.63,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 200,
+      "timestamp": 6.67,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 201,
+      "timestamp": 6.7,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 202,
+      "timestamp": 6.73,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 203,
+      "timestamp": 6.77,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 204,
+      "timestamp": 6.8,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 205,
+      "timestamp": 6.83,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 206,
+      "timestamp": 6.87,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 207,
+      "timestamp": 6.9,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 208,
+      "timestamp": 6.93,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 209,
+      "timestamp": 6.97,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 210,
+      "timestamp": 7.0,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 211,
+      "timestamp": 7.03,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 212,
+      "timestamp": 7.07,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 213,
+      "timestamp": 7.1,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 214,
+      "timestamp": 7.13,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 215,
+      "timestamp": 7.17,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 216,
+      "timestamp": 7.2,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 217,
+      "timestamp": 7.23,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 218,
+      "timestamp": 7.27,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 219,
+      "timestamp": 7.3,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 220,
+      "timestamp": 7.33,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 221,
+      "timestamp": 7.37,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 222,
+      "timestamp": 7.4,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 223,
+      "timestamp": 7.43,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 224,
+      "timestamp": 7.47,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 225,
+      "timestamp": 7.5,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 226,
+      "timestamp": 7.53,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 227,
+      "timestamp": 7.57,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 228,
+      "timestamp": 7.6,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 229,
+      "timestamp": 7.63,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 230,
+      "timestamp": 7.67,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 231,
+      "timestamp": 7.7,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 232,
+      "timestamp": 7.73,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 233,
+      "timestamp": 7.77,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 234,
+      "timestamp": 7.8,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 235,
+      "timestamp": 7.83,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 236,
+      "timestamp": 7.87,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 237,
+      "timestamp": 7.9,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 238,
+      "timestamp": 7.93,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 239,
+      "timestamp": 7.97,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 240,
+      "timestamp": 8.0,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 241,
+      "timestamp": 8.03,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 242,
+      "timestamp": 8.07,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 243,
+      "timestamp": 8.1,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 244,
+      "timestamp": 8.13,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 245,
+      "timestamp": 8.17,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 246,
+      "timestamp": 8.2,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 247,
+      "timestamp": 8.23,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 248,
+      "timestamp": 8.27,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 249,
+      "timestamp": 8.3,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 250,
+      "timestamp": 8.33,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 251,
+      "timestamp": 8.37,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 252,
+      "timestamp": 8.4,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 253,
+      "timestamp": 8.43,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 254,
+      "timestamp": 8.47,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 255,
+      "timestamp": 8.5,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 256,
+      "timestamp": 8.53,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 257,
+      "timestamp": 8.57,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 258,
+      "timestamp": 8.6,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 259,
+      "timestamp": 8.63,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 260,
+      "timestamp": 8.67,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 261,
+      "timestamp": 8.7,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 262,
+      "timestamp": 8.73,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 263,
+      "timestamp": 8.77,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 264,
+      "timestamp": 8.8,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 265,
+      "timestamp": 8.83,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 266,
+      "timestamp": 8.87,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 267,
+      "timestamp": 8.9,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 268,
+      "timestamp": 8.93,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 269,
+      "timestamp": 8.97,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 270,
+      "timestamp": 9.0,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 271,
+      "timestamp": 9.03,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 272,
+      "timestamp": 9.07,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 273,
+      "timestamp": 9.1,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 274,
+      "timestamp": 9.13,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 275,
+      "timestamp": 9.17,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 276,
+      "timestamp": 9.2,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 277,
+      "timestamp": 9.23,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 278,
+      "timestamp": 9.27,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 279,
+      "timestamp": 9.3,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 280,
+      "timestamp": 9.33,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 281,
+      "timestamp": 9.37,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 282,
+      "timestamp": 9.4,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 283,
+      "timestamp": 9.43,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 284,
+      "timestamp": 9.47,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 285,
+      "timestamp": 9.5,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 286,
+      "timestamp": 9.53,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 287,
+      "timestamp": 9.57,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 288,
+      "timestamp": 9.6,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 289,
+      "timestamp": 9.63,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 290,
+      "timestamp": 9.67,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 291,
+      "timestamp": 9.7,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 292,
+      "timestamp": 9.73,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 293,
+      "timestamp": 9.77,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 294,
+      "timestamp": 9.8,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 295,
+      "timestamp": 9.83,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 296,
+      "timestamp": 9.87,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 297,
+      "timestamp": 9.9,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 298,
+      "timestamp": 9.93,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 299,
+      "timestamp": 9.97,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 300,
+      "timestamp": 10.0,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 301,
+      "timestamp": 10.03,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 302,
+      "timestamp": 10.07,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 303,
+      "timestamp": 10.1,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 304,
+      "timestamp": 10.13,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 305,
+      "timestamp": 10.17,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 306,
+      "timestamp": 10.2,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 307,
+      "timestamp": 10.23,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 308,
+      "timestamp": 10.27,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 309,
+      "timestamp": 10.3,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 310,
+      "timestamp": 10.33,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 311,
+      "timestamp": 10.37,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 312,
+      "timestamp": 10.4,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 313,
+      "timestamp": 10.43,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 314,
+      "timestamp": 10.47,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 315,
+      "timestamp": 10.5,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 316,
+      "timestamp": 10.53,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 317,
+      "timestamp": 10.57,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 318,
+      "timestamp": 10.6,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 319,
+      "timestamp": 10.63,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 320,
+      "timestamp": 10.67,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 321,
+      "timestamp": 10.7,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 322,
+      "timestamp": 10.73,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 323,
+      "timestamp": 10.77,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 324,
+      "timestamp": 10.8,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 325,
+      "timestamp": 10.83,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 326,
+      "timestamp": 10.87,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 327,
+      "timestamp": 10.9,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 328,
+      "timestamp": 10.93,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 329,
+      "timestamp": 10.97,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 330,
+      "timestamp": 11.0,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 331,
+      "timestamp": 11.03,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 332,
+      "timestamp": 11.07,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 333,
+      "timestamp": 11.1,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 334,
+      "timestamp": 11.13,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 335,
+      "timestamp": 11.17,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 336,
+      "timestamp": 11.2,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 337,
+      "timestamp": 11.23,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 338,
+      "timestamp": 11.27,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 339,
+      "timestamp": 11.3,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 340,
+      "timestamp": 11.33,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 341,
+      "timestamp": 11.37,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 342,
+      "timestamp": 11.4,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 343,
+      "timestamp": 11.43,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 344,
+      "timestamp": 11.47,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 345,
+      "timestamp": 11.5,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 346,
+      "timestamp": 11.53,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 347,
+      "timestamp": 11.57,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 348,
+      "timestamp": 11.6,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 349,
+      "timestamp": 11.63,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 350,
+      "timestamp": 11.67,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 351,
+      "timestamp": 11.7,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 352,
+      "timestamp": 11.73,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 353,
+      "timestamp": 11.77,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 354,
+      "timestamp": 11.8,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 355,
+      "timestamp": 11.83,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 356,
+      "timestamp": 11.87,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 357,
+      "timestamp": 11.9,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 358,
+      "timestamp": 11.93,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 359,
+      "timestamp": 11.97,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 360,
+      "timestamp": 12.0,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 361,
+      "timestamp": 12.03,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 362,
+      "timestamp": 12.07,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 363,
+      "timestamp": 12.1,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 364,
+      "timestamp": 12.13,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 365,
+      "timestamp": 12.17,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 366,
+      "timestamp": 12.2,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 367,
+      "timestamp": 12.23,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 368,
+      "timestamp": 12.27,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 369,
+      "timestamp": 12.3,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 370,
+      "timestamp": 12.33,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 371,
+      "timestamp": 12.37,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 372,
+      "timestamp": 12.4,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 373,
+      "timestamp": 12.43,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 374,
+      "timestamp": 12.47,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 375,
+      "timestamp": 12.5,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 376,
+      "timestamp": 12.53,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 377,
+      "timestamp": 12.57,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 378,
+      "timestamp": 12.6,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 379,
+      "timestamp": 12.63,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 380,
+      "timestamp": 12.67,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 381,
+      "timestamp": 12.7,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 382,
+      "timestamp": 12.73,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 383,
+      "timestamp": 12.77,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 384,
+      "timestamp": 12.8,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 385,
+      "timestamp": 12.83,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 386,
+      "timestamp": 12.87,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 387,
+      "timestamp": 12.9,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 388,
+      "timestamp": 12.93,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 389,
+      "timestamp": 12.97,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 390,
+      "timestamp": 13.0,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 391,
+      "timestamp": 13.03,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 392,
+      "timestamp": 13.07,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 393,
+      "timestamp": 13.1,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 394,
+      "timestamp": 13.13,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 395,
+      "timestamp": 13.17,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 396,
+      "timestamp": 13.2,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 397,
+      "timestamp": 13.23,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 398,
+      "timestamp": 13.27,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 399,
+      "timestamp": 13.3,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 400,
+      "timestamp": 13.33,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 401,
+      "timestamp": 13.37,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 402,
+      "timestamp": 13.4,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 403,
+      "timestamp": 13.43,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 404,
+      "timestamp": 13.47,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 405,
+      "timestamp": 13.5,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 406,
+      "timestamp": 13.53,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 407,
+      "timestamp": 13.57,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 408,
+      "timestamp": 13.6,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 409,
+      "timestamp": 13.63,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 410,
+      "timestamp": 13.67,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 411,
+      "timestamp": 13.7,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 412,
+      "timestamp": 13.73,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 413,
+      "timestamp": 13.77,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 414,
+      "timestamp": 13.8,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 415,
+      "timestamp": 13.83,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 416,
+      "timestamp": 13.87,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 417,
+      "timestamp": 13.9,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 418,
+      "timestamp": 13.93,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 419,
+      "timestamp": 13.97,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 420,
+      "timestamp": 14.0,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 421,
+      "timestamp": 14.03,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 422,
+      "timestamp": 14.07,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 423,
+      "timestamp": 14.1,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 424,
+      "timestamp": 14.13,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 425,
+      "timestamp": 14.17,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 426,
+      "timestamp": 14.2,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 427,
+      "timestamp": 14.23,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 428,
+      "timestamp": 14.27,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 429,
+      "timestamp": 14.3,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 430,
+      "timestamp": 14.33,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 431,
+      "timestamp": 14.37,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 432,
+      "timestamp": 14.4,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 433,
+      "timestamp": 14.43,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 434,
+      "timestamp": 14.47,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 435,
+      "timestamp": 14.5,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 436,
+      "timestamp": 14.53,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 437,
+      "timestamp": 14.57,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 438,
+      "timestamp": 14.6,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 439,
+      "timestamp": 14.63,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 440,
+      "timestamp": 14.67,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 441,
+      "timestamp": 14.7,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 442,
+      "timestamp": 14.73,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 443,
+      "timestamp": 14.77,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 444,
+      "timestamp": 14.8,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 445,
+      "timestamp": 14.83,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 446,
+      "timestamp": 14.87,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 447,
+      "timestamp": 14.9,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 448,
+      "timestamp": 14.93,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 449,
+      "timestamp": 14.97,
+      "agent_decision": "throwing",
+      "true_label": "throwing",
+      "correct": true
+    },
+    {
+      "frame": 450,
+      "timestamp": 15.0,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 451,
+      "timestamp": 15.03,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 452,
+      "timestamp": 15.07,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 453,
+      "timestamp": 15.1,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 454,
+      "timestamp": 15.13,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 455,
+      "timestamp": 15.17,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 456,
+      "timestamp": 15.2,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 457,
+      "timestamp": 15.23,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 458,
+      "timestamp": 15.27,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 459,
+      "timestamp": 15.3,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 460,
+      "timestamp": 15.33,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 461,
+      "timestamp": 15.37,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 462,
+      "timestamp": 15.4,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 463,
+      "timestamp": 15.43,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 464,
+      "timestamp": 15.47,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 465,
+      "timestamp": 15.5,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 466,
+      "timestamp": 15.53,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 467,
+      "timestamp": 15.57,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 468,
+      "timestamp": 15.6,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 469,
+      "timestamp": 15.63,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 470,
+      "timestamp": 15.67,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 471,
+      "timestamp": 15.7,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 472,
+      "timestamp": 15.73,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 473,
+      "timestamp": 15.77,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 474,
+      "timestamp": 15.8,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 475,
+      "timestamp": 15.83,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 476,
+      "timestamp": 15.87,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 477,
+      "timestamp": 15.9,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 478,
+      "timestamp": 15.93,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 479,
+      "timestamp": 15.97,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 480,
+      "timestamp": 16.0,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 481,
+      "timestamp": 16.03,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 482,
+      "timestamp": 16.07,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 483,
+      "timestamp": 16.1,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 484,
+      "timestamp": 16.13,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 485,
+      "timestamp": 16.17,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 486,
+      "timestamp": 16.2,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 487,
+      "timestamp": 16.23,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 488,
+      "timestamp": 16.27,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 489,
+      "timestamp": 16.3,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 490,
+      "timestamp": 16.33,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 491,
+      "timestamp": 16.37,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 492,
+      "timestamp": 16.4,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 493,
+      "timestamp": 16.43,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 494,
+      "timestamp": 16.47,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 495,
+      "timestamp": 16.5,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 496,
+      "timestamp": 16.53,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 497,
+      "timestamp": 16.57,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 498,
+      "timestamp": 16.6,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 499,
+      "timestamp": 16.63,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 500,
+      "timestamp": 16.67,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 501,
+      "timestamp": 16.7,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 502,
+      "timestamp": 16.73,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 503,
+      "timestamp": 16.77,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 504,
+      "timestamp": 16.8,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 505,
+      "timestamp": 16.83,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 506,
+      "timestamp": 16.87,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 507,
+      "timestamp": 16.9,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 508,
+      "timestamp": 16.93,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 509,
+      "timestamp": 16.97,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 510,
+      "timestamp": 17.0,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 511,
+      "timestamp": 17.03,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 512,
+      "timestamp": 17.07,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 513,
+      "timestamp": 17.1,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 514,
+      "timestamp": 17.13,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 515,
+      "timestamp": 17.17,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 516,
+      "timestamp": 17.2,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 517,
+      "timestamp": 17.23,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 518,
+      "timestamp": 17.27,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 519,
+      "timestamp": 17.3,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 520,
+      "timestamp": 17.33,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 521,
+      "timestamp": 17.37,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 522,
+      "timestamp": 17.4,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 523,
+      "timestamp": 17.43,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 524,
+      "timestamp": 17.47,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 525,
+      "timestamp": 17.5,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 526,
+      "timestamp": 17.53,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 527,
+      "timestamp": 17.57,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 528,
+      "timestamp": 17.6,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 529,
+      "timestamp": 17.63,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 530,
+      "timestamp": 17.67,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 531,
+      "timestamp": 17.7,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 532,
+      "timestamp": 17.73,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 533,
+      "timestamp": 17.77,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 534,
+      "timestamp": 17.8,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 535,
+      "timestamp": 17.83,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 536,
+      "timestamp": 17.87,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 537,
+      "timestamp": 17.9,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 538,
+      "timestamp": 17.93,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 539,
+      "timestamp": 17.97,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 540,
+      "timestamp": 18.0,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 541,
+      "timestamp": 18.03,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 542,
+      "timestamp": 18.07,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 543,
+      "timestamp": 18.1,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 544,
+      "timestamp": 18.13,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 545,
+      "timestamp": 18.17,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 546,
+      "timestamp": 18.2,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 547,
+      "timestamp": 18.23,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 548,
+      "timestamp": 18.27,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 549,
+      "timestamp": 18.3,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 550,
+      "timestamp": 18.33,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 551,
+      "timestamp": 18.37,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 552,
+      "timestamp": 18.4,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 553,
+      "timestamp": 18.43,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 554,
+      "timestamp": 18.47,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 555,
+      "timestamp": 18.5,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 556,
+      "timestamp": 18.53,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 557,
+      "timestamp": 18.57,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 558,
+      "timestamp": 18.6,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 559,
+      "timestamp": 18.63,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 560,
+      "timestamp": 18.67,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 561,
+      "timestamp": 18.7,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 562,
+      "timestamp": 18.73,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 563,
+      "timestamp": 18.77,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 564,
+      "timestamp": 18.8,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 565,
+      "timestamp": 18.83,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 566,
+      "timestamp": 18.87,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 567,
+      "timestamp": 18.9,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 568,
+      "timestamp": 18.93,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 569,
+      "timestamp": 18.97,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 570,
+      "timestamp": 19.0,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 571,
+      "timestamp": 19.03,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 572,
+      "timestamp": 19.07,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 573,
+      "timestamp": 19.1,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 574,
+      "timestamp": 19.13,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 575,
+      "timestamp": 19.17,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 576,
+      "timestamp": 19.2,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 577,
+      "timestamp": 19.23,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 578,
+      "timestamp": 19.27,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 579,
+      "timestamp": 19.3,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 580,
+      "timestamp": 19.33,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 581,
+      "timestamp": 19.37,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 582,
+      "timestamp": 19.4,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 583,
+      "timestamp": 19.43,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 584,
+      "timestamp": 19.47,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 585,
+      "timestamp": 19.5,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 586,
+      "timestamp": 19.53,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 587,
+      "timestamp": 19.57,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 588,
+      "timestamp": 19.6,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 589,
+      "timestamp": 19.63,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 590,
+      "timestamp": 19.67,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 591,
+      "timestamp": 19.7,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 592,
+      "timestamp": 19.73,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 593,
+      "timestamp": 19.77,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 594,
+      "timestamp": 19.8,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 595,
+      "timestamp": 19.83,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 596,
+      "timestamp": 19.87,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 597,
+      "timestamp": 19.9,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 598,
+      "timestamp": 19.93,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 599,
+      "timestamp": 19.97,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 600,
+      "timestamp": 20.0,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 601,
+      "timestamp": 20.03,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 602,
+      "timestamp": 20.07,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 603,
+      "timestamp": 20.1,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 604,
+      "timestamp": 20.13,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 605,
+      "timestamp": 20.17,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 606,
+      "timestamp": 20.2,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 607,
+      "timestamp": 20.23,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 608,
+      "timestamp": 20.27,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 609,
+      "timestamp": 20.3,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 610,
+      "timestamp": 20.33,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 611,
+      "timestamp": 20.37,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 612,
+      "timestamp": 20.4,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 613,
+      "timestamp": 20.43,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 614,
+      "timestamp": 20.47,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 615,
+      "timestamp": 20.5,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 616,
+      "timestamp": 20.53,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 617,
+      "timestamp": 20.57,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 618,
+      "timestamp": 20.6,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 619,
+      "timestamp": 20.63,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 620,
+      "timestamp": 20.67,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 621,
+      "timestamp": 20.7,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 622,
+      "timestamp": 20.73,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 623,
+      "timestamp": 20.77,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 624,
+      "timestamp": 20.8,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 625,
+      "timestamp": 20.83,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 626,
+      "timestamp": 20.87,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 627,
+      "timestamp": 20.9,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 628,
+      "timestamp": 20.93,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 629,
+      "timestamp": 20.97,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 630,
+      "timestamp": 21.0,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 631,
+      "timestamp": 21.03,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 632,
+      "timestamp": 21.07,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 633,
+      "timestamp": 21.1,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 634,
+      "timestamp": 21.13,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 635,
+      "timestamp": 21.17,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 636,
+      "timestamp": 21.2,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 637,
+      "timestamp": 21.23,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 638,
+      "timestamp": 21.27,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 639,
+      "timestamp": 21.3,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 640,
+      "timestamp": 21.33,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 641,
+      "timestamp": 21.37,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 642,
+      "timestamp": 21.4,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 643,
+      "timestamp": 21.43,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 644,
+      "timestamp": 21.47,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 645,
+      "timestamp": 21.5,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 646,
+      "timestamp": 21.53,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 647,
+      "timestamp": 21.57,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 648,
+      "timestamp": 21.6,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 649,
+      "timestamp": 21.63,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 650,
+      "timestamp": 21.67,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 651,
+      "timestamp": 21.7,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 652,
+      "timestamp": 21.73,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 653,
+      "timestamp": 21.77,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 654,
+      "timestamp": 21.8,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 655,
+      "timestamp": 21.83,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 656,
+      "timestamp": 21.87,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 657,
+      "timestamp": 21.9,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 658,
+      "timestamp": 21.93,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 659,
+      "timestamp": 21.97,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 660,
+      "timestamp": 22.0,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 661,
+      "timestamp": 22.03,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 662,
+      "timestamp": 22.07,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 663,
+      "timestamp": 22.1,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 664,
+      "timestamp": 22.13,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 665,
+      "timestamp": 22.17,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 666,
+      "timestamp": 22.2,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 667,
+      "timestamp": 22.23,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 668,
+      "timestamp": 22.27,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 669,
+      "timestamp": 22.3,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 670,
+      "timestamp": 22.33,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 671,
+      "timestamp": 22.37,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 672,
+      "timestamp": 22.4,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 673,
+      "timestamp": 22.43,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 674,
+      "timestamp": 22.47,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 675,
+      "timestamp": 22.5,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 676,
+      "timestamp": 22.53,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 677,
+      "timestamp": 22.57,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 678,
+      "timestamp": 22.6,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 679,
+      "timestamp": 22.63,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 680,
+      "timestamp": 22.67,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 681,
+      "timestamp": 22.7,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 682,
+      "timestamp": 22.73,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 683,
+      "timestamp": 22.77,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 684,
+      "timestamp": 22.8,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 685,
+      "timestamp": 22.83,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 686,
+      "timestamp": 22.87,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 687,
+      "timestamp": 22.9,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 688,
+      "timestamp": 22.93,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 689,
+      "timestamp": 22.97,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 690,
+      "timestamp": 23.0,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 691,
+      "timestamp": 23.03,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 692,
+      "timestamp": 23.07,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 693,
+      "timestamp": 23.1,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 694,
+      "timestamp": 23.13,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 695,
+      "timestamp": 23.17,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 696,
+      "timestamp": 23.2,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 697,
+      "timestamp": 23.23,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 698,
+      "timestamp": 23.27,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 699,
+      "timestamp": 23.3,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 700,
+      "timestamp": 23.33,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 701,
+      "timestamp": 23.37,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 702,
+      "timestamp": 23.4,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 703,
+      "timestamp": 23.43,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 704,
+      "timestamp": 23.47,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 705,
+      "timestamp": 23.5,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 706,
+      "timestamp": 23.53,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 707,
+      "timestamp": 23.57,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 708,
+      "timestamp": 23.6,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 709,
+      "timestamp": 23.63,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 710,
+      "timestamp": 23.67,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 711,
+      "timestamp": 23.7,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 712,
+      "timestamp": 23.73,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 713,
+      "timestamp": 23.77,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 714,
+      "timestamp": 23.8,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 715,
+      "timestamp": 23.83,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 716,
+      "timestamp": 23.87,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 717,
+      "timestamp": 23.9,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 718,
+      "timestamp": 23.93,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 719,
+      "timestamp": 23.97,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 720,
+      "timestamp": 24.0,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 721,
+      "timestamp": 24.03,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 722,
+      "timestamp": 24.07,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 723,
+      "timestamp": 24.1,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 724,
+      "timestamp": 24.13,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 725,
+      "timestamp": 24.17,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 726,
+      "timestamp": 24.2,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 727,
+      "timestamp": 24.23,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 728,
+      "timestamp": 24.27,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 729,
+      "timestamp": 24.3,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 730,
+      "timestamp": 24.33,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 731,
+      "timestamp": 24.37,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 732,
+      "timestamp": 24.4,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 733,
+      "timestamp": 24.43,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 734,
+      "timestamp": 24.47,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 735,
+      "timestamp": 24.5,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 736,
+      "timestamp": 24.53,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 737,
+      "timestamp": 24.57,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 738,
+      "timestamp": 24.6,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 739,
+      "timestamp": 24.63,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 740,
+      "timestamp": 24.67,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 741,
+      "timestamp": 24.7,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 742,
+      "timestamp": 24.73,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 743,
+      "timestamp": 24.77,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 744,
+      "timestamp": 24.8,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 745,
+      "timestamp": 24.83,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 746,
+      "timestamp": 24.87,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 747,
+      "timestamp": 24.9,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 748,
+      "timestamp": 24.93,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 749,
+      "timestamp": 24.97,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 750,
+      "timestamp": 25.0,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 751,
+      "timestamp": 25.03,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 752,
+      "timestamp": 25.07,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 753,
+      "timestamp": 25.1,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 754,
+      "timestamp": 25.13,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 755,
+      "timestamp": 25.17,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 756,
+      "timestamp": 25.2,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 757,
+      "timestamp": 25.23,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 758,
+      "timestamp": 25.27,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 759,
+      "timestamp": 25.3,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 760,
+      "timestamp": 25.33,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 761,
+      "timestamp": 25.37,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 762,
+      "timestamp": 25.4,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 763,
+      "timestamp": 25.43,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 764,
+      "timestamp": 25.47,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 765,
+      "timestamp": 25.5,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 766,
+      "timestamp": 25.53,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 767,
+      "timestamp": 25.57,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 768,
+      "timestamp": 25.6,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 769,
+      "timestamp": 25.63,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 770,
+      "timestamp": 25.67,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 771,
+      "timestamp": 25.7,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 772,
+      "timestamp": 25.73,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 773,
+      "timestamp": 25.77,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 774,
+      "timestamp": 25.8,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 775,
+      "timestamp": 25.83,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 776,
+      "timestamp": 25.87,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 777,
+      "timestamp": 25.9,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 778,
+      "timestamp": 25.93,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 779,
+      "timestamp": 25.97,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 780,
+      "timestamp": 26.0,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 781,
+      "timestamp": 26.03,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 782,
+      "timestamp": 26.07,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 783,
+      "timestamp": 26.1,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 784,
+      "timestamp": 26.13,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 785,
+      "timestamp": 26.17,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 786,
+      "timestamp": 26.2,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 787,
+      "timestamp": 26.23,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 788,
+      "timestamp": 26.27,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 789,
+      "timestamp": 26.3,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 790,
+      "timestamp": 26.33,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 791,
+      "timestamp": 26.37,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 792,
+      "timestamp": 26.4,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 793,
+      "timestamp": 26.43,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 794,
+      "timestamp": 26.47,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 795,
+      "timestamp": 26.5,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 796,
+      "timestamp": 26.53,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 797,
+      "timestamp": 26.57,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 798,
+      "timestamp": 26.6,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 799,
+      "timestamp": 26.63,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 800,
+      "timestamp": 26.67,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 801,
+      "timestamp": 26.7,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 802,
+      "timestamp": 26.73,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 803,
+      "timestamp": 26.77,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 804,
+      "timestamp": 26.8,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 805,
+      "timestamp": 26.83,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 806,
+      "timestamp": 26.87,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 807,
+      "timestamp": 26.9,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 808,
+      "timestamp": 26.93,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 809,
+      "timestamp": 26.97,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 810,
+      "timestamp": 27.0,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 811,
+      "timestamp": 27.03,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 812,
+      "timestamp": 27.07,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 813,
+      "timestamp": 27.1,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 814,
+      "timestamp": 27.13,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 815,
+      "timestamp": 27.17,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 816,
+      "timestamp": 27.2,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 817,
+      "timestamp": 27.23,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 818,
+      "timestamp": 27.27,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 819,
+      "timestamp": 27.3,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 820,
+      "timestamp": 27.33,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 821,
+      "timestamp": 27.37,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 822,
+      "timestamp": 27.4,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 823,
+      "timestamp": 27.43,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 824,
+      "timestamp": 27.47,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 825,
+      "timestamp": 27.5,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 826,
+      "timestamp": 27.53,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 827,
+      "timestamp": 27.57,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 828,
+      "timestamp": 27.6,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 829,
+      "timestamp": 27.63,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 830,
+      "timestamp": 27.67,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 831,
+      "timestamp": 27.7,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 832,
+      "timestamp": 27.73,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 833,
+      "timestamp": 27.77,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 834,
+      "timestamp": 27.8,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 835,
+      "timestamp": 27.83,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 836,
+      "timestamp": 27.87,
+      "agent_decision": "throwing",
+      "true_label": "not throwing",
+      "correct": false
+    },
+    {
+      "frame": 837,
+      "timestamp": 27.9,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 838,
+      "timestamp": 27.93,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 839,
+      "timestamp": 27.97,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 840,
+      "timestamp": 28.0,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 841,
+      "timestamp": 28.03,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 842,
+      "timestamp": 28.07,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 843,
+      "timestamp": 28.1,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 844,
+      "timestamp": 28.13,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 845,
+      "timestamp": 28.17,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 846,
+      "timestamp": 28.2,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 847,
+      "timestamp": 28.23,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 848,
+      "timestamp": 28.27,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 849,
+      "timestamp": 28.3,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 850,
+      "timestamp": 28.33,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 851,
+      "timestamp": 28.37,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 852,
+      "timestamp": 28.4,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 853,
+      "timestamp": 28.43,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 854,
+      "timestamp": 28.47,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 855,
+      "timestamp": 28.5,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 856,
+      "timestamp": 28.53,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 857,
+      "timestamp": 28.57,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 858,
+      "timestamp": 28.6,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 859,
+      "timestamp": 28.63,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 860,
+      "timestamp": 28.67,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 861,
+      "timestamp": 28.7,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 862,
+      "timestamp": 28.73,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 863,
+      "timestamp": 28.77,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 864,
+      "timestamp": 28.8,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 865,
+      "timestamp": 28.83,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 866,
+      "timestamp": 28.87,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 867,
+      "timestamp": 28.9,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 868,
+      "timestamp": 28.93,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 869,
+      "timestamp": 28.97,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 870,
+      "timestamp": 29.0,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 871,
+      "timestamp": 29.03,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 872,
+      "timestamp": 29.07,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 873,
+      "timestamp": 29.1,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 874,
+      "timestamp": 29.13,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 875,
+      "timestamp": 29.17,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 876,
+      "timestamp": 29.2,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 877,
+      "timestamp": 29.23,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 878,
+      "timestamp": 29.27,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 879,
+      "timestamp": 29.3,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 880,
+      "timestamp": 29.33,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 881,
+      "timestamp": 29.37,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 882,
+      "timestamp": 29.4,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 883,
+      "timestamp": 29.43,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 884,
+      "timestamp": 29.47,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 885,
+      "timestamp": 29.5,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 886,
+      "timestamp": 29.53,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 887,
+      "timestamp": 29.57,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 888,
+      "timestamp": 29.6,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 889,
+      "timestamp": 29.63,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 890,
+      "timestamp": 29.67,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 891,
+      "timestamp": 29.7,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 892,
+      "timestamp": 29.73,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 893,
+      "timestamp": 29.77,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 894,
+      "timestamp": 29.8,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 895,
+      "timestamp": 29.83,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 896,
+      "timestamp": 29.87,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 897,
+      "timestamp": 29.9,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 898,
+      "timestamp": 29.93,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 899,
+      "timestamp": 29.97,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 900,
+      "timestamp": 30.0,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 901,
+      "timestamp": 30.03,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 902,
+      "timestamp": 30.07,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 903,
+      "timestamp": 30.1,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 904,
+      "timestamp": 30.13,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 905,
+      "timestamp": 30.17,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 906,
+      "timestamp": 30.2,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 907,
+      "timestamp": 30.23,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 908,
+      "timestamp": 30.27,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 909,
+      "timestamp": 30.3,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 910,
+      "timestamp": 30.33,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 911,
+      "timestamp": 30.37,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 912,
+      "timestamp": 30.4,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 913,
+      "timestamp": 30.43,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 914,
+      "timestamp": 30.47,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 915,
+      "timestamp": 30.5,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 916,
+      "timestamp": 30.53,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 917,
+      "timestamp": 30.57,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 918,
+      "timestamp": 30.6,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 919,
+      "timestamp": 30.63,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 920,
+      "timestamp": 30.67,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 921,
+      "timestamp": 30.7,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 922,
+      "timestamp": 30.73,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 923,
+      "timestamp": 30.77,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 924,
+      "timestamp": 30.8,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 925,
+      "timestamp": 30.83,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 926,
+      "timestamp": 30.87,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 927,
+      "timestamp": 30.9,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 928,
+      "timestamp": 30.93,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 929,
+      "timestamp": 30.97,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 930,
+      "timestamp": 31.0,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 931,
+      "timestamp": 31.03,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 932,
+      "timestamp": 31.07,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 933,
+      "timestamp": 31.1,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 934,
+      "timestamp": 31.13,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 935,
+      "timestamp": 31.17,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 936,
+      "timestamp": 31.2,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 937,
+      "timestamp": 31.23,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 938,
+      "timestamp": 31.27,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 939,
+      "timestamp": 31.3,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 940,
+      "timestamp": 31.33,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 941,
+      "timestamp": 31.37,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 942,
+      "timestamp": 31.4,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 943,
+      "timestamp": 31.43,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 944,
+      "timestamp": 31.47,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 945,
+      "timestamp": 31.5,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 946,
+      "timestamp": 31.53,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 947,
+      "timestamp": 31.57,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 948,
+      "timestamp": 31.6,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 949,
+      "timestamp": 31.63,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 950,
+      "timestamp": 31.67,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 951,
+      "timestamp": 31.7,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 952,
+      "timestamp": 31.73,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 953,
+      "timestamp": 31.77,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 954,
+      "timestamp": 31.8,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 955,
+      "timestamp": 31.83,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 956,
+      "timestamp": 31.87,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 957,
+      "timestamp": 31.9,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 958,
+      "timestamp": 31.93,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 959,
+      "timestamp": 31.97,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 960,
+      "timestamp": 32.0,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 961,
+      "timestamp": 32.03,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 962,
+      "timestamp": 32.07,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 963,
+      "timestamp": 32.1,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 964,
+      "timestamp": 32.13,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 965,
+      "timestamp": 32.17,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 966,
+      "timestamp": 32.2,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 967,
+      "timestamp": 32.23,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 968,
+      "timestamp": 32.27,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 969,
+      "timestamp": 32.3,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 970,
+      "timestamp": 32.33,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    },
+    {
+      "frame": 971,
+      "timestamp": 32.37,
+      "agent_decision": "not throwing",
+      "true_label": "not throwing",
+      "correct": true
+    }
+  ]
+}
