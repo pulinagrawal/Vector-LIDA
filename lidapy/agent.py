@@ -49,7 +49,7 @@ from types import SimpleNamespace
 from abc import ABC, abstractmethod
 from typing import Any, Dict
 from .utils import get_logger
-
+from tqdm import tqdm
 import logging
 logging.getLogger(__name__).setLevel(logging.INFO)
 
@@ -122,7 +122,7 @@ def run_alarm_lida(environment, lida_agent, steps=100):
 def minimally_conscious_agent(environment, lida_agent, steps=100):
     lida_agent = SimpleNamespace(**lida_agent)
     current_motor_commands = None
-    for _ in range(steps):
+    for _ in tqdm(range(steps)):       
         current_stimuli = environment.execute(motor_commands=current_motor_commands)
         associated_nodes = lida_agent.sensory_system.process(current_stimuli)
 

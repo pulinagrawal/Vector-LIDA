@@ -1,0 +1,9 @@
+[
+    {"start": 0.0, "end": 10.0, "label": "not throwing"},
+    {"start": 10.0, "end": 15.0, "label": "throwing"},
+    {"start": 15.0, "end": 38.0, "label": "not throwing"},
+    {"start": 38.0, "end": 45.0, "label": "throwing"},
+    {"start": 45.0, "end": 63.0, "label": "not throwing"},
+    {"start": 63.0, "end": 70.0, "label": "throwing"},
+    {"start": 70.0, "end": 149, "label": "not throwing"}
+]
