@@ -1,6 +1,7 @@
 #region Imports
 import traceback
 import sys
+from tqdm import tqdm
 import numpy as np
 from pathlib import Path
 from PIL import Image
@@ -108,8 +109,8 @@ def frame_node(frame):
 
 action1_node = action_node("a person in the act of throwing")
 action2_node = action_node("cloudy sky")
-throwing = Node(content='frame features', activation=1.0)
-notthrowing = Node(content='frame features', activation=1.0)
+throwing = Node(content='throwing', activation=1.0)
+notthrowing = Node(content='not_throwing', activation=1.0)
 throwing.features = compute_average_embedding([frame_node(np.array(Image.open(Path(f"film_agent/frames/throwing/frame_{i+1}.jpg")))) for i in range(5)])
 notthrowing.features = compute_average_embedding([frame_node(np.array(Image.open(Path(f"film_agent/frames/not_throwing/frame_{i+1}.jpg")))) for i in range(5)])
 schemes = [SchemeUnit(context=[action1_node, throwing], action=mps[0]), 
@@ -133,17 +134,18 @@ if __name__ == '__main__':
     # Initialize environment with reference image folders and reduced FPS for better playback
     try:
         env = FilmEnvironment(
-            video_source=1,
+            video_source=r"film_agent/test_data/videos/test2.mp4",
             reference_image_folders=["throwing", "not_throwing"],
-            output_dir=r"film_agent\test_data\LIDA",
-            display_frames=True,
-            fps=30
+            output_dir=r"film_agent/test_data/LIDA",
+            display_frames=False,
+            fps=30,
+            display_frequency=30,
         )
         
         try:
             current_motor_commands = None
             # Get the total number of frames in the video
-            while True:
+            for frame in tqdm(range(4500)):
             # Process all frames in the video
                 execute_cognitive_cycle(
                     current_motor_commands=current_motor_commands, 

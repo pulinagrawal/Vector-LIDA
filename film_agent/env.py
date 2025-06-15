@@ -72,7 +72,7 @@ class FilmEnvironment(Environment):
     }
         self.current_classification = None
         self.classification_confidence = 0.0
-        self.ground_truth_path = r"film_agent\test_data\labels\test2.json"
+        self.ground_truth_path = r"film_agent/test_data/labels/test2.json"
         self.label_intervals = None
         with open(self.ground_truth_path, 'r') as f:
             self.label_intervals = json.load(f)

@@ -27,7 +27,7 @@ class DefaultPAMMemory(Memory):
 
 class MobileCLIPPAMMemory(DefaultPAMMemory):
     def __init__(self, reference_images_map):
-        super(DefaultPAMMemory, self).__init__()
+        super().__init__()
 
         def frame_node(frame):
             node = Node(content="frame features", activation=1.0)
