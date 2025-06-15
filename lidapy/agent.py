@@ -126,7 +126,7 @@ def execute_cognitive_cycle(current_motor_commands, environment, lida_agent):
 
     lida_agent.csm.run(associated_nodes)
     winning_coalition = lida_agent.gw.run(lida_agent.csm)
-
+    
     selected_behavior = lida_agent.procedural_system.run(winning_coalition)
     current_motor_commands = lida_agent.sensory_motor_system.run(selected_behavior=selected_behavior, 
                                                                     dorsal_update=associated_nodes,

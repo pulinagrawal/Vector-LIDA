@@ -20,10 +20,14 @@ class PerceptualAssociativeMemory:
 
     def receive_broadcast(self, coalition :Coalition):
         self.logger.debug(f"Receiving broadcast from coalition: {coalition}")
-        self.store(coalition.coalition_node)
+        self.store(coalition.get_nodes())
+        self.learn(coalition.get_nodes())
         map(self.memory.store, coalition.get_nodes())
 
-    def store(self, node):
-        self.logger.debug(f"Storing node: {node}")
-        self.memory.store(node)
+    def store(self, nodes):
+        self.logger.debug(f"Storing node: {nodes}")
+        self.memory.store(nodes)
 
+    def learn(self, nodes):
+        self.logger.debug(f"Learning node: {nodes}")
+        self.memory.learn(nodes)

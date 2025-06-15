@@ -66,7 +66,7 @@ def compute_average_embedding(embeddings_list, ema_mode=False, prev_embedding=No
 
 def combine_features(self, node1, node2) -> list:
     """Combine features of two nodes by averaging them"""
-    combined_features = compute_average_embedding([node1, node2])
+    combined_features = compute_average_embedding([node1.features, node2.features])
     return combined_features
 
 Node.similarity_function = classmethod(similarity_function)
@@ -111,20 +111,21 @@ action1_node = action_node("a person in the act of throwing")
 action2_node = action_node("cloudy sky")
 throwing = Node(content='throwing', activation=1.0)
 notthrowing = Node(content='not_throwing', activation=1.0)
-throwing.features = compute_average_embedding([frame_node(np.array(Image.open(Path(f"film_agent/frames/throwing/frame_{i+1}.jpg")))) for i in range(5)])
-notthrowing.features = compute_average_embedding([frame_node(np.array(Image.open(Path(f"film_agent/frames/not_throwing/frame_{i+1}.jpg")))) for i in range(5)])
+throwing.features = compute_average_embedding([frame_node(np.array(Image.open(Path(f"film_agent/frames/throwing/frame_{i+1}.jpg")))).features for i in range(5)])
+notthrowing.features = compute_average_embedding([frame_node(np.array(Image.open(Path(f"film_agent/frames/not_throwing/frame_{i+1}.jpg")))).features for i in range(5)])
 schemes = [SchemeUnit(context=[action1_node, throwing], action=mps[0]), 
            SchemeUnit(context=[action2_node, notthrowing], action=mps[1]),
            SchemeUnit(context=[], action=mps[1])
           ]
 
+ss = SensorySystem(pam=pam, sensory_memory=sm)
 pm = ProceduralMemory(schemes=schemes, learn=False)
 acs = [AttentionCodelet()]
 
 lida_agent = {
-'sensory_system': SensorySystem(pam=pam, sensory_memory=sm),
+'sensory_system': ss,
 'csm': CurrentSituationalModel(),
-'gw': GlobalWorkspace(attention_codelets=acs, broadcast_receivers=[pm]),
+'gw': GlobalWorkspace(attention_codelets=acs, broadcast_receivers=[pm, ss]),
 'procedural_system': ProceduralSystem(procedural_memory=pm),
 'sensory_motor_system': SensoryMotorSystem(actuators=actuators, motor_plans=mps),
 }

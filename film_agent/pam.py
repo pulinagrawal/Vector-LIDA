@@ -12,8 +12,12 @@ class DefaultPAMMemory(Memory):
     def __init__(self):
         self.nodes = set()
 
-    def store(self, node):
-        self.nodes.add(node)
+    def store(self, nodes):
+        for node in nodes:
+            for existing_node in self.nodes:
+                if existing_node.content == node.content:
+                    return
+            self.nodes.add(node)
     
     def find_associated_nodes(self, node):
         self.learn([node])
@@ -36,8 +40,8 @@ class MobileCLIPPAMMemory(DefaultPAMMemory):
 
         for concept in reference_images_map:
             node = Node(content=concept, activation=1.0)
-            node.features = compute_average_embedding([frame_node(np.array(Image.open(Path(file)))) for file in reference_images_map[concept]], ema_mode=False)
-            self.store(node)
+            node.features = compute_average_embedding([frame_node(np.array(Image.open(Path(file)))).features for file in reference_images_map[concept]])
+            self.store([node])
 
     def find_associated_nodes(self, node):
         """
@@ -65,4 +69,4 @@ class MobileCLIPPAMMemory(DefaultPAMMemory):
             
             # Link the current node to its associated nodes
             for associated_node in associated_nodes:
-                associated_node.features = compute_average_embedding([node], prev_embedding=associated_node)
+                associated_node.features = compute_average_embedding(node.features, prev_embedding=associated_node.features)

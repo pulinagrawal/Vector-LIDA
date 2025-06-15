@@ -80,3 +80,8 @@ class SensorySystem:
             nodes.extend(associated_nodes)
         self.logger.info(f"Processed input into {len(nodes)} nodes")
         return nodes
+
+    def receive_broadcast(self, coalition):
+        self.logger.debug(f"Receiving broadcast from coalition: {coalition}")
+        self.pam.receive_broadcast(coalition)
+        self.logger.info("Broadcast received and processed")

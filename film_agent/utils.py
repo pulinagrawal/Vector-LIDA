@@ -30,12 +30,14 @@ def compute_average_embedding(embeddings_list, ema_mode=True, prev_embedding=Non
     Returns:
         The averaged embedding (or EMA updated embedding if in EMA mode)
     """
+    if isinstance(embeddings_list, list) and not isinstance(embeddings_list[0], list):
+        ema_mode = True  # If a list is provided, we assume it's not in EMA mode
     if not embeddings_list:
         return prev_embedding if ema_mode and prev_embedding is not None else None
 
     try:
         # Extract features if the objects have a 'features' attribute, otherwise use the objects directly
-        features_list = [emb.features if hasattr(emb, 'features') else emb for emb in embeddings_list]
+        features_list = [emb for emb in embeddings_list]
         
         if ema_mode and prev_embedding is not None:
             # Apply EMA update using the first embedding in the list
