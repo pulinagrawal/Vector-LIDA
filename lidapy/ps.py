@@ -160,7 +160,7 @@ class ProceduralMemory:
         self.logger.debug("Decayed all schemes")
 
     def run(self, winning_coalition):
-        self.decay()
+        # self.decay()
         self.logger.debug(f"Running with winning coalition: {winning_coalition}")
         self.receive_broadcast(winning_coalition)
         best_scheme = self.find_best_matching_scheme(winning_coalition)
