@@ -1,3 +1,4 @@
+from httpx import get
 from lidapy.codelet import Codelet
 from lidapy.global_workspace import Coalition
 from lidapy.utils import get_logger
@@ -12,7 +13,15 @@ def get_most_active_node(csm):
     logger.debug(f"Found most active node with activation {sorted_nodes[0].activation}")
   return sorted_nodes, None
 
-DEFAULT_ATTENTION_CODELET = get_most_active_node
+def get_most_recent_nodes(csm):
+  ''' Get highly active nodes from the CSM based on a threshold. '''
+  nodes = csm.get_all_nodes()
+  recent_nodes = list(filter(lambda node: node.activation>.99999, nodes))
+  if recent_nodes:
+    logger.debug(f"Found most recent nodes {recent_nodes}")
+  return recent_nodes, None
+
+DEFAULT_ATTENTION_CODELET = get_most_recent_nodes
 
 class AttentionCodelet(Codelet):
     def __init__(self, focus_function=DEFAULT_ATTENTION_CODELET):

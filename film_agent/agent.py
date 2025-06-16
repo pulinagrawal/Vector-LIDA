@@ -72,6 +72,16 @@ def combine_features(self, node1, node2) -> list:
 Node.similarity_function = classmethod(similarity_function)
 Node.combine_features_function = classmethod(combine_features)
 
+def action_node(content):
+    node = Node(content=content, activation=1.0)
+    node.features = clip_text_encoder(content)
+    return node
+
+def frame_node(frame):
+    node = Node(content="frame features", activation=1.0)
+    node.features = clip_image_encoder(frame)
+    return node
+
 
 # Set up LIDA components
 sensors = [{"name": "vision_sensor", "modality": "image"}]
@@ -81,7 +91,14 @@ reference_images_map = {
     "throwing": [Path(f"film_agent/frames/throwing/frame_{i+1}.jpg") for i in range(5)],
     "not_throwing": [Path(f"film_agent/frames/not_throwing/frame_{i+1}.jpg") for i in range(5)]
 }
-pam = PerceptualAssociativeMemory(memory=MobileCLIPPAMMemory(reference_images_map=reference_images_map))
+
+bootstrap_nodes = {}
+for concept in reference_images_map:
+    node = Node(content=concept, activation=1.0)
+    node.features = compute_average_embedding([frame_node(np.array(Image.open(Path(file)))).features for file in reference_images_map[concept]])
+    bootstrap_nodes[concept] = node
+
+pam = PerceptualAssociativeMemory(memory=MobileCLIPPAMMemory(bootstrap_nodes=bootstrap_nodes.values()))
 sm = SensoryMemory(sensors=sensors, feature_detectors=feature_detectors)
 
 def record_function(dorsal_update=None):
@@ -97,22 +114,10 @@ mps = [MotorPlan("record", record_function),
        MotorPlan("stop", stop_function)
       ]  
 
-def action_node(content):
-    node = Node(content=content, activation=1.0)
-    node.features = clip_text_encoder(content)
-    return node
-
-def frame_node(frame):
-    node = Node(content="frame features", activation=1.0)
-    node.features = clip_image_encoder(frame)
-    return node
-
 action1_node = action_node("a person in the act of throwing")
 action2_node = action_node("cloudy sky")
-throwing = Node(content='throwing', activation=1.0)
-notthrowing = Node(content='not_throwing', activation=1.0)
-throwing.features = compute_average_embedding([frame_node(np.array(Image.open(Path(f"film_agent/frames/throwing/frame_{i+1}.jpg")))).features for i in range(5)])
-notthrowing.features = compute_average_embedding([frame_node(np.array(Image.open(Path(f"film_agent/frames/not_throwing/frame_{i+1}.jpg")))).features for i in range(5)])
+throwing = bootstrap_nodes["throwing"]
+notthrowing = bootstrap_nodes["not_throwing"]
 schemes = [SchemeUnit(context=[action1_node, throwing], action=mps[0]), 
            SchemeUnit(context=[action2_node, notthrowing], action=mps[1]),
            SchemeUnit(context=[], action=mps[1])

@@ -153,6 +153,30 @@ class Node:
         self.features = self.features.tolist() if not isinstance(self.features, list) else self.features
         return copy.deepcopy(self)
 
+    def combine_nodes(nodes, type='node'):
+        """
+        Combine multiple nodes into a single node.
+        
+        Args:
+            nodes (list): List of Node instances to combine.
+            type (str): Type of combination, e.g., 'node', 'coalition'.
+        
+        Returns:
+            Node: A new Node instance combining the features of the input nodes.
+        """
+        if not nodes:
+            return None
+        if len(nodes) == 1:
+            return nodes[0]
+        
+        combined_content = " + ".join(str(node.content) for node in nodes)
+        combined_activation = sum(node.activation for node in nodes) / len(nodes)
+        combined_tags = list(set(tag for node in nodes for tag in node.tags))
+        
+        combined_node = Node(combined_content, combined_activation, tags=combined_tags)
+        combined_node.links = [link for node in nodes for link in node.links]
+        return combined_node
+
 def link_nodes(node1, node2):
     node1.links.append(node2)
     node2.links.append(node1)

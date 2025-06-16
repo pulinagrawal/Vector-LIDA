@@ -30,18 +30,10 @@ class DefaultPAMMemory(Memory):
             self.store(node)
 
 class MobileCLIPPAMMemory(DefaultPAMMemory):
-    def __init__(self, reference_images_map):
+    def __init__(self, bootstrap_nodes=None):
         super().__init__()
-
-        def frame_node(frame):
-            node = Node(content="frame features", activation=1.0)
-            node.features = clip_image_encoder(frame)
-            return node
-
-        for concept in reference_images_map:
-            node = Node(content=concept, activation=1.0)
-            node.features = compute_average_embedding([frame_node(np.array(Image.open(Path(file)))).features for file in reference_images_map[concept]])
-            self.store([node])
+        if bootstrap_nodes is not None:
+            self.store(bootstrap_nodes)
 
     def find_associated_nodes(self, node):
         """
